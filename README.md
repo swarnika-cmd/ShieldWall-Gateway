@@ -233,9 +233,33 @@ bench/run.sh            # full run, use an idle machine
 bench/run.sh --quick    # 10 req/s for 5 s, smoke test only
 ```
 
-Results: `bench/results/summary.md` and `bench/results/k6-summary.json`.
+Results are written to `bench/results/summary.md` and `bench/results/k6-summary.json`.
 
-**Results:** _to be filled in from a full run on an idle machine._
+### Results (Nov 2026)
+
+Apple M4 Pro, Docker Desktop Linux VM. One uvicorn worker (cpuset of 2 vCPUs), Celery,
+Postgres, Redis, the mock provider and k6 each pinned to their own vCPUs. Non-streaming
+requests whose prompt contains an email and a phone number, so every request is masked and
+unmasked. Raw output: `bench/results/sweep-50-200/` and `bench/results/sweep-100-150/`.
+
+| Rate | Gateway overhead p50 / p95 / p99 (k6) | In-app `gateway_overhead_ms` p50 / p99 | Errors |
+|---:|---|---|---:|
+| 50 req/s (30 s) | 1.27 / 1.84 / 2.79 ms | 0.48 / 1.89 ms | 0% |
+| 100 req/s (20 s) | 1.07 / 1.47 / 5.74 ms | 0.44 / 2.55 ms | 0% |
+| 150 req/s (20 s) | 1.03 / 2.60 / 9.94 ms | 0.34 / 3.45 ms | 0% |
+| 200 req/s (30 s) | saturated: p50 1.9 s, p99 6.3 s | n/a | 3.96% |
+
+What this shows:
+
+- Up to 150 req/s, the gateway adds about 1 ms at p50 and under 10 ms at p99 on top of the
+  provider call, and the in-app timer agrees.
+- **A single worker saturates between 150 and 200 req/s.** Past that point requests queue
+  inside the one event loop and latency grows without bound. This has not been profiled yet.
+  The likely costs per request are tokenizer counting, regex PII scans, JSON
+  parsing/serialisation, and the Redis and Celery round trips. The next steps are profiling
+  with `py-spy`, then running one uvicorn worker per core behind the same Redis budget
+  (budgets are already atomic across processes).
+- These are local numbers on one machine, not production capacity.
 
 ## Database
 
