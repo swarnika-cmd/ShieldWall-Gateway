@@ -1,0 +1,84 @@
+# Benchmark stack. Started by bench/run.sh; do not run by hand unless you know why.
+# CPU sets keep the load generator (k6) off the cores used by the gateway.
+# Override with BENCH_CPUS_* env vars if your Docker VM has fewer than 12 CPUs.
+name: shieldwall-bench
+
+x-app-env: &app-env
+  DATABASE_URL: postgresql://postgres:postgres@postgres:5432/shieldwall
+  REDIS_URL: redis://redis:6379/0
+  UPSTREAM_URL: http://mock-upstream:8001/v1/chat/completions
+  ADMIN_TOKEN: bench-admin-token
+  LOG_LEVEL: WARNING
+
+services:
+  api:
+    build: ..
+    image: shieldwall-gateway:bench
+    # One uvicorn worker process: overhead numbers are per core.
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--no-access-log"]
+    environment: *app-env
+    cpuset: "${BENCH_CPUS_API:-0-1}"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+
+  worker:
+    build: ..
+    image: shieldwall-gateway:bench
+    command: ["celery", "-A", "tasks", "worker", "--loglevel=WARNING", "--concurrency=2"]
+    environment: *app-env
+    cpuset: "${BENCH_CPUS_WORKER:-2-3}"
+    depends_on:
+      api: {condition: service_healthy}
+
+  mock-upstream:
+    build: ..
+    image: shieldwall-gateway:bench
+    command: ["uvicorn", "mock_upstream.app:app", "--host", "0.0.0.0", "--port", "8001", "--no-access-log"]
+    environment:
+      MOCK_LATENCY_MS: "${MOCK_LATENCY_MS:-200}"
+    cpuset: "${BENCH_CPUS_MOCK:-6-7}"
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: shieldwall
+    cpuset: "${BENCH_CPUS_DB:-4}"
+    tmpfs: [/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d shieldwall"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  redis:
+    image: redis:7
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    cpuset: "${BENCH_CPUS_REDIS:-5}"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  k6:
+    image: grafana/k6
+    profiles: ["load"]   # only started explicitly by run.sh
+    cpuset: "${BENCH_CPUS_K6:-8-11}"
+    volumes:
+      - ./k6:/scripts:ro
+      - ./results:/results
+    environment:
+      GATEWAY_URL: http://api:8000/v1/chat/completions
+      DIRECT_URL: http://mock-upstream:8001/v1/chat/completions
+      RATES: "${BENCH_RATES:-50,200}"
+      DURATION: "${BENCH_DURATION:-30s}"
+      API_KEYS: "${BENCH_API_KEYS:-}"
+      HARDWARE: "${BENCH_HARDWARE:-}"
