@@ -1,0 +1,200 @@
+# postgres:16 in Docker, 2026-11-06
+NOTICE:  column "context_relevance" of relation "request_logs" already exists, skipping
+NOTICE:  column "faithfulness" of relation "request_logs" already exists, skipping
+ setseed 
+---------
+ 
+(1 row)
+
+=== v1 /api/analytics (24h) ===
+                                             QUERY PLAN                                              
+-----------------------------------------------------------------------------------------------------
+ Aggregate (actual time=5.789..5.790 rows=1 loops=1)
+   Buffers: shared hit=2921
+   ->  Bitmap Heap Scan on request_logs (actual time=0.672..4.695 rows=6737 loops=1)
+         Recheck Cond: ("timestamp" >= (now() - '24:00:00'::interval))
+         Heap Blocks: exact=2874
+         Buffers: shared hit=2913
+         ->  Bitmap Index Scan on idx_timestamp_latency (actual time=0.482..0.482 rows=6737 loops=1)
+               Index Cond: ("timestamp" >= (now() - '24:00:00'::interval))
+               Buffers: shared hit=39
+ Planning:
+   Buffers: shared hit=150
+ Planning Time: 0.191 ms
+ Execution Time: 5.840 ms
+(13 rows)
+
+=== v1 /api/analytics/tenants (24h) ===
+                                                QUERY PLAN                                                 
+-----------------------------------------------------------------------------------------------------------
+ Sort (actual time=3.058..3.059 rows=20 loops=1)
+   Sort Key: (COALESCE(sum(cost), 0.0)) DESC
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=2916
+   ->  HashAggregate (actual time=3.045..3.047 rows=20 loops=1)
+         Group Key: tenant_id
+         Batches: 1  Memory Usage: 24kB
+         Buffers: shared hit=2913
+         ->  Bitmap Heap Scan on request_logs (actual time=0.538..2.121 rows=6737 loops=1)
+               Recheck Cond: ("timestamp" >= (now() - '24:00:00'::interval))
+               Heap Blocks: exact=2874
+               Buffers: shared hit=2913
+               ->  Bitmap Index Scan on idx_timestamp_latency (actual time=0.336..0.336 rows=6737 loops=1)
+                     Index Cond: ("timestamp" >= (now() - '24:00:00'::interval))
+                     Buffers: shared hit=39
+ Planning:
+   Buffers: shared hit=52
+ Planning Time: 0.099 ms
+ Execution Time: 3.079 ms
+(19 rows)
+
+=== v1 /api/analytics/summary (no window: whole table) ===
+                                            QUERY PLAN                                             
+---------------------------------------------------------------------------------------------------
+ Finalize Aggregate (actual time=12.195..14.373 rows=1 loops=1)
+   Buffers: shared hit=3284
+   ->  Gather (actual time=12.145..14.367 rows=3 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         Buffers: shared hit=3284
+         ->  Partial Aggregate (actual time=10.818..10.818 rows=1 loops=3)
+               Buffers: shared hit=3284
+               ->  Parallel Seq Scan on request_logs (actual time=0.003..3.430 rows=66667 loops=3)
+                     Buffers: shared hit=3284
+ Planning:
+   Buffers: shared hit=21
+ Planning Time: 0.063 ms
+ Execution Time: 14.388 ms
+(14 rows)
+
+=== v1 /api/security/logs (no window) ===
+                                                QUERY PLAN                                                
+----------------------------------------------------------------------------------------------------------
+ Limit (actual time=0.030..0.344 rows=100 loops=1)
+   Buffers: shared hit=446
+   ->  Index Scan using idx_timestamp_latency on request_logs (actual time=0.030..0.339 rows=100 loops=1)
+         Filter: ((violations_triggered IS NOT NULL) AND ((violations_triggered)::text <> ''::text))
+         Rows Removed by Filter: 342
+         Buffers: shared hit=446
+ Planning:
+   Buffers: shared hit=14
+ Planning Time: 0.059 ms
+ Execution Time: 0.354 ms
+(10 rows)
+
+ pg_advisory_xact_lock 
+-----------------------
+ 
+(1 row)
+
+NOTICE:  relation "request_logs" already exists, skipping
+ setseed 
+---------
+ 
+(1 row)
+
+ table_size | covering_idx | partial_idx 
+------------+--------------+-------------
+ 53 MB      | 27 MB        | 1880 kB
+(1 row)
+
+=== v2 /api/analytics (24h) ===
+                                                   QUERY PLAN                                                    
+-----------------------------------------------------------------------------------------------------------------
+ Aggregate (actual time=1.805..1.806 rows=1 loops=1)
+   Buffers: shared hit=127
+   ->  Index Only Scan using idx_logs_time_covering on request_logs (actual time=0.022..0.916 rows=6737 loops=1)
+         Index Cond: ("timestamp" >= (now() - '24:00:00'::interval))
+         Heap Fetches: 0
+         Buffers: shared hit=119
+ Planning:
+   Buffers: shared hit=166
+ Planning Time: 0.249 ms
+ Execution Time: 1.852 ms
+(10 rows)
+
+=== v2 /api/analytics/tenants (24h) ===
+                                                      QUERY PLAN                                                       
+-----------------------------------------------------------------------------------------------------------------------
+ Sort (actual time=1.093..1.094 rows=20 loops=1)
+   Sort Key: (sum(cost)) DESC
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=122
+   ->  HashAggregate (actual time=1.081..1.084 rows=20 loops=1)
+         Group Key: tenant_id
+         Batches: 1  Memory Usage: 24kB
+         Buffers: shared hit=119
+         ->  Index Only Scan using idx_logs_time_covering on request_logs (actual time=0.005..0.437 rows=6737 loops=1)
+               Index Cond: ("timestamp" >= (now() - '24:00:00'::interval))
+               Heap Fetches: 0
+               Buffers: shared hit=119
+ Planning:
+   Buffers: shared hit=55
+ Planning Time: 0.087 ms
+ Execution Time: 1.109 ms
+(16 rows)
+
+=== v2 /api/analytics/tenants (30d) ===
+                                                   QUERY PLAN                                                   
+----------------------------------------------------------------------------------------------------------------
+ Sort (actual time=19.370..21.677 rows=20 loops=1)
+   Sort Key: (sum(cost)) DESC
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=6785
+   ->  Finalize GroupAggregate (actual time=19.324..21.666 rows=20 loops=1)
+         Group Key: tenant_id
+         Buffers: shared hit=6785
+         ->  Gather Merge (actual time=19.309..21.631 rows=60 loops=1)
+               Workers Planned: 2
+               Workers Launched: 2
+               Buffers: shared hit=6785
+               ->  Sort (actual time=17.966..17.968 rows=20 loops=3)
+                     Sort Key: tenant_id
+                     Sort Method: quicksort  Memory: 27kB
+                     Buffers: shared hit=6785
+                     Worker 0:  Sort Method: quicksort  Memory: 27kB
+                     Worker 1:  Sort Method: quicksort  Memory: 27kB
+                     ->  Partial HashAggregate (actual time=17.938..17.941 rows=20 loops=3)
+                           Group Key: tenant_id
+                           Batches: 1  Memory Usage: 24kB
+                           Buffers: shared hit=6769
+                           Worker 0:  Batches: 1  Memory Usage: 24kB
+                           Worker 1:  Batches: 1  Memory Usage: 24kB
+                           ->  Parallel Seq Scan on request_logs (actual time=1.375..11.208 rows=66667 loops=3)
+                                 Filter: ("timestamp" >= (now() - '30 days'::interval))
+                                 Buffers: shared hit=6769
+ Planning:
+   Buffers: shared hit=4
+ Planning Time: 0.048 ms
+ Execution Time: 21.698 ms
+(30 rows)
+
+=== v2 /api/analytics/summary (24h) ===
+                                                   QUERY PLAN                                                    
+-----------------------------------------------------------------------------------------------------------------
+ Aggregate (actual time=1.881..1.881 rows=1 loops=1)
+   Buffers: shared hit=119
+   ->  Index Only Scan using idx_logs_time_covering on request_logs (actual time=0.016..0.536 rows=6737 loops=1)
+         Index Cond: ("timestamp" >= (now() - '24:00:00'::interval))
+         Heap Fetches: 0
+         Buffers: shared hit=119
+ Planning:
+   Buffers: shared hit=9
+ Planning Time: 0.077 ms
+ Execution Time: 1.916 ms
+(10 rows)
+
+=== v2 /api/security/logs (24h) ===
+                                                 QUERY PLAN                                                  
+-------------------------------------------------------------------------------------------------------------
+ Limit (actual time=0.025..0.144 rows=100 loops=1)
+   Buffers: shared hit=102
+   ->  Index Scan using idx_logs_violations_time on request_logs (actual time=0.025..0.140 rows=100 loops=1)
+         Index Cond: ("timestamp" >= (now() - '24:00:00'::interval))
+         Buffers: shared hit=102
+ Planning:
+   Buffers: shared hit=17
+ Planning Time: 0.047 ms
+ Execution Time: 0.153 ms
+(9 rows)
+

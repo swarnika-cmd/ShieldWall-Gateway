@@ -48,6 +48,23 @@ BEGIN
 END $$;
 ALTER TABLE request_logs DROP COLUMN IF EXISTS faithfulness;
 
--- Dashboard indexes
-CREATE INDEX IF NOT EXISTS idx_tenant_timestamp ON request_logs(tenant_id, timestamp DESC);
-CREATE INDEX IF NOT EXISTS idx_timestamp_latency ON request_logs(timestamp DESC, latency_ms);
+-- Indexes (see docs/db-indexing.md for the EXPLAIN ANALYZE numbers).
+-- v1 indexes: (tenant_id, timestamp) was never used by any query because no
+-- query filters on tenant_id; (timestamp, latency_ms) is replaced by the
+-- covering index below.
+DROP INDEX IF EXISTS idx_tenant_timestamp;
+DROP INDEX IF EXISTS idx_timestamp_latency;
+
+-- Every dashboard query filters on a time window. INCLUDE puts the columns
+-- the queries read into the index so Postgres can answer from the index
+-- alone (index-only scan) without visiting the table.
+CREATE INDEX IF NOT EXISTS idx_logs_time_covering
+    ON request_logs (timestamp)
+    INCLUDE (tenant_id, cost, latency_ms, gateway_overhead_ms, upstream_ms, relevance_score,
+             violations_triggered);
+
+-- Security log view: only rows with a violation, newest first. A partial
+-- index stays small because it skips the (common) clean requests.
+CREATE INDEX IF NOT EXISTS idx_logs_violations_time
+    ON request_logs (timestamp DESC)
+    WHERE violations_triggered IS NOT NULL AND violations_triggered <> '';
