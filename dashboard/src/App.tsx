@@ -2,14 +2,16 @@ import { useState, useEffect } from 'react';
 
 interface KpiData {
   total_spend: number;
-  blocked_injections: number;
-  avg_overhead_ms: number;
+  blocked_requests: number;
+  gateway_overhead_ms_p50: number;
+  gateway_overhead_ms_p99: number;
+  upstream_ms_p50: number;
 }
 
 interface AnalyticsData {
-  p95_latency: number;
+  p95_latency_ms: number;
   total_cost: number;
-  avg_faithfulness: number;
+  avg_relevance_score: number | null;
 }
 
 interface TenantSpend {
@@ -25,43 +27,79 @@ interface SecurityLog {
   latency_ms: number;
   http_status: number;
   violations_triggered: string;
-  pii_mappings: Record<string, string>;
+  pii_entities: Record<string, number>; // entity type -> count; raw values are never sent
+}
+
+const TOKEN_KEY = 'shieldwall_admin_token';
+
+function readStoredToken(): string {
+  try {
+    return sessionStorage.getItem(TOKEN_KEY) || '';
+  } catch {
+    return '';
+  }
 }
 
 export default function App() {
   const [window, setWindow] = useState<'1h' | '24h' | '30d'>('24h');
-  const [kpis, setKpis] = useState<KpiData>({ total_spend: 0, blocked_injections: 0, avg_overhead_ms: 0 });
-  const [analytics, setAnalytics] = useState<AnalyticsData>({ p95_latency: 0, total_cost: 0, avg_faithfulness: 0 });
+  const [kpis, setKpis] = useState<KpiData>({
+    total_spend: 0, blocked_requests: 0, gateway_overhead_ms_p50: 0, gateway_overhead_ms_p99: 0, upstream_ms_p50: 0,
+  });
+  const [analytics, setAnalytics] = useState<AnalyticsData>({ p95_latency_ms: 0, total_cost: 0, avg_relevance_score: null });
+  const [adminToken, setAdminToken] = useState<string>(readStoredToken());
+  const [tokenInput, setTokenInput] = useState<string>('');
+  const [authError, setAuthError] = useState<string>('');
   const [tenants, setTenants] = useState<TenantSpend[]>([]);
   const [logs, setLogs] = useState<SecurityLog[]>([]);
   const [selectedLog, setSelectedLog] = useState<SecurityLog | null>(null);
   const [lastRefreshed, setLastRefreshed] = useState<string>('');
 
-  const fetchDashboardData = async () => {
+  const saveToken = () => {
     try {
-      // 1. Fetch Overall KPIs
-      const kpiRes = await fetch('/api/analytics/summary');
+      sessionStorage.setItem(TOKEN_KEY, tokenInput);
+    } catch {
+      // storage blocked: keep the token in memory only
+    }
+    setAdminToken(tokenInput);
+    setTokenInput('');
+  };
+
+  const fetchDashboardData = async () => {
+    if (!adminToken) {
+      setAuthError('Enter the admin token to load data.');
+      return;
+    }
+    // Every /api/* call needs the admin token.
+    const opts = { headers: { Authorization: `Bearer ${adminToken}` } };
+    try {
+      // 1. Fetch headline KPIs for the window
+      const kpiRes = await fetch(`/api/analytics/summary?window=${window}`, opts);
+      if (kpiRes.status === 401 || kpiRes.status === 503) {
+        setAuthError(kpiRes.status === 401 ? 'Admin token rejected.' : 'Admin API disabled on the server.');
+        return;
+      }
+      setAuthError('');
       if (kpiRes.ok) {
         const kpiJson = await kpiRes.json();
         setKpis(kpiJson);
       }
 
-      // 2. Fetch Lookback-specific Aggregates (faithfulness, p95 latency)
-      const analyticsRes = await fetch(`/api/analytics?window=${window}`);
+      // 2. Fetch Lookback-specific Aggregates (relevance, p95 latency)
+      const analyticsRes = await fetch(`/api/analytics?window=${window}`, opts);
       if (analyticsRes.ok) {
         const analyticsJson = await analyticsRes.json();
         setAnalytics(analyticsJson);
       }
 
       // 3. Fetch Tenant Spend Charting
-      const tenantRes = await fetch(`/api/analytics/tenants?window=${window}`);
+      const tenantRes = await fetch(`/api/analytics/tenants?window=${window}`, opts);
       if (tenantRes.ok) {
         const tenantJson = await tenantRes.json();
         setTenants(tenantJson);
       }
 
       // 4. Fetch Security/Vulnerability Logs
-      const logsRes = await fetch('/api/security/logs');
+      const logsRes = await fetch(`/api/security/logs?window=${window}`, opts);
       if (logsRes.ok) {
         const logsJson = await logsRes.json();
         setLogs(logsJson);
@@ -78,7 +116,7 @@ export default function App() {
     fetchDashboardData();
     const interval = setInterval(fetchDashboardData, 5000);
     return () => clearInterval(interval);
-  }, [window]);
+  }, [window, adminToken]);
 
   // Map backend violation name to friendly name & CSS class
   const getViolationDetails = (violationStr: string) => {
@@ -86,8 +124,9 @@ export default function App() {
     if (v.includes('BUDGET_EXCEEDED') || v.includes('BUDGET_429_BREACH')) {
       return { friendly: 'BUDGET_429_BREACH', className: 'budget_429_breach' };
     }
-    if (v.includes('MALICIOUS_INJECTION')) {
-      return { friendly: 'MALICIOUS_INJECTION', className: 'malicious_injection' };
+    if (v.includes('UPSTREAM_ERROR')) {
+      // reuses the pink badge style
+      return { friendly: 'UPSTREAM_ERROR', className: 'malicious_injection' };
     }
     return { friendly: 'PII_REDACTED', className: 'pii_redacted' };
   };
@@ -109,6 +148,16 @@ export default function App() {
           <p className="header-subtitle">Real-time security auditing, data masking & LLM budget gate dashboard</p>
         </div>
         <div className="header-controls">
+          <input
+            type="password"
+            placeholder={adminToken ? 'Admin token set (replace)' : 'Admin token'}
+            value={tokenInput}
+            onChange={(e) => setTokenInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') saveToken(); }}
+            style={{ padding: '0.4rem 0.6rem', borderRadius: '6px', border: '1px solid var(--border-color)' }}
+          />
+          <button onClick={saveToken} className="btn-diagnostics">Save</button>
+          {authError && <span style={{ color: 'var(--color-accent-pink)' }}>{authError}</span>}
           <div className="refresh-indicator">
             <span className="refresh-dot"></span>
             Live Updates (Last sync: {lastRefreshed || 'connecting...'})
@@ -150,33 +199,36 @@ export default function App() {
           <div className="kpi-footer">Total accumulated: ${kpis.total_spend.toFixed(4)}</div>
         </div>
 
-        {/* Card 2: System Overhead */}
+        {/* Card 2: Gateway overhead (time in the gateway, excluding the provider) */}
         <div className="kpi-card overhead">
-          <div className="kpi-label">System Overhead ({window})</div>
+          <div className="kpi-label">Gateway Overhead p50 ({window})</div>
           <div className="kpi-value">
-            {analytics.p95_latency.toFixed(0)}
+            {kpis.gateway_overhead_ms_p50.toFixed(2)}
             <span className="kpi-unit">ms</span>
           </div>
-          <div className="kpi-footer">P95 Proxy response latency</div>
+          <div className="kpi-footer">
+            p99 {kpis.gateway_overhead_ms_p99.toFixed(2)} ms · provider p50 {kpis.upstream_ms_p50.toFixed(0)} ms ·
+            end-to-end p95 {analytics.p95_latency_ms.toFixed(0)} ms
+          </div>
         </div>
 
-        {/* Card 3: Blocked Injections */}
+        {/* Card 3: Requests blocked by the budget gate */}
         <div className="kpi-card blocked">
-          <div className="kpi-label">Blocked Injections (Lifetime)</div>
+          <div className="kpi-label">Budget Blocks ({window})</div>
           <div className="kpi-value">
-            {kpis.blocked_injections}
-            <span className="kpi-unit"> events</span>
+            {kpis.blocked_requests}
+            <span className="kpi-unit"> requests</span>
           </div>
-          <div className="kpi-footer">Threats dropped at budget & policy gate</div>
+          <div className="kpi-footer">Rejected with 429 by the monthly budget gate</div>
         </div>
 
-        {/* Card 4: Average Faithfulness */}
+        {/* Card 4: Retrieval relevance (optional cross-encoder score) */}
         <div className="kpi-card" style={{ background: 'var(--bg-card)' }}>
-          <div className="kpi-label">Avg RAG Faithfulness ({window})</div>
+          <div className="kpi-label">Avg Retrieval Relevance ({window})</div>
           <div className="kpi-value" style={{ color: 'var(--color-accent-blue)' }}>
-            {analytics.avg_faithfulness.toFixed(3)}
+            {analytics.avg_relevance_score === null ? 'n/a' : analytics.avg_relevance_score.toFixed(3)}
           </div>
-          <div className="kpi-footer">Drift boundary: &gt;0.82 threshold</div>
+          <div className="kpi-footer">Query-to-context relevance; needs ENABLE_RELEVANCE_EVAL</div>
         </div>
       </section>
 
@@ -245,7 +297,7 @@ export default function App() {
                 <th>Model</th>
                 <th>Triggered Violation</th>
                 <th>HTTP Status</th>
-                <th>Overhead</th>
+                <th>Latency</th>
                 <th>Diagnostics</th>
               </tr>
             </thead>
@@ -333,23 +385,22 @@ export default function App() {
               </div>
 
               <div className="diagnostics-mapping-area">
-                <h3 className="diagnostics-title">Masked String Variations (PII Redactions)</h3>
+                <h3 className="diagnostics-title">PII Masked (types and counts only)</h3>
                 <div className="mapping-list">
-                  {selectedLog.pii_mappings && Object.keys(selectedLog.pii_mappings).length > 0 ? (
-                    Object.entries(selectedLog.pii_mappings).map(([token, original]) => (
-                      <div className="mapping-item" key={token}>
-                        <div className="mapping-token">Placeholder Token: {token}</div>
-                        <div className="mapping-original">Original Value: {original}</div>
+                  {selectedLog.pii_entities && Object.keys(selectedLog.pii_entities).length > 0 ? (
+                    Object.entries(selectedLog.pii_entities).map(([entity, count]) => (
+                      <div className="mapping-item" key={entity}>
+                        <div className="mapping-token">{entity}</div>
+                        <div className="mapping-original">{count} value(s) masked</div>
                       </div>
                     ))
                   ) : (
-                    <p className="no-mappings-placeholder">
-                      {selectedLog.violations_triggered.includes('PII') 
-                        ? 'PII mappings have expired (TTL is 5 minutes for security compliance).' 
-                        : 'No PII replacements associated with this event type.'}
-                    </p>
+                    <p className="no-mappings-placeholder">No PII was masked in this request.</p>
                   )}
                 </div>
+                <p className="no-mappings-placeholder">
+                  Original values are never stored; they exist only in gateway memory while the request runs.
+                </p>
               </div>
             </div>
           </div>
