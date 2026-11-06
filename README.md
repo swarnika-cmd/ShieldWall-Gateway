@@ -1,213 +1,247 @@
----
-title: ShieldWall Gateway
-emoji: 🛡️
-colorFrom: blue
-colorTo: indigo
-sdk: docker
-app_port: 7860
-pinned: false
----
+# ShieldWall Gateway
 
-# 🛡️ ShieldWall Gateway: Enterprise LLM Security & Telemetry Control Room
+A self-hosted, OpenAI-compatible proxy that sits between your applications and
+an LLM provider (OpenAI, Groq, or anything that speaks `/v1/chat/completions`).
 
-![ShieldWall Gateway Dashboard](dashboard.png)
-ShieldWall Gateway is a high-throughput, self-hosted, operational LLM proxy, data-redaction engine, and real-time observability control room. It provides robust perimeter defense for enterprise LLM integrations—protecting infrastructure budgets via atomic token-based rate limits, redacting sensitive PII/secrets before they reach public APIs, and validating generation quality in real-time.
+What it does on every request:
 
-All operations—from security filtering to full-stack dashboard visualization—are served from a unified, single-port gateway layout with an asynchronous background evaluation queue.
+1. **Authenticates** the calling project with its own API key (`sw_...`).
+   The provider key never leaves the gateway.
+2. **Masks PII** in the prompt (emails, card numbers, Aadhaar, PAN, Indian
+   mobile numbers, US SSNs, some API keys) before it reaches the provider,
+   and puts the original values back into the answer, including streamed answers.
+3. **Enforces a monthly budget per project** by atomically reserving the
+   worst-case cost in Redis before calling the provider, then reconciling
+   with the real cost afterwards.
+4. **Logs** cost, latency and which kinds of PII were masked (counts only) to
+   Postgres through a Celery worker, for the admin dashboard.
 
----
+It is a student project built to learn backend engineering. It has a test
+suite and a reproducible benchmark, but it has not been security-audited or
+run in production.
 
-## 🏗️ System Architecture Topology
-
-The diagram below details the end-to-end telemetry and request processing path of ShieldWall. 
-
-```mermaid
-graph TD
-    classDef external fill:#2c2c2c,stroke:#444,stroke-width:1px,color:#fff;
-    classDef gateway fill:#003366,stroke:#0055ff,stroke-width:2px,color:#fff;
-    classDef storage fill:#2a4d2a,stroke:#3b7a3b,stroke-width:2px,color:#fff;
-    classDef async_queue fill:#6b4423,stroke:#a66a38,stroke-width:2px,color:#fff;
-
-    Client[Client App / LLM Consumer]:::external
-    Admin[Admin Cockpit Browser]:::external
-    Upstream[Upstream LLM Provider <br> OpenAI / Groq]:::external
-
-    subgraph ShieldWall Infrastructure
-        Gateway[FastAPI Proxy Server <br> :8000]:::gateway
-        Redis[(Redis Cache & Broker <br> :6380)]:::storage
-        Postgres[(PostgreSQL DB <br> :5435)]:::storage
-        Celery[Celery Worker Container]:::async_queue
-        CrossEncoder[Cross-Encoder ML Model <br> ms-marco-MiniLM-L-6-v2]:::async_queue
-    end
-
-    %% Sync Request Path
-    Client -->|1. Chat Completion Request| Gateway
-    Gateway <-->|2. Lua Atomic Budget Check| Redis
-    Gateway -->|3. Regex Outbound PII Masking| Gateway
-    Gateway -->|4. Store Trace Mappings <br> 5m TTL| Redis
-    Gateway -->|5. Forward Clean Payload| Upstream
-    Upstream -->|6. Encrypted Stream/Response Chunks| Gateway
-    Gateway -->|7. Boundary-Matching De-Anonymization| Gateway
-    Gateway -->|8. Clean Decrypted Response| Client
-
-    %% Async Telemetry & Eval Path
-    Gateway -->|9. Dispatch Background Logging Task| Celery
-    Celery <-->|10. Read/Write Trace Metadata| Redis
-    Celery -->|11. Compute Token Cost & Migrations| Postgres
-    Celery -->|12. Evaluate Context Relevance & Faithfulness| CrossEncoder
-    CrossEncoder -->|13. Persist Float Evaluation Metrics| Postgres
-
-    %% Admin Dashboard View
-    Admin -->|Dashboard Static Assets| Gateway
-    Admin -->|API Queries: Analytics / Logs / Summary| Gateway
-    Gateway -->|Query Rolling Aggregates| Postgres
-    Gateway -->|Unmask Diagnostics Logs| Redis
-```
-
----
-
-## 🔄 Synchronous Request Pipeline (PII Masking & Streaming)
-
-The request pipeline performs deep filtering on the input prompt and performs streaming boundary unmasking on outbound chunks, keeping overhead under **15ms**.
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Client as LLM Client
-    participant Proxy as FastAPI Gateway
-    participant Cache as Redis Cache
-    participant LLM as Upstream LLM (OpenAI/Groq)
-
-    Client->>Proxy: POST /v1/chat/completions (with PII & custom RAG metadata)
-    Proxy->>Cache: Evaluate check_budget_lua (10m window)
-    alt Budget Exceeded (Lifetime or Window Limit)
-        Cache-->>Proxy: Return current spend > limit
-        Proxy-->>Client: HTTP 429: Budget limit exceeded (X-ShieldWall-Reason)
-    else Budget Approved
-        Cache-->>Proxy: Return current spend within limit
-        Proxy->>Proxy: Run Regex PII masking rules (Email, SSN, Secrets)
-        Proxy->>Cache: Save original PII mappings (trace:{id}:mappings) [5m TTL]
-        Proxy->>Proxy: Strip custom RAG metadata (user_query, rag_context)
-        Proxy->>LLM: Forward sanitized chat completions request
-        alt Streaming Response
-            loop For each chunk
-                LLM->>Proxy: Yield stream chunk (contains masked tokens)
-                Proxy->>Proxy: Match boundary buffer and replace tokens with original values
-                Proxy-->>Client: Yield de-anonymized stream chunk
-            end
-        else Non-Streaming Response
-            LLM->>Proxy: Return full JSON response payload
-            Proxy->>Proxy: Replace masked tokens with original values
-            Proxy-->>Client: Return de-anonymized JSON response
-        end
-    end
-```
-
----
-
-## 📊 Telemetry & Async Quality Evaluation Engine
-
-Telemetry ingestion, pricing calculation, and NLP quality evaluation are offloaded from the hot request path using **Celery** to ensure zero performance degradation.
+## Architecture
 
 ```mermaid
 flowchart LR
-    classDef step fill:#1e1e24,stroke:#3b3b44,stroke-width:1px,color:#fff;
-    classDef action fill:#0a3641,stroke:#0f5f72,stroke-width:1.5px,color:#fff;
-    classDef storage fill:#213b21,stroke:#336933,stroke-width:1.5px,color:#fff;
-
-    A[FastAPI Response Complete]:::step -->|Enqueue| B(FastAPI BackgroundTasks Dispatcher):::action
-    B -->|Fast Fire-and-Forget Enqueue| C{Redis Queue Broker}:::action
-    C -->|Pulls Task| D(Celery Worker):::action
-    
-    subgraph Celery Tasks Pipeline
-        D --> E[Calculate Token Count & Pricing]:::step
-        E --> F[Persist Audit Trail Record in Postgres]:::storage
-        F --> G[Check RAG Evaluation Fields]:::step
-        G -->|If query, context & response present| H(Sentence-Transformers Cross-Encoder):::action
-        H --> I[Evaluate Context Relevance: Query vs RAG Chunks]:::step
-        H --> J[Evaluate Faithfulness: RAG Chunks vs Response Text]:::step
-        I & J --> K[Update Record with relevance & faithfulness floats]:::storage
-    end
+    C[Client app] -->|Bearer sw_...| A[Auth<br/>sha256 key lookup<br/>60 s cache]
+    A --> M[PII mask<br/>regex + checksums]
+    M --> B[Budget reserve<br/>Redis Lua, atomic]
+    B -->|masked prompt<br/>+ gateway's provider key| U[Upstream LLM]
+    U --> S[Unmask<br/>stream-safe buffer]
+    S --> C
+    S -.after response.-> R[Reconcile real cost<br/>Redis Lua]
+    S -.after response.-> Q[(Redis queue)]
+    Q --> W[Celery worker] --> P[(Postgres<br/>request_logs)]
+    D[Admin dashboard] -->|Bearer ADMIN_TOKEN| X["Admin API /api/*"] --> P
 ```
 
----
+- **Hot path** (adds latency to every call): auth, masking, one Redis Lua
+  call, the upstream call, unmasking.
+- **Async path** (after the response is sent): budget reconciliation, then
+  the log row goes through Celery to Postgres. Postgres is only on the hot
+  path for an API-key lookup when the key is not in the in-process cache.
 
-## 🎨 Visual Design & Dashboard Cockpit
+| Module | Responsibility |
+|---|---|
+| `main.py` | FastAPI app, request lifecycle, upstream proxying (normal and streaming) |
+| `auth.py` | Project API keys, admin token check |
+| `pii.py` | PII rules, Luhn and Verhoeff checksums, per-request masker |
+| `streaming.py` | Unmasking placeholders that are split across SSE chunks |
+| `budget.py` | Redis Lua scripts for reserve and reconcile |
+| `pricing.py` | Token estimates and cost in integer micro-USD |
+| `db.py` | psycopg 3 async pool (API) and sync connections (worker, scripts) |
+| `admin_api.py` | `/api/*` dashboard endpoints |
+| `tasks.py` | Celery tasks: write logs, optional relevance scoring |
+| `schema.sql` | Idempotent schema, applied by the API at startup |
+| `mock_upstream/` | Fake OpenAI-compatible provider for tests, demo and benchmarks |
 
-The Admin Cockpit is built with premium **glassmorphism** aesthetics to provide a command-center user experience:
+## Threat model: what this protects and what it does not
 
-*   **Dark Mode Palette**: Seamlessly blending rich obsidian backgrounds, glowing indicators, and neon accents (electric blue, warning pink, nominal emerald).
-*   **KPI Status Ribbon**: High-visibility metric cards indicating Total Corporate Spend, System Overhead (added proxy latency), and Total Blocked Injections.
-*   **Financial Consumption Charting**: Custom responsive bar charts mapping and ranking financial token consumption grouped by tenant sub-identities (`GROUP BY tenant_id`).
-*   **Live Vulnerability Table**: Auto-refreshing security events display with diagnostic buttons.
-*   **Diagnostics Modal**: Interactive overlays allowing administrators to unmask masked string values (retrieved securely from Redis TTL storage) for diagnostic audits.
+Protects against:
 
----
+- **Anyone using your provider key through the gateway.** Requests without a
+  valid project key get `401` and never reach the provider.
+- **A project overspending its monthly budget**, including under heavy
+  concurrency (tested with 50 parallel requests; see `tests/integration/test_budget.py`).
+- **Raw PII in logs or the dashboard.** The token-to-value mapping lives only in
+  the gateway process memory for the duration of one request. Postgres and
+  Redis store entity types and counts only (`{"EMAIL": 2}`).
+- **Common PII formats leaving your network**, within the limits below.
 
-## 🗄️ Database Time-Series Schema
+Does NOT protect against:
 
-The PostgreSQL schema (`schema.sql`) records analytical data and is optimized for rolling metrics lookbacks and latency distribution scans:
+- **PII the regexes do not recognise.** Names, postal addresses, dates of
+  birth, free-text descriptions, unusual number formats, PII inside images or
+  files are all sent to the provider unmasked. Regex masking has false negatives; treat it as a safety net, not a guarantee.
+- **False positives.** A 16-digit number that happens to pass Luhn and start
+  with 2-6 or 8 is masked as a card number (roughly 1 in 10 random 16-digit
+  numbers with such a prefix pass Luhn).
+- **The provider inferring the masked value** from context, or the model
+  ignoring placeholders.
+- **A compromised gateway host.** Whoever controls the process sees raw prompts.
+- **Small budget overshoot from tokenizer mismatch.** The reservation uses a
+  tiktoken estimate; the reconciliation uses the provider's reported usage. For
+  non-OpenAI models these can differ slightly.
+- **Key theft.** Keys are bearer tokens: anyone holding one can spend that
+  project's budget. Revoking a key (delete the row) takes up to 60 s because of
+  the auth cache.
+- **Request floods.** There is no per-second rate limit, only a monthly budget.
+  Invalid keys are not cached, so a flood of bad keys hits Postgres (one indexed lookup each).
 
-```sql
-CREATE TABLE IF NOT EXISTS request_logs (
-    id SERIAL PRIMARY KEY,
-    request_id VARCHAR(64) UNIQUE NOT NULL,
-    tenant_id VARCHAR(64) NOT NULL,
-    timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
-    model VARCHAR(64) NOT NULL,
-    upstream_provider VARCHAR(64) NOT NULL,
-    latency_ms INTEGER NOT NULL,
-    http_status INTEGER NOT NULL,
-    input_tokens INTEGER NOT NULL,
-    output_tokens INTEGER NOT NULL,
-    cost NUMERIC(10, 6) NOT NULL,
-    violations_triggered VARCHAR(256),
-    context_relevance NUMERIC(4, 3),
-    faithfulness NUMERIC(4, 3)
-);
+### Failure modes
 
--- Optimize for dashboard aggregations filtering by tenant over time
-CREATE INDEX IF NOT EXISTS idx_tenant_timestamp ON request_logs(tenant_id, timestamp DESC);
+| Failure | Behaviour |
+|---|---|
+| Redis down | `503` for chat requests by default (`BUDGET_FAIL_MODE=closed`): without Redis the budget cannot be enforced. Set `open` to let traffic through unmetered. Log rows are lost while the Celery broker is down. |
+| Postgres down | Cached keys keep working (up to 60 s); unknown keys get `503`. Admin API returns `500`. Celery retries nothing; log rows are dropped. |
+| Gateway crashes mid-request | The budget hold expires after `RESERVATION_TTL_SECONDS` (600 s) and is swept by the next reservation. |
+| Provider down / 5xx | Client gets `502` (or the provider's status); the hold is released and nothing is charged. |
+| Stream cut off before `[DONE]` | Any text held back for unmasking is flushed. If the connection broke (rather than closing cleanly), an error event follows. |
 
--- Optimize for dashboard performance KPIs (e.g. latency distributions over time)
-CREATE INDEX IF NOT EXISTS idx_timestamp_latency ON request_logs(timestamp DESC, latency_ms);
+## Quick start (Docker Compose)
+
+Requirements: Docker with Compose v2.
+
+```bash
+cp .env.example .env              # set ADMIN_TOKEN to a long random string
+docker compose up --build -d      # api, worker, postgres, redis, mock-upstream
 ```
 
----
+The gateway listens on `http://localhost:8000` (change with `SHIELDWALL_API_PORT`).
+By default it forwards to the bundled mock provider, so no LLM key is needed.
+To use a real provider, set `UPSTREAM_URL` and `UPSTREAM_API_KEY` in `.env`.
 
-## ⚙️ Running Locally with Docker Compose
+### Create a project key
 
-### Prerequisites
-*   Docker & Docker Compose installed.
-*   An OpenAI API Key or Groq API Key added to your `.env` file at the project root.
+```bash
+docker compose exec api python scripts/create_project.py --name my-app --budget-usd 25
+```
 
-### Steps to Run
-1.  **Configure Environment Variables**:
-    Create a `.env` file at the root of the workspace:
-    ```bash
-    OPENAI_API_KEY=sk-proj-your-key-here
-    GROQ_API_KEY=gsk_your-key-here
-    FAIL_SAFE_MODE=fail_open # fail_open or fail_closed
-    ```
-2.  **Launch the Containers**:
-    Run the following command to build and launch the ShieldWall network:
-    ```bash
-    docker compose up --build
-    ```
-    *Note: If port `5432` is already allocated by an active PostgreSQL server on your host machine, the database container will automatically bind to port `5435` on localhost, preventing configuration conflicts.*
+The key is printed once. Only its SHA-256 hash is stored.
 
-3.  **Access the Applications**:
+### Call it
 
-    ### 🚀 Live Production Deployment (Hugging Face Spaces)
-    | Service / Interface | URL / Endpoint | Description |
-    | :--- | :--- | :--- |
-    | **🖥️ Admin Dashboard** | [Open Space Cockpit](https://huggingface.co/spaces/swarnikazzzzz/Orkeney) | View logs, lookback metrics, and active tenant costs |
-    | **🛡️ Swagger API Docs** | [Open Swagger UI](https://swarnikazzzzz-orkeney.hf.space/docs) | Interactive OpenAPI console to test proxy requests |
-    | **🔑 Gateway Endpoint** | `https://swarnikazzzzz-orkeney.hf.space/v1/chat/completions` | Live proxy endpoint compatible with OpenAI SDKs |
+```bash
+curl http://localhost:8000/v1/chat/completions \
+  -H "Authorization: Bearer sw_..." \
+  -H "Content-Type: application/json" \
+  -d '{"model": "gpt-4o-mini", "messages": [{"role": "user", "content": "I am riya@example.com"}]}'
+```
 
-    ### 💻 Local Development (Docker Compose)
-    | Service / Interface | URL / Endpoint | Description |
-    | :--- | :--- | :--- |
-    | **🖥️ Admin Dashboard** | [http://localhost:8000/](http://localhost:8000/) | Local observability console and event logs |
-    | **🛡️ Swagger API Docs** | [http://localhost:8000/docs](http://localhost:8000/docs) | Local OpenAPI interactive documentation page |
-    | **🔑 Gateway Endpoint** | `http://localhost:8000/v1/chat/completions` | Local proxy endpoint for offline testing |
+The mock echoes what it received. The provider sees `[REDACTED_EMAIL_1]`;
+you get your email back. Any OpenAI SDK works by setting `base_url` to
+`http://localhost:8000/v1` and `api_key` to the `sw_` key.
+
+### Dashboard
+
+Open `http://localhost:8000/` and paste the `ADMIN_TOKEN`. The token is kept
+in the browser tab's `sessionStorage`. The built files in `dashboard/dist`
+are committed; rebuild with `cd dashboard && npm ci && npm run build`.
+
+## API reference
+
+### `POST /v1/chat/completions`
+
+OpenAI-compatible. Requires `Authorization: Bearer sw_...`.
+
+- Extra OpenAI fields (`temperature`, `tools`, ...) are forwarded unchanged.
+- If neither `max_tokens` nor `max_completion_tokens` is set, the gateway sets
+  `max_tokens=DEFAULT_MAX_OUTPUT_TOKENS` (1024) so the cost reservation is an upper bound.
+- Optional `user_query` and `rag_context` are stripped before forwarding and
+  used only for relevance scoring (if enabled).
+- Response header `X-ShieldWall-Request-Id` identifies the log row.
+
+| Status | Meaning |
+|---|---|
+| 200 | Success (JSON or `text/event-stream`) |
+| 401 | Missing or invalid project key |
+| 429 | Monthly budget would be exceeded. Header `X-ShieldWall-Reason: budget_exceeded`; body has `budget_usd`, `spent_usd`, `reserved_usd` |
+| 502 | Provider unreachable, or provider rejected the gateway's key |
+| 503 | Redis (budget store) or Postgres (key store) unavailable |
+
+### Admin API (`/api/*`)
+
+All require `Authorization: Bearer <ADMIN_TOKEN>`. If `ADMIN_TOKEN` is not set
+on the server they return `503`. `window` is one of `1h`, `24h` (default), `7d`, `30d`.
+
+| Endpoint | Returns |
+|---|---|
+| `GET /api/analytics?window=` | `requests`, `total_cost`, `p95_latency_ms`, `avg_relevance_score` |
+| `GET /api/analytics/tenants?window=` | spend per project |
+| `GET /api/analytics/summary?window=` | `total_spend`, `blocked_requests`, `gateway_overhead_ms_p50/p99`, `upstream_ms_p50` |
+| `GET /api/security/logs?window=&limit=` | recent requests with a violation, with `pii_entities` counts (never values) |
+
+`gateway_overhead_ms` is the time spent inside the gateway's handler minus the
+time spent waiting for the provider (and, for streams, minus time waiting on
+the client). It does not include HTTP parsing in uvicorn; the benchmark
+measures that end to end.
+
+`GET /health` (no auth) reports Redis and Postgres status.
+
+## Configuration
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `DATABASE_URL` | `postgresql://postgres:postgres@localhost:5432/shieldwall` | Postgres |
+| `REDIS_URL` | `redis://localhost:6379/0` | Budget store and Celery broker |
+| `UPSTREAM_URL` | OpenAI, or Groq if `GROQ_API_KEY` is set | Provider endpoint |
+| `UPSTREAM_API_KEY` | falls back to `GROQ_API_KEY`, then `OPENAI_API_KEY` | Gateway's provider key |
+| `ADMIN_TOKEN` | empty (admin API disabled) | Dashboard / admin API token |
+| `BUDGET_FAIL_MODE` | `closed` | `closed` or `open` when Redis is down |
+| `DEFAULT_MAX_OUTPUT_TOKENS` | `1024` | Output cap when the client sets none |
+| `RESERVATION_TTL_SECONDS` | `600` | When an unreconciled hold is dropped |
+| `AUTH_CACHE_TTL_SECONDS` | `60` | In-process key cache lifetime |
+| `DB_POOL_MIN` / `DB_POOL_MAX` | `1` / `10` | API's Postgres pool |
+| `ENABLE_RELEVANCE_EVAL` | `false` | Score retrieval relevance in the worker (needs `requirements-eval.txt`, build with `--build-arg INSTALL_EVAL=true`) |
+
+Budgets are in USD because provider prices are in USD. Money is stored in
+Redis as integer micro-USD so the Lua scripts add and compare exactly.
+
+## Tests
+
+```bash
+docker compose -f docker-compose.test.yml run --rm --build tests
+docker compose -f docker-compose.test.yml down -v
+```
+
+- `tests/unit`: PII rules with positive and hard-negative cases, Luhn and
+  Verhoeff vectors, stream unmasking (including Hypothesis property tests that
+  split text at random chunk boundaries), pricing.
+- `tests/integration`: real Postgres and Redis, the gateway in-process, the
+  mock provider on a local port. Covers 401s, admin token, 50 concurrent
+  requests against a budget that fits exactly 7, a naive check-then-add
+  version that overspends (to show why Lua is needed), streaming and
+  non-streaming end to end (provider sees only placeholders, client gets
+  originals, nothing raw in Postgres or Redis), upstream failures, and
+  migration idempotency.
+
+CI (`.github/workflows/ci.yml`) runs the same tests on Python 3.11 with
+`postgres:16` and `redis:7` service containers and the same `DATABASE_URL` /
+`REDIS_URL` variables.
+
+## Benchmarks
+
+`bench/run.sh` measures the latency the gateway adds, using k6 against the
+mock provider (fixed 200 ms latency): scenario A calls the mock directly,
+scenario B goes through the gateway, at 50 and 200 requests/s for 30 s each.
+Overhead = B minus A at p50/p95/p99. It also prints the gateway's own
+`gateway_overhead_ms` from Postgres as a cross-check.
+
+```bash
+bench/run.sh            # full run, use an idle machine
+bench/run.sh --quick    # 10 req/s for 5 s, smoke test only
+```
+
+Results: `bench/results/summary.md` and `bench/results/k6-summary.json`.
+
+**Results:** _to be filled in from a full run on an idle machine._
+
+## Database
+
+See [`docs/db-indexing.md`](docs/db-indexing.md) for the dashboard query
+plans before and after v2, measured with `EXPLAIN (ANALYZE, BUFFERS)` on 200k rows.
+
+## Changes from v1
+
+See [`CHANGELOG.md`](CHANGELOG.md).
