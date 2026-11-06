@@ -1,0 +1,4 @@
+# Optional: only needed when ENABLE_RELEVANCE_EVAL=true (adds ~1 GB to the image).
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+sentence-transformers>=2.5.1

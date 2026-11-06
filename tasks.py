@@ -1,254 +1,124 @@
-import os
+"""Celery worker: writes request logs to Postgres off the hot path.
+
+Each worker process (or thread, with --pool=threads or eager mode in tests)
+keeps ONE synchronous psycopg connection of its own; connections are never
+shared between processes or threads. The schema
+is created by the API at startup, not here.
+
+Optional: retrieval-relevance scoring with a cross-encoder
+(ENABLE_RELEVANCE_EVAL=true, needs requirements-eval.txt). The model
+cross-encoder/ms-marco-MiniLM-L-6-v2 is trained to score how relevant a
+passage is to a search query. We use it for exactly that: how relevant the
+retrieved RAG chunks are to the user's question. It does NOT measure whether
+the answer is faithful to the context, so we do not call it that.
+"""
+import json
 import logging
 import math
-import psycopg2
-from typing import List, Tuple
+import os
+import threading
+from typing import List, Optional
+
+import psycopg
 from celery import Celery
-from celery.signals import worker_ready
 
-# Configure Logger
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("shieldwall_worker")
+import config
+import db
 
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@db:5432/shieldwall")
+logging.basicConfig(level=config.LOG_LEVEL)
+logger = logging.getLogger("shieldwall.worker")
 
-# Initialize Celery Application
-celery_app = Celery("shieldwall", broker=REDIS_URL, backend=REDIS_URL)
-
-# Configure Celery
+celery_app = Celery("shieldwall", broker=config.REDIS_URL)
 celery_app.conf.update(
     task_serializer="json",
     accept_content=["json"],
-    result_serializer="json",
+    task_ignore_result=True,
     timezone="UTC",
     enable_utc=True,
+    # Tests set this so tasks run inline without a worker process.
+    task_always_eager=os.getenv("CELERY_TASK_ALWAYS_EAGER", "false").lower() == "true",
+    # If Redis is down, fail fast instead of blocking the API thread for seconds.
+    task_publish_retry_policy={"max_retries": 1, "interval_start": 0, "interval_step": 0.2},
 )
 
-# Model Pricing: Cost per token (in USD)
-MODEL_PRICING = {
-    # OpenAI models
-    "gpt-4o": {"input": 5.00 / 1_000_000, "output": 15.00 / 1_000_000},
-    "gpt-4o-mini": {"input": 0.150 / 1_000_000, "output": 0.600 / 1_000_000},
-    "gpt-3.5-turbo": {"input": 0.50 / 1_000_000, "output": 1.50 / 1_000_000},
-    "gpt-4-turbo": {"input": 10.00 / 1_000_000, "output": 30.00 / 1_000_000},
-    "gpt-4": {"input": 30.00 / 1_000_000, "output": 60.00 / 1_000_000},
-    # Groq models
-    "llama3-8b-8192": {"input": 0.05 / 1_000_000, "output": 0.08 / 1_000_000},
-    "llama3-70b-8192": {"input": 0.59 / 1_000_000, "output": 0.79 / 1_000_000},
-    "llama-3.1-8b-instant": {"input": 0.05 / 1_000_000, "output": 0.08 / 1_000_000},
-    "llama-3.1-70b-versatile": {"input": 0.59 / 1_000_000, "output": 0.79 / 1_000_000},
-    "llama-3.3-70b-versatile": {"input": 0.59 / 1_000_000, "output": 0.79 / 1_000_000},
-    "mixtral-8x7b-32768": {"input": 0.24 / 1_000_000, "output": 0.24 / 1_000_000},
-    "gemma2-9b-it": {"input": 0.20 / 1_000_000, "output": 0.20 / 1_000_000},
-}
-DEFAULT_PRICING = {"input": 10.00 / 1_000_000, "output": 30.00 / 1_000_000}
+_local = threading.local()
 
-# Global CrossEncoder Instance
-cross_encoder_model = None
 
-def get_cross_encoder():
-    """Lazily loads or returns the global CrossEncoder model."""
-    global cross_encoder_model
-    if cross_encoder_model is None:
-        try:
-            from sentence_transformers import CrossEncoder
-            logger.info("Loading Cross-Encoder model (cross-encoder/ms-marco-MiniLM-L-6-v2)...")
-            cross_encoder_model = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
-            logger.info("Cross-Encoder model loaded successfully.")
-        except Exception as e:
-            logger.error(f"Failed to load Cross-Encoder model: {e}")
-    return cross_encoder_model
+def get_connection() -> psycopg.Connection:
+    """One lazily-opened connection per process/thread; reopened if it broke."""
+    conn: Optional[psycopg.Connection] = getattr(_local, "conn", None)
+    if conn is None or conn.closed or conn.broken:
+        conn = _local.conn = db.sync_connect()
+    return conn
 
-def calculate_cost(model: str, input_tokens: int, output_tokens: int) -> float:
-    """Calculates the absolute cost of the request based on model pricing."""
-    pricing = MODEL_PRICING.get(model, DEFAULT_PRICING)
-    return (input_tokens * pricing["input"]) + (output_tokens * pricing["output"])
 
-def sigmoid(x: float) -> float:
-    """Standard sigmoid activation mapping raw logit scores to [0.0, 1.0]."""
+INSERT_LOG_SQL = """
+INSERT INTO request_logs (
+    request_id, tenant_id, timestamp, model, upstream_provider,
+    latency_ms, upstream_ms, gateway_overhead_ms, http_status,
+    input_tokens, output_tokens, cost, violations_triggered, pii_entities
+) VALUES (%s, %s, to_timestamp(%s), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+ON CONFLICT (request_id) DO NOTHING
+"""
+
+
+@celery_app.task(name="tasks.log_request")
+def log_request(payload: dict) -> str:
+    """Persist one request log row. The payload never contains raw PII."""
+    conn = get_connection()
+    with conn.transaction():
+        conn.execute(
+            INSERT_LOG_SQL,
+            (
+                payload["request_id"],
+                payload["tenant_id"],
+                payload["timestamp"],
+                payload["model"],
+                payload["upstream_provider"],
+                payload["latency_ms"],
+                payload.get("upstream_ms"),
+                payload.get("gateway_overhead_ms"),
+                payload["http_status"],
+                payload["input_tokens"],
+                payload["output_tokens"],
+                payload["cost_usd"],
+                payload.get("violations_triggered", ""),
+                json.dumps(payload.get("pii_entities") or {}),
+            ),
+        )
+
+    if config.ENABLE_RELEVANCE_EVAL and payload.get("user_query") and payload.get("rag_context"):
+        score_relevance.delay(payload["request_id"], payload["user_query"], payload["rag_context"])
+    return payload["request_id"]
+
+
+_cross_encoder = None
+
+
+def _sigmoid(x: float) -> float:
     try:
         return 1.0 / (1.0 + math.exp(-x))
     except OverflowError:
         return 0.0 if x < 0 else 1.0
 
-def evaluate_rag_metrics(user_query: str, rag_context: List[str], response_text: str) -> Tuple[float, float]:
-    """Uses Cross-Encoder to compute Context Relevance and Faithfulness scores."""
-    model = get_cross_encoder()
-    if not model or not rag_context:
-        return 0.0, 0.0
 
-    # 1. Context Relevance: score (user_query, context_chunk) pairs
-    try:
-        relevance_pairs = [(user_query, chunk) for chunk in rag_context]
-        relevance_logits = model.predict(relevance_pairs)
-        # Handle single float output if rag_context contains only 1 element
-        if isinstance(relevance_logits, (int, float)):
-            relevance_logits = [relevance_logits]
-        relevance_scores = [sigmoid(float(logit)) for logit in relevance_logits]
-        context_relevance = sum(relevance_scores) / len(relevance_scores)
-    except Exception as e:
-        logger.error(f"Failed to score context relevance: {e}")
-        context_relevance = 0.0
+def relevance_score(user_query: str, chunks: List[str]) -> float:
+    """Mean query-to-chunk relevance in [0, 1] from the ms-marco cross-encoder."""
+    global _cross_encoder
+    if _cross_encoder is None:
+        from sentence_transformers import CrossEncoder  # only installed with requirements-eval.txt
+        _cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+    logits = _cross_encoder.predict([(user_query, chunk) for chunk in chunks])
+    scores = [_sigmoid(float(x)) for x in list(logits)]
+    return round(sum(scores) / len(scores), 3)
 
-    # 2. Faithfulness: score (context_chunk, response_text) pairs
-    try:
-        faithfulness_pairs = [(chunk, response_text) for chunk in rag_context]
-        faithfulness_logits = model.predict(faithfulness_pairs)
-        if isinstance(faithfulness_logits, (int, float)):
-            faithfulness_logits = [faithfulness_logits]
-        faithfulness_scores = [sigmoid(float(logit)) for logit in faithfulness_logits]
-        # Max score indicates if at least one chunk grounds the response
-        faithfulness = max(faithfulness_scores)
-    except Exception as e:
-        logger.error(f"Failed to score faithfulness: {e}")
-        faithfulness = 0.0
 
-    return round(context_relevance, 3), round(faithfulness, 3)
-
-def init_db():
-    """Initializes the database by executing our time-series logs migration schema."""
-    schema_path = os.path.join(os.path.dirname(__file__), "schema.sql")
-    if not os.path.exists(schema_path):
-        logger.warning(f"schema.sql not found at {schema_path}. Skipping automatic migration.")
-        return
-        
-    with open(schema_path, "r") as f:
-        schema_sql = f.read()
-
-    import time
-    retries = 5
-    delay = 3.0
-    conn = None
-    for i in range(retries):
-        try:
-            logger.info(f"Connecting to database (attempt {i+1}/{retries})...")
-            conn = psycopg2.connect(DATABASE_URL)
-            break
-        except Exception as e:
-            if i == retries - 1:
-                logger.critical(f"Failed to connect to database after {retries} attempts.")
-                raise e
-            logger.warning(f"Database connection failed: {e}. Retrying in {delay}s...")
-            time.sleep(delay)
-
-    try:
-        with conn.cursor() as cur:
-            cur.execute(schema_sql)
-            conn.commit()
-            logger.info("PostgreSQL database migrations applied successfully.")
-    except Exception as e:
-        conn.rollback()
-        logger.error(f"Failed to apply SQL migrations: {e}")
-        raise e
-    finally:
-        if conn:
-            conn.close()
-
-# Auto-apply database migration schema and preload ML models on worker ready
-@worker_ready.connect
-def on_worker_ready(sender, **kwargs):
-    logger.info("Celery worker process ready. Syncing Postgres database schema...")
-    try:
-        init_db()
-    except Exception as e:
-        logger.critical(f"Database migration aborted during startup: {e}")
-        
-    # Preload the Cross-Encoder model
-    try:
-        get_cross_encoder()
-    except Exception as e:
-        logger.warning(f"Could not preload Cross-Encoder model at startup: {e}")
-
-@celery_app.task(name="tasks.evaluate_request_quality")
-def evaluate_request_quality(request_id: str, user_query: str, rag_context: List[str], response_text: str) -> str:
-    """Background task evaluating context relevance and faithfulness, persisting results to Postgres."""
-    if not user_query or not rag_context or not response_text:
-        logger.info(f"Skipping evaluation for request '{request_id}': missing user_query, rag_context, or response_text.")
-        return request_id
-
-    logger.info(f"Starting async quality evaluation for request '{request_id}'...")
-    context_relevance, faithfulness = evaluate_rag_metrics(user_query, rag_context, response_text)
-
-    conn = psycopg2.connect(DATABASE_URL)
-    try:
-        with conn.cursor() as cur:
-            cur.execute(
-                """
-                UPDATE request_logs
-                SET context_relevance = %s, faithfulness = %s
-                WHERE request_id = %s;
-                """,
-                (context_relevance, faithfulness, request_id)
-            )
-            conn.commit()
-            logger.info(f"Updated request '{request_id}' quality scores: relevance={context_relevance:.3f}, faithfulness={faithfulness:.3f}")
-    except Exception as e:
-        conn.rollback()
-        logger.error(f"Failed to save evaluation scores for request '{request_id}': {e}")
-        raise e
-    finally:
-        conn.close()
-
-    return request_id
-
-@celery_app.task(name="tasks.log_request")
-def log_request(payload: dict) -> str:
-    """Consumes request details, calculates metrics, and persists to PostgreSQL."""
-    request_id = payload["request_id"]
-    tenant_id = payload["tenant_id"]
-    timestamp = payload["timestamp"]  # epoch float
-    model = payload["model"]
-    upstream_provider = payload["upstream_provider"]
-    latency_ms = payload["latency_ms"]
-    http_status = payload["http_status"]
-    input_tokens = payload["input_tokens"]
-    output_tokens = payload["output_tokens"]
-    violations_triggered = payload.get("violations_triggered", "")
-
-    # Calculate absolute financial cost
-    cost = calculate_cost(model, input_tokens, output_tokens)
-
-    conn = psycopg2.connect(DATABASE_URL)
-    try:
-        with conn.cursor() as cur:
-            cur.execute(
-                """
-                INSERT INTO request_logs (
-                    request_id, tenant_id, timestamp, model, upstream_provider,
-                    latency_ms, http_status, input_tokens, output_tokens, cost, violations_triggered
-                ) VALUES (%s, %s, to_timestamp(%s), %s, %s, %s, %s, %s, %s, %s, %s)
-                ON CONFLICT (request_id) DO NOTHING;
-                """,
-                (
-                    request_id,
-                    tenant_id,
-                    timestamp,
-                    model,
-                    upstream_provider,
-                    latency_ms,
-                    http_status,
-                    input_tokens,
-                    output_tokens,
-                    cost,
-                    violations_triggered
-                )
-            )
-            conn.commit()
-            logger.info(f"Successfully logged metric event {request_id} for tenant '{tenant_id}' (cost: ${cost:.6f})")
-    except Exception as e:
-        conn.rollback()
-        logger.error(f"Failed to commit metrics for request {request_id}: {e}")
-        raise e
-    finally:
-        conn.close()
-
-    # Trigger evaluation asynchronously if RAG metadata is available
-    user_query = payload.get("user_query")
-    rag_context = payload.get("rag_context")
-    response_text = payload.get("response_text")
-
-    if user_query and rag_context and response_text:
-        evaluate_request_quality.delay(request_id, user_query, rag_context, response_text)
-
+@celery_app.task(name="tasks.score_relevance")
+def score_relevance(request_id: str, user_query: str, rag_context: List[str]) -> str:
+    score = relevance_score(user_query, rag_context)
+    conn = get_connection()
+    with conn.transaction():
+        conn.execute("UPDATE request_logs SET relevance_score = %s WHERE request_id = %s",
+                     (score, request_id))
+    logger.info("relevance_score=%.3f for %s", score, request_id)
     return request_id
