@@ -1,52 +1,77 @@
-version: '3.8'
+# Local stack: API, Celery worker, Postgres, Redis and a mock LLM provider.
+#   cp .env.example .env      # then set ADMIN_TOKEN
+#   docker compose up --build
+# To use a real provider instead of the mock, set UPSTREAM_URL and
+# UPSTREAM_API_KEY in .env.
+name: shieldwall
+
+x-app-env: &app-env
+  DATABASE_URL: postgresql://postgres:postgres@postgres:5432/shieldwall
+  REDIS_URL: redis://redis:6379/0
+  UPSTREAM_URL: ${UPSTREAM_URL:-http://mock-upstream:8001/v1/chat/completions}
+  UPSTREAM_API_KEY: ${UPSTREAM_API_KEY:-}
+  ADMIN_TOKEN: ${ADMIN_TOKEN:?set ADMIN_TOKEN in .env (see .env.example)}
+  BUDGET_FAIL_MODE: ${BUDGET_FAIL_MODE:-closed}
+  ENABLE_RELEVANCE_EVAL: ${ENABLE_RELEVANCE_EVAL:-false}
+  LOG_LEVEL: ${LOG_LEVEL:-INFO}
 
 services:
-  web:
+  api:
     build: .
-    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    image: shieldwall-gateway:local
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+    environment: *app-env
     ports:
-      - "8000:8000"
-    environment:
-      - REDIS_URL=redis://redis:6379/0
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/shieldwall
-      - OPENAI_API_KEY=${OPENAI_API_KEY:-""}
-      - GROQ_API_KEY=${GROQ_API_KEY:-""}
-      - FAIL_SAFE_MODE=${FAIL_SAFE_MODE:-"fail_open"} # fail_open or fail_closed
+      - "${SHIELDWALL_API_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
     depends_on:
-      - redis
-      - db
-    volumes:
-      - .:/app
-
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6380:6379"
-    command: redis-server --save "" --appendonly no # Ephemeral for high performance rate-limiting
-
-  db:
-    image: postgres:16-alpine
-    ports:
-      - "5435:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=shieldwall
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   worker:
     build: .
-    command: celery -A tasks worker --loglevel=info
-    environment:
-      - REDIS_URL=redis://redis:6379/0
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/shieldwall
-      - GROQ_API_KEY=${GROQ_API_KEY:-""}
+    image: shieldwall-gateway:local
+    command: ["celery", "-A", "tasks", "worker", "--loglevel=INFO", "--concurrency=2"]
+    environment: *app-env
     depends_on:
-      - redis
-      - db
+      api:
+        condition: service_healthy  # the API creates the schema at startup
+
+  mock-upstream:
+    build: .
+    image: shieldwall-gateway:local
+    command: ["uvicorn", "mock_upstream.app:app", "--host", "0.0.0.0", "--port", "8001"]
+    environment:
+      MOCK_LATENCY_MS: ${MOCK_LATENCY_MS:-200}
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: shieldwall
     volumes:
-      - .:/app
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d shieldwall"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  redis:
+    image: redis:7
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
 
 volumes:
   postgres_data:

@@ -1,0 +1,10 @@
+.git
+.github
+**/__pycache__
+**/*.pyc
+.pytest_cache
+.hypothesis
+.env
+dashboard/node_modules
+dashboard.png
+bench/results
