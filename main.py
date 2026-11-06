@@ -1,1094 +1,379 @@
-import os
-import time
-import json
+"""ShieldWall gateway: an OpenAI-compatible proxy in front of an LLM provider.
+
+Hot path for POST /v1/chat/completions (see README for the diagram):
+  1. authenticate the project API key           (auth.py)
+  2. mask PII in the prompt                      (pii.py)
+  3. reserve the worst-case cost in Redis (Lua)  (budget.py)
+  4. call the upstream provider with OUR key
+  5. unmask placeholders in the answer (also for streams)  (streaming.py)
+  6. after the response: reconcile the real cost and queue a log row
+     for the Celery worker                       (tasks.py)
+"""
 import asyncio
 import logging
-import re
+import os
+import time
+import uuid
 from contextlib import asynccontextmanager
-from typing import List, Dict, Any
+from dataclasses import dataclass
+from typing import Any, List, Optional
 
-from fastapi import FastAPI, Request, Response, HTTPException, status, BackgroundTasks, Header, Body
-from fastapi.responses import StreamingResponse, JSONResponse
+import anyio
 import httpx
 import redis.asyncio as aioredis
-import tiktoken
-from pydantic import BaseModel, Field, ConfigDict
+from fastapi import BackgroundTasks, Body, FastAPI, HTTPException, Request, Response, status
+from fastapi.responses import JSONResponse, StreamingResponse
+from pydantic import BaseModel, ConfigDict, Field
 
-class ChatMessage(BaseModel):
-    role: str = Field(..., description="Role of the message author (system, user, assistant)")
-    content: Any = Field(..., description="Content of the message (string, or block list)")
+import admin_api
+import config
+import db
+from auth import Project, ProjectAuthenticator
+from budget import BudgetGate, BudgetUnavailable, Reservation
+from pii import PiiMasker
+from pricing import cost_micro_usd, count_text_tokens, estimate_input_tokens, micro_to_usd
+from streaming import SseUnmaskRelay, sse
 
-class ChatCompletionRequest(BaseModel):
-    model_config = ConfigDict(extra='allow')
-    
-    model: str = Field(default="gpt-4o-mini", description="The LLM model to use (e.g. llama-3.1-8b-instant, gpt-4o-mini)")
-    messages: List[ChatMessage] = Field(..., description="List of messages in the conversation")
-    stream: bool = Field(default=False, description="If true, response chunks will be streamed")
-    user_query: str | None = Field(default=None, description="User query for RAG quality evaluation")
-    rag_context: List[str] | None = Field(default=None, description="Retrieved document chunks for RAG evaluation")
-
-# Configure Logger
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=config.LOG_LEVEL)
 logger = logging.getLogger("shieldwall")
 
-# Model Pricing: Cost per token (in USD)
-MODEL_PRICING = {
-    # OpenAI models
-    "gpt-4o": {"input": 5.00 / 1_000_000, "output": 15.00 / 1_000_000},
-    "gpt-4o-mini": {"input": 0.150 / 1_000_000, "output": 0.600 / 1_000_000},
-    "gpt-3.5-turbo": {"input": 0.50 / 1_000_000, "output": 1.50 / 1_000_000},
-    "gpt-4-turbo": {"input": 10.00 / 1_000_000, "output": 30.00 / 1_000_000},
-    "gpt-4": {"input": 30.00 / 1_000_000, "output": 60.00 / 1_000_000},
-    # Groq models
-    "llama3-8b-8192": {"input": 0.05 / 1_000_000, "output": 0.08 / 1_000_000},
-    "llama3-70b-8192": {"input": 0.59 / 1_000_000, "output": 0.79 / 1_000_000},
-    "llama-3.1-8b-instant": {"input": 0.05 / 1_000_000, "output": 0.08 / 1_000_000},
-    "llama-3.1-70b-versatile": {"input": 0.59 / 1_000_000, "output": 0.79 / 1_000_000},
-    "llama-3.3-70b-versatile": {"input": 0.59 / 1_000_000, "output": 0.79 / 1_000_000},
-    "mixtral-8x7b-32768": {"input": 0.24 / 1_000_000, "output": 0.24 / 1_000_000},
-    "gemma2-9b-it": {"input": 0.20 / 1_000_000, "output": 0.20 / 1_000_000},
-}
-DEFAULT_PRICING = {"input": 10.00 / 1_000_000, "output": 30.00 / 1_000_000}
 
-# Determine default upstream based on available API Keys
-DEFAULT_UPSTREAM = "https://api.openai.com/v1/chat/completions"
-if os.getenv("GROQ_API_KEY"):
-    DEFAULT_UPSTREAM = "https://api.groq.com/openai/v1/chat/completions"
+class ChatMessage(BaseModel):
+    role: str = Field(..., description="system, user or assistant")
+    content: Any = Field(..., description="A string, or a list of content parts")
 
-UPSTREAM_URL = os.getenv("UPSTREAM_URL", DEFAULT_UPSTREAM)
-FAIL_SAFE_MODE = os.getenv("FAIL_SAFE_MODE", "fail_open") # fail_open or fail_closed
-BUDGET_LIMIT = 5.00 # $5.00 budget per 10 mins
 
-redis_client = None
-http_client = None
+class ChatCompletionRequest(BaseModel):
+    model_config = ConfigDict(extra="allow")  # other OpenAI fields are forwarded as-is
 
-# Pre-compiled high-performance Regex rules for PII/Secrets detection
-PII_RULES = {
-    "EMAIL": re.compile(r'\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b'),
-    "SSN": re.compile(r'\b\d{3}-\d{2}-\d{4}\b'),
-    "CREDIT_CARD": re.compile(r'\b(?:\d[ -]*?){13,16}\b'),
-    "OPENAI_KEY": re.compile(r'\bsk-(?:proj-)?[a-zA-Z0-9-_]{32,}\b'),
-    "AWS_KEY": re.compile(r'\bAKIA[A-Z0-9]{16}\b'),
-    "ENV_VAR": re.compile(r'\b[A-Z_]+[A-Z0-9_]*\s*=\s*[\'"]?[A-Za-z0-9/+=]{40}[\'"]?\b'),
-    "AWS_SECRET_KEY": re.compile(r'\bAWS_SECRET_ACCESS_KEY\s*[:=]\s*[\'"]?[A-Za-z0-9/+=]{40}[\'"]?\b', re.IGNORECASE)
-}
+    model: str = Field(default="gpt-4o-mini")
+    messages: List[ChatMessage]
+    stream: bool = False
+    user_query: Optional[str] = Field(default=None, description="Optional, for relevance scoring")
+    rag_context: Optional[List[str]] = Field(default=None, description="Optional, for relevance scoring")
 
-# Redis Lua Script to atomically check budget and clean up expired entries
-CHECK_BUDGET_LUA = """
-local zset_key = KEYS[1]
-local sum_key = KEYS[2]
-local now = tonumber(ARGV[1])
-
--- Clean up expired items
-local expired = redis.call('ZRANGEBYSCORE', zset_key, '-inf', now)
-local subtracted = 0
-for _, item in ipairs(expired) do
-    local cost = string.match(item, ":([^:]+)$")
-    if cost then
-        subtracted = subtracted + tonumber(cost)
-    end
-end
-if #expired > 0 then
-    redis.call('ZREMRANGEBYSCORE', zset_key, '-inf', now)
-    local new_sum = redis.call('DECRBYFLOAT', sum_key, subtracted)
-    if tonumber(new_sum) < 0 then
-        redis.call('SET', sum_key, "0")
-    end
-end
-
-local current_sum = tonumber(redis.call('GET', sum_key) or "0")
-return current_sum
-"""
-
-# Redis Lua Script to atomically record cost and clean up expired entries
-ADD_COST_LUA = """
-local zset_key = KEYS[1]
-local sum_key = KEYS[2]
-local now = tonumber(ARGV[1])
-local cost = tonumber(ARGV[2])
-local request_id = ARGV[3]
-local window = tonumber(ARGV[4])
-
--- Clean up expired items first to make sure sum is accurate
-local expired = redis.call('ZRANGEBYSCORE', zset_key, '-inf', now)
-local subtracted = 0
-for _, item in ipairs(expired) do
-    local cost_val = string.match(item, ":([^:]+)$")
-    if cost_val then
-        subtracted = subtracted + tonumber(cost_val)
-    end
-end
-if #expired > 0 then
-    redis.call('ZREMRANGEBYSCORE', zset_key, '-inf', now)
-    redis.call('DECRBYFLOAT', sum_key, subtracted)
-end
-
--- Add new cost
-redis.call('INCRBYFLOAT', sum_key, cost)
-redis.call('ZADD', zset_key, now + window, request_id .. ":" .. cost)
-
--- Set expiration for safety
-redis.call('EXPIRE', zset_key, window * 2)
-redis.call('EXPIRE', sum_key, window * 2)
-
-local current_sum = tonumber(redis.call('GET', sum_key) or "0")
-if current_sum < 0 then
-    current_sum = 0
-    redis.call('SET', sum_key, "0")
-end
-return current_sum
-"""
-
-# Database configuration
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@db:5432/shieldwall")
-db_pool = None
-alert_task = None
-
-ALERT_LOOP_INTERVAL = 60.0
-ALERT_COOLDOWN_PERIOD = 600.0
-
-def query_db(query: str, params: tuple = None, is_update: bool = False):
-    """Executes a query against Postgres database using the connection pool or a direct connection."""
-    import psycopg2
-    conn = None
-    try:
-        if db_pool:
-            conn = db_pool.getconn()
-        else:
-            conn = psycopg2.connect(DATABASE_URL)
-        
-        with conn.cursor() as cur:
-            cur.execute(query, params)
-            if is_update:
-                conn.commit()
-                return None
-            else:
-                if cur.description is None:
-                    return []
-                columns = [desc[0] for desc in cur.description]
-                rows = cur.fetchall()
-                return [dict(zip(columns, row)) for row in rows]
-    except Exception as e:
-        logger.error(f"Database query error: {e}")
-        raise e
-    finally:
-        if conn:
-            if db_pool:
-                db_pool.putconn(conn)
-            else:
-                conn.close()
-
-async def regression_alert_loop():
-    logger.info("Faithfulness regression alerting loop started.")
-    last_alert_time = 0
-    threshold = float(os.getenv("ALERT_FAITHFULNESS_THRESHOLD", "0.82"))
-    
-    while True:
-        try:
-            await asyncio.sleep(ALERT_LOOP_INTERVAL)
-            
-            # Query the average faithfulness in the last 10 minutes
-            query = """
-                SELECT 
-                    COUNT(*) as count,
-                    AVG(faithfulness) as avg_faith
-                FROM request_logs
-                WHERE timestamp >= NOW() - INTERVAL '10 minutes'
-                  AND faithfulness IS NOT NULL;
-            """
-            rows = await asyncio.to_thread(query_db, query)
-            if rows and rows[0]["count"] > 0:
-                count = rows[0]["count"]
-                avg_faith = float(rows[0]["avg_faith"] or 0.0)
-                
-                if avg_faith < threshold:
-                    now = time.time()
-                    if now - last_alert_time > ALERT_COOLDOWN_PERIOD:
-                        last_alert_time = now
-                        # Emit alert to logs
-                        slack_payload = {
-                            "text": f"🚨 *ShieldWall Alert: Faithfulness Regression Detected!* 🚨\n"
-                                    f"The average faithfulness score over the last 10 minutes is *{avg_faith:.3f}* "
-                                    f"(Threshold: *{threshold:.2f}*, Sample count: {count}).\n"
-                                    f"This may indicate severe prompt drift or system degradation."
-                        }
-                        logger.warning(
-                            f"[ALERT] [Slack Webhook Sim] Faithfulness regression detected! "
-                            f"Average faithfulness in the last 10m is {avg_faith:.3f} (Threshold: {threshold:.2f}). "
-                            f"Payload: {json.dumps(slack_payload)}"
-                        )
-        except asyncio.CancelledError:
-            logger.info("Faithfulness regression alerting loop cancelled.")
-            break
-        except Exception as e:
-            logger.error(f"Error in regression alert loop: {e}")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global redis_client, http_client, db_pool, alert_task
-    redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
-    logger.info(f"Connecting to Redis at {redis_url}...")
-    redis_client = aioredis.from_url(redis_url, decode_responses=True)
-    
+    pool = await db.create_pool()
+    await db.apply_schema(pool)  # idempotent migration on every start
+    # Load tokenizer vocabularies now (~100 ms each) instead of on the first request.
+    await asyncio.to_thread(count_text_tokens, "warm up", "gpt-4o-mini")
+    await asyncio.to_thread(count_text_tokens, "warm up", "gpt-4")
+
+    redis_client = aioredis.from_url(config.REDIS_URL, decode_responses=True)
     try:
         await redis_client.ping()
-        logger.info("Connected to Redis successfully.")
-    except Exception as e:
-        logger.error(f"Failed to connect to Redis: {e}")
-        if FAIL_SAFE_MODE == "fail_closed":
-            raise e
-            
-    # Persistent HTTP client with connection pool for ultra-low proxy overhead
-    http_client = httpx.AsyncClient(timeout=60.0)
-    logger.info("HTTP persistent client initialized.")
+    except Exception as exc:
+        # Not fatal: requests get 503 (BUDGET_FAIL_MODE=closed) until Redis is back.
+        logger.error("Redis not reachable at startup: %s", exc)
 
-    # Initialize DB connection pool
-    try:
-        from psycopg2.pool import SimpleConnectionPool
-        logger.info(f"Initializing DB connection pool for {DATABASE_URL}...")
-        db_pool = SimpleConnectionPool(1, 10, dsn=DATABASE_URL)
-        logger.info("DB connection pool initialized.")
-    except Exception as e:
-        logger.error(f"Failed to initialize DB connection pool: {e}")
+    app.state.pool = pool
+    app.state.redis = redis_client
+    app.state.auth = ProjectAuthenticator(pool)
+    app.state.budget = BudgetGate(redis_client)
+    app.state.http = httpx.AsyncClient(
+        timeout=httpx.Timeout(config.UPSTREAM_TIMEOUT_SECONDS, connect=5.0),
+        limits=httpx.Limits(max_connections=500, max_keepalive_connections=100),
+    )
+    alert_task = None
+    if config.ENABLE_RELEVANCE_EVAL:
+        alert_task = asyncio.create_task(admin_api.relevance_alert_loop(pool))
 
-    # Start the alerting background loop
-    alert_task = asyncio.create_task(regression_alert_loop())
-    
     yield
-    
-    # Cancel alert loop on shutdown
+
     if alert_task:
         alert_task.cancel()
-        try:
-            await alert_task
-        except asyncio.CancelledError:
-            pass
-            
-    # Clean up connections on shutdown
-    if db_pool:
-        db_pool.closeall()
-        logger.info("DB connection pool closed.")
-    if redis_client:
-        await redis_client.close()
-        logger.info("Redis client connection closed.")
-    if http_client:
-        await http_client.aclose()
-        logger.info("HTTP persistent client connection closed.")
+    await app.state.http.aclose()
+    await redis_client.aclose()
+    await pool.close()
 
-app = FastAPI(lifespan=lifespan)
 
-# Custom Exception Handler to enforce X-ShieldWall-Reason header
-@app.exception_handler(HTTPException)
-async def http_exception_handler(request: Request, exc: HTTPException):
-    headers = exc.headers or {}
-    return JSONResponse(
-        status_code=exc.status_code,
-        content={"detail": exc.detail},
-        headers=headers
-    )
+app = FastAPI(title="ShieldWall Gateway", version="2.0.0", lifespan=lifespan)
+app.include_router(admin_api.router)
 
-def estimate_input_tokens(messages: List[Dict[str, Any]], model: str) -> int:
-    """Estimates the input token count for the request payload using tiktoken."""
+
+@dataclass
+class RequestContext:
+    """Everything we need to finish (reconcile + log) one request."""
+    project: Project
+    request_id: str
+    model: str
+    masker: PiiMasker
+    reservation: Optional[Reservation]
+    estimated_input_tokens: int
+    started: float
+    user_query: Optional[str] = None
+    rag_context: Optional[List[str]] = None
+    upstream_seconds: float = 0.0   # time spent waiting for the provider
+    client_seconds: float = 0.0     # time spent waiting to send stream chunks to the client
+    total_seconds: Optional[float] = None
+
+    def stop_clock(self) -> None:
+        if self.total_seconds is None:
+            self.total_seconds = time.perf_counter() - self.started
+
+    def overhead_ms(self) -> float:
+        self.stop_clock()
+        return max(0.0, (self.total_seconds - self.upstream_seconds - self.client_seconds) * 1000)
+
+
+def enqueue_log(payload: dict) -> None:
+    """Hand the log row to Celery (runs in a worker thread, see finish_request)."""
+    from tasks import log_request
     try:
-        encoding = tiktoken.encoding_for_model(model)
-    except KeyError:
-        encoding = tiktoken.get_encoding("cl100k_base")
-        
-    num_tokens = 0
-    for message in messages:
-        num_tokens += 4  # every message follows <im_start>{role/name}\n{content}<im_end>\n
-        for key, value in message.items():
-            if isinstance(value, str):
-                num_tokens += len(encoding.encode(value))
-    num_tokens += 2  # every reply is primed with <im_start>assistant
-    return num_tokens
-
-def calculate_cost(model: str, input_tokens: int, output_tokens: int) -> float:
-    """Calculates the total cost of the request based on the model's token prices."""
-    pricing = MODEL_PRICING.get(model, DEFAULT_PRICING)
-    return (input_tokens * pricing["input"]) + (output_tokens * pricing["output"])
-
-async def check_project_budget(project_id: str) -> float:
-    """Queries Redis to get the rolling 10-minute expenditure for the project."""
-    if not redis_client:
-        if FAIL_SAFE_MODE == "fail_closed":
-            raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Security Gate active: Cache unavailable in fail_closed mode."
-            )
-        return 0.0  # Fail open
-        
-    zset_key = f"project:budget:10m:zset:{project_id}"
-    sum_key = f"project:budget:10m:sum:{project_id}"
-    now = int(time.time())
-    try:
-        current_sum = await redis_client.eval(CHECK_BUDGET_LUA, 2, zset_key, sum_key, now)
-        return float(current_sum)
-    except Exception as e:
-        logger.error(f"Redis budget check error: {e}")
-        if FAIL_SAFE_MODE == "fail_closed":
-            raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Security Gate active: Cache operation failed in fail_closed mode."
-            )
-        return 0.0  # Fail open
-
-async def record_project_cost(project_id: str, request_id: str, cost: float) -> float:
-    """Atomically adds the request's cost to the rolling 10-minute window in Redis."""
-    if not redis_client:
-        return 0.0
-        
-    zset_key = f"project:budget:10m:zset:{project_id}"
-    sum_key = f"project:budget:10m:sum:{project_id}"
-    now = int(time.time())
-    window = 600  # 10 minutes (600 seconds)
-    try:
-        new_sum = await redis_client.eval(ADD_COST_LUA, 2, zset_key, sum_key, now, cost, request_id, window)
-        logger.info(f"Recorded cost ${cost:.6f} for project '{project_id}'. New rolling 10m spend: ${new_sum:.6f}")
-        return float(new_sum)
-    except Exception as e:
-        logger.error(f"Redis budget record error: {e}")
-        return 0.0
-
-# --- PII MASKING ENGINE FUNCTIONS ---
-def mask_pii(text: str, project_id: str, request_id: str, mappings: Dict[str, str]) -> str:
-    """Scans and masks PII in the input text, returning the masked text.
-    Updates the 'mappings' dictionary with token -> original_value mapping."""
-    if not text:
-        return text
-        
-    masked_text = text
-    counts = {}
-    
-    # Run each compiled regex rule
-    for rule_name, rule_regex in PII_RULES.items():
-        matches = list(set(rule_regex.findall(masked_text)))
-        # Sort by length descending to prevent substring collisions
-        matches.sort(key=len, reverse=True)
-        
-        for match in matches:
-            # Check if this match was already tokenized in this request to maintain consistency
-            existing_token = None
-            for token, raw_val in mappings.items():
-                if raw_val == match:
-                    existing_token = token
-                    break
-                    
-            if existing_token:
-                token = existing_token
-            else:
-                counter = counts.get(rule_name, 0) + 1
-                counts[rule_name] = counter
-                token = f"[REDACTED_{rule_name}_{counter}]"
-                mappings[token] = match
-                
-            masked_text = masked_text.replace(match, token)
-            
-    return masked_text
-
-def unmask_text(text: str, mappings: Dict[str, str]) -> str:
-    """Replaces all placeholder tokens with their raw original text values."""
-    if not text or not mappings:
-        return text
-    unmasked = text
-    for token, original in mappings.items():
-        unmasked = unmasked.replace(token, original)
-    return unmasked
-
-async def save_pii_mappings(request_id: str, mappings: Dict[str, str]):
-    """Stores the generated PII mappings in Redis as a hash with a 5-minute TTL."""
-    if not mappings or not redis_client:
-        return
-    hash_key = f"trace:{request_id}:mappings"
-    try:
-        await redis_client.hset(hash_key, mapping=mappings)
-        await redis_client.expire(hash_key, 300) # 5 minutes TTL
-        logger.info(f"Saved {len(mappings)} PII mappings in Redis for trace '{request_id}' with 5m TTL.")
-    except Exception as e:
-        logger.error(f"Failed to save PII mappings: {e}")
-        if FAIL_SAFE_MODE == "fail_closed":
-            raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Security Gate active: Failed to secure PII mapping state."
-            )
-
-async def load_pii_mappings(request_id: str) -> Dict[str, str]:
-    """Loads PII token mappings for the given trace ID from Redis."""
-    if not redis_client:
-        return {}
-    hash_key = f"trace:{request_id}:mappings"
-    try:
-        mappings = await redis_client.hgetall(hash_key)
-        return mappings or {}
-    except Exception as e:
-        logger.error(f"Failed to load PII mappings: {e}")
-        if FAIL_SAFE_MODE == "fail_closed":
-            raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Security Gate active: Failed to retrieve PII mapping state."
-            )
-        return {}
-
-# --- ASYNC LOGING ENGINE & CELERY TASK INTEGRATION ---
-def enqueue_request_log(payload: dict):
-    """Fires request log payload to the Celery Redis Queue in a non-blocking background task."""
-    try:
-        from tasks import log_request
         log_request.delay(payload)
-    except Exception as e:
-        logger.error(f"Failed to push logging task to Celery: {e}")
+    except Exception as exc:
+        logger.error("Could not enqueue request log: %s", exc)
 
-async def log_request_background(
-    project_id: str,
-    request_id: str,
-    model: str,
-    input_tokens: int,
-    output_tokens: int,
-    latency_ms: int,
-    http_status: int,
-    violations_triggered: str,
-    user_query: str = None,
-    rag_context: List[str] = None,
-    response_text: str = None
-):
-    """Background task executing cost accounting in Redis and database logging in Celery."""
-    # 1. Compute Cost
-    cost = calculate_cost(model, input_tokens, output_tokens)
-    
-    # 2. Record cost in Redis for sliding budget gates
-    await record_project_cost(project_id, request_id, cost)
-    
-    # 3. Push to Celery queue for database ingestion and async evaluation
-    enqueue_request_log({
-        "request_id": request_id,
-        "tenant_id": project_id,
+
+async def finish_request(app: FastAPI, ctx: RequestContext, http_status: int,
+                         usage: Optional[dict], masked_response: str, violation: str = "") -> None:
+    """Reconcile the budget with the real cost and queue the log row."""
+    prompt_tokens = ctx.estimated_input_tokens
+    completion_tokens = 0
+    if usage:
+        prompt_tokens = usage.get("prompt_tokens", prompt_tokens)
+        completion_tokens = usage.get("completion_tokens", 0)
+    elif masked_response:
+        completion_tokens = count_text_tokens(masked_response, ctx.model)
+    charged = http_status == 200 or bool(masked_response)
+    actual_micro = cost_micro_usd(ctx.model, prompt_tokens, completion_tokens) if charged else 0
+
+    if ctx.reservation is not None:
+        try:
+            await app.state.budget.reconcile(ctx.project.id, ctx.request_id, actual_micro,
+                                             ctx.reservation.reserved_at)
+        except Exception as exc:
+            # The hold expires on its own after RESERVATION_TTL_SECONDS.
+            logger.error("Budget reconcile failed for %s: %s", ctx.request_id, exc)
+
+    entities = ctx.masker.entity_counts()
+    if not violation and entities:
+        violation = "PII_MASKED"
+    payload = {
+        "request_id": ctx.request_id,
+        "tenant_id": ctx.project.name,
         "timestamp": time.time(),
-        "model": model,
-        "upstream_provider": "OpenAI",
-        "latency_ms": latency_ms,
+        "model": ctx.model,
+        "upstream_provider": config.UPSTREAM_PROVIDER_NAME,
+        "latency_ms": int((ctx.total_seconds or 0) * 1000),
+        # None when the request never reached the provider (e.g. blocked by budget).
+        "upstream_ms": round(ctx.upstream_seconds * 1000, 3) if ctx.upstream_seconds else None,
+        "gateway_overhead_ms": round(ctx.overhead_ms(), 3),
         "http_status": http_status,
-        "input_tokens": input_tokens,
-        "output_tokens": output_tokens,
-        "violations_triggered": violations_triggered,
-        "user_query": user_query,
-        "rag_context": rag_context,
-        "response_text": response_text
-    })
+        "input_tokens": prompt_tokens,
+        "output_tokens": completion_tokens,
+        "cost_usd": micro_to_usd(actual_micro),
+        "violations_triggered": violation,
+        "pii_entities": entities,  # counts only, never values
+    }
+    if config.ENABLE_RELEVANCE_EVAL and ctx.user_query and ctx.rag_context:
+        # The worker only ever sees masked text.
+        payload["user_query"] = ctx.masker.mask(ctx.user_query)
+        payload["rag_context"] = [ctx.masker.mask(chunk) for chunk in ctx.rag_context]
+    await asyncio.to_thread(enqueue_log, payload)
 
-# --- PROXY HANDLERS ---
-async def handle_non_streaming_proxy(
-    body: dict,
-    headers: dict,
-    project_id: str,
-    request_id: str,
-    model: str,
-    input_tokens: int,
-    background_tasks: BackgroundTasks,
-    violations_triggered: str = "",
-    user_query: str = None,
-    rag_context: List[str] = None
-) -> Response:
-    start_time = time.perf_counter()
+
+def upstream_headers() -> dict:
+    headers = {"Content-Type": "application/json"}
+    if config.UPSTREAM_API_KEY:
+        headers["Authorization"] = f"Bearer {config.UPSTREAM_API_KEY}"
+    return headers
+
+
+async def proxy_non_streaming(app: FastAPI, ctx: RequestContext, body: dict,
+                              background_tasks: BackgroundTasks) -> Response:
+    sent_at = time.perf_counter()
     try:
-        response = await http_client.post(UPSTREAM_URL, json=body, headers=headers)
-        latency_ms = int((time.perf_counter() - start_time) * 1000)
-        logger.info(f"Upstream non-streaming request completed in {latency_ms}ms")
-    except Exception as e:
-        logger.error(f"Upstream request failed: {e}")
-        # Log failure asynchronously
-        background_tasks.add_task(
-            log_request_background,
-            project_id=project_id,
-            request_id=request_id,
-            model=model,
-            input_tokens=input_tokens,
-            output_tokens=0,
-            latency_ms=0,
-            http_status=status.HTTP_502_BAD_GATEWAY,
-            violations_triggered="UPSTREAM_ERROR",
-            user_query=user_query,
-            rag_context=rag_context
-        )
-        raise HTTPException(
-            status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="Failed to connect to upstream provider"
-        )
+        upstream = await app.state.http.post(config.UPSTREAM_URL, json=body, headers=upstream_headers())
+    except httpx.HTTPError as exc:
+        ctx.upstream_seconds += time.perf_counter() - sent_at
+        ctx.stop_clock()
+        logger.error("Upstream request failed: %s", exc)
+        # Return (not raise) so the background task that releases the budget hold still runs.
+        background_tasks.add_task(finish_request, app, ctx, 502, None, "", "UPSTREAM_ERROR")
+        return JSONResponse({"detail": "Upstream provider unreachable."}, status_code=502)
+    ctx.upstream_seconds += time.perf_counter() - sent_at
 
-    if response.status_code != 200:
-        background_tasks.add_task(
-            log_request_background,
-            project_id=project_id,
-            request_id=request_id,
-            model=model,
-            input_tokens=input_tokens,
-            output_tokens=0,
-            latency_ms=latency_ms,
-            http_status=response.status_code,
-            violations_triggered="UPSTREAM_ERROR",
-            user_query=user_query,
-            rag_context=rag_context
-        )
-        return Response(
-            content=response.content,
-            status_code=response.status_code,
-            headers=dict(response.headers)
-        )
-
+    headers = {"X-ShieldWall-Request-Id": ctx.request_id}
     try:
-        response_json = response.json()
-    except Exception:
-        background_tasks.add_task(
-            log_request_background,
-            project_id=project_id,
-            request_id=request_id,
-            model=model,
-            input_tokens=input_tokens,
-            output_tokens=0,
-            latency_ms=latency_ms,
-            http_status=response.status_code,
-            violations_triggered="INVALID_RESPONSE",
-            user_query=user_query,
-            rag_context=rag_context
+        data = upstream.json()
+    except ValueError:
+        data = None
+
+    if upstream.status_code != 200 or not isinstance(data, dict):
+        ctx.stop_clock()
+        background_tasks.add_task(finish_request, app, ctx, upstream.status_code, None, "", "UPSTREAM_ERROR")
+        # A 401/403 from the provider is OUR key's problem, not the client's.
+        code = 502 if upstream.status_code in (401, 403) or data is None else upstream.status_code
+        return JSONResponse({"detail": "Upstream provider error.", "upstream_status": upstream.status_code},
+                            status_code=code, headers=headers)
+
+    masked_response = ""
+    for choice in data.get("choices") or []:
+        message = choice.get("message") or {}
+        if isinstance(message.get("content"), str):
+            masked_response += message["content"]
+            message["content"] = ctx.masker.unmask(message["content"])
+
+    response = JSONResponse(data, headers=headers)  # body is serialised here
+    ctx.stop_clock()
+    background_tasks.add_task(finish_request, app, ctx, 200, data.get("usage"), masked_response)
+    return response
+
+
+async def proxy_streaming(app: FastAPI, ctx: RequestContext, body: dict,
+                          background_tasks: BackgroundTasks) -> Response:
+    client: httpx.AsyncClient = app.state.http
+    sent_at = time.perf_counter()
+    try:
+        upstream = await client.send(
+            client.build_request("POST", config.UPSTREAM_URL, json=body, headers=upstream_headers()),
+            stream=True,
         )
-        return Response(
-            content=response.content,
-            status_code=response.status_code,
-            headers=dict(response.headers)
-        )
+    except httpx.HTTPError as exc:
+        ctx.upstream_seconds += time.perf_counter() - sent_at
+        ctx.stop_clock()
+        logger.error("Upstream stream failed to start: %s", exc)
+        background_tasks.add_task(finish_request, app, ctx, 502, None, "", "UPSTREAM_ERROR")
+        return JSONResponse({"detail": "Upstream provider unreachable."}, status_code=502)
+    ctx.upstream_seconds += time.perf_counter() - sent_at
 
-    # Inbound post-filter: De-anonymize PII in the completion choices
-    mappings = await load_pii_mappings(request_id)
-    has_pii = len(mappings) > 0
-    if mappings and "choices" in response_json:
-        for choice in response_json["choices"]:
-            message = choice.get("message", {})
-            if "content" in message and message["content"]:
-                message["content"] = unmask_text(message["content"], mappings)
+    # Check the status BEFORE we start streaming, so errors keep their status code.
+    if upstream.status_code != 200:
+        await upstream.aread()
+        await upstream.aclose()
+        ctx.stop_clock()
+        background_tasks.add_task(finish_request, app, ctx, upstream.status_code, None, "", "UPSTREAM_ERROR")
+        code = 502 if upstream.status_code in (401, 403) else upstream.status_code
+        return JSONResponse({"detail": "Upstream provider error.", "upstream_status": upstream.status_code},
+                            status_code=code)
 
-    # Extract response text for async evaluation scoring
-    response_text = ""
-    if "choices" in response_json and response_json["choices"]:
-        msg = response_json["choices"][0].get("message", {})
-        response_text = msg.get("content", "")
-
-    usage = response_json.get("usage", {})
-    prompt_tokens = usage.get("prompt_tokens", input_tokens)
-    completion_tokens = usage.get("completion_tokens", 0)
-
-    # Trigger async logging and budget accounting via FastAPI BackgroundTasks
-    violation_str = "PII_MASKED" if (violations_triggered or has_pii) else ""
-    background_tasks.add_task(
-        log_request_background,
-        project_id=project_id,
-        request_id=request_id,
-        model=model,
-        input_tokens=prompt_tokens,
-        output_tokens=completion_tokens,
-        latency_ms=latency_ms,
-        http_status=response.status_code,
-        violations_triggered=violation_str,
-        user_query=user_query,
-        rag_context=rag_context,
-        response_text=response_text
-    )
-
-    # Forward upstream response headers cleanly, removing transport/encoding headers
-    resp_headers = {}
-    for k, v in response.headers.items():
-        k_lower = k.lower()
-        if k_lower not in ("content-length", "content-encoding", "transfer-encoding", "connection", "content-type"):
-            resp_headers[k] = v
-    return JSONResponse(
-        content=response_json,
-        status_code=response.status_code,
-        headers=resp_headers
-    )
-
-async def handle_streaming_proxy(
-    body: dict,
-    headers: dict,
-    project_id: str,
-    request_id: str,
-    model: str,
-    input_tokens: int,
-    background_tasks: BackgroundTasks,
-    violations_triggered: str = "",
-    user_query: str = None,
-    rag_context: List[str] = None
-) -> StreamingResponse:
-    start_time = time.perf_counter()
-    async def generator():
-        accumulated_text = []
-        final_usage = None
-        http_status_code = 200
-        
-        # Load PII mappings for boundary-safe de-anonymization
-        mappings = await load_pii_mappings(request_id)
-        active_tokens = list(mappings.keys())
-        has_pii = len(mappings) > 0
-        
-        content_buffer = ""
-
-        req = http_client.build_request("POST", UPSTREAM_URL, json=body, headers=headers)
+    async def relay():
+        relay = SseUnmaskRelay(ctx.masker.mappings)
+        http_status = 200
+        lines = upstream.aiter_lines()
         try:
-            response = await http_client.send(req, stream=True)
-            http_status_code = response.status_code
-        except Exception as e:
-            logger.error(f"Stream request connection failed: {e}")
-            yield f"data: {json.dumps({'error': 'Failed to connect to upstream'})}\n\n"
-            # Log error directly since generator is decoupled from request threads
-            enqueue_request_log({
-                "request_id": request_id,
-                "tenant_id": project_id,
-                "timestamp": time.time(),
-                "model": model,
-                "upstream_provider": "OpenAI",
-                "latency_ms": 0,
-                "http_status": status.HTTP_502_BAD_GATEWAY,
-                "input_tokens": input_tokens,
-                "output_tokens": 0,
-                "violations_triggered": "UPSTREAM_ERROR",
-                "user_query": user_query,
-                "rag_context": rag_context
-            })
-            return
-
-        if response.status_code != 200:
-            body_content = await response.aread()
-            yield body_content
-            await response.aclose()
-            latency_ms = int((time.perf_counter() - start_time) * 1000)
-            # Log error response from provider
-            enqueue_request_log({
-                "request_id": request_id,
-                "tenant_id": project_id,
-                "timestamp": time.time(),
-                "model": model,
-                "upstream_provider": "OpenAI",
-                "latency_ms": latency_ms,
-                "http_status": response.status_code,
-                "input_tokens": input_tokens,
-                "output_tokens": 0,
-                "violations_triggered": "UPSTREAM_ERROR",
-                "user_query": user_query,
-                "rag_context": rag_context
-            })
-            return
-
-        try:
-            async for line in response.aiter_lines():
-                if not line:
-                    continue
-
-                if line.startswith("data:"):
-                    data_str = line[5:].strip()
-                    if data_str == "[DONE]":
-                        # Flush any leftover chars in the content buffer
-                        if content_buffer:
-                            unmasked_flush = unmask_text(content_buffer, mappings)
-                            flush_chunk = {
-                                "choices": [{
-                                    "index": 0,
-                                    "delta": {"content": unmasked_flush},
-                                    "finish_reason": None
-                                }]
-                            }
-                            yield f"data: {json.dumps(flush_chunk)}\n\n"
-                            accumulated_text.append(unmasked_flush)
-                            content_buffer = ""
-                        yield line + "\n"
-                        continue
-                        
-                    try:
-                        chunk_data = json.loads(data_str)
-                        if "usage" in chunk_data and chunk_data["usage"]:
-                            final_usage = chunk_data["usage"]
-                            
-                        has_content = False
-                        chunk_content = ""
-                        
-                        if "choices" in chunk_data and chunk_data["choices"]:
-                            choice = chunk_data["choices"][0]
-                            delta = choice.get("delta", {})
-                            if "content" in delta and delta["content"]:
-                                chunk_content = delta["content"]
-                                has_content = True
-                                
-                        if has_content and active_tokens:
-                            # 1. Append content to suffix buffer
-                            content_buffer += chunk_content
-                            
-                            # 2. Swap fully matched tokens in buffer
-                            content_buffer = unmask_text(content_buffer, mappings)
-                            
-                            # 3. Find if the buffer ends with a prefix of any active token (split token check)
-                            longest_prefix_len = 0
-                            for token in active_tokens:
-                                for i in range(1, len(token) + 1):
-                                    prefix = token[:i]
-                                    if content_buffer.endswith(prefix):
-                                        if len(prefix) > longest_prefix_len:
-                                            longest_prefix_len = len(prefix)
-                                            
-                            # 4. Yield everything before the split prefix match
-                            if longest_prefix_len > 0:
-                                yield_text = content_buffer[:-longest_prefix_len]
-                                content_buffer = content_buffer[-longest_prefix_len:]
-                            else:
-                                yield_text = content_buffer
-                                content_buffer = ""
-                                
-                            if yield_text:
-                                choice["delta"]["content"] = yield_text
-                                yield f"data: {json.dumps(chunk_data)}\n\n"
-                                accumulated_text.append(yield_text)
-                        else:
-                            # If no mappings or no content, forward chunk immediately
-                            yield line + "\n"
-                            if has_content:
-                                accumulated_text.append(chunk_content)
-                                
-                    except json.JSONDecodeError:
-                        yield line + "\n"
-                else:
-                    yield line + "\n"
-        finally:
-            await response.aclose()
-            
-            # Post-stream cost and log logic (executes as part of generator teardown)
-            latency_ms = int((time.perf_counter() - start_time) * 1000)
-            
-            prompt_tokens = input_tokens
-            completion_tokens = 0
-
-            if final_usage:
-                prompt_tokens = final_usage.get("prompt_tokens", prompt_tokens)
-                completion_tokens = final_usage.get("completion_tokens", 0)
-            else:
-                full_text = "".join(accumulated_text)
+            while not relay.done:
+                wait_start = time.perf_counter()
                 try:
-                    encoding = tiktoken.encoding_for_model(model)
-                except KeyError:
-                    encoding = tiktoken.get_encoding("cl100k_base")
-                completion_tokens = len(encoding.encode(full_text))
+                    line = await lines.__anext__()
+                except StopAsyncIteration:
+                    break  # upstream closed without [DONE]
+                except httpx.HTTPError as exc:
+                    logger.warning("Upstream stream broke for %s: %s", ctx.request_id, exc)
+                    http_status = 502
+                    break
+                finally:
+                    ctx.upstream_seconds += time.perf_counter() - wait_start
 
-            cost = calculate_cost(model, prompt_tokens, completion_tokens)
-            
-            # 1. Update Redis budget
-            await record_project_cost(project_id, request_id, cost)
-            
-            # 2. Enqueue metrics payload to celery queue, carrying response text
-            violation_str = "PII_MASKED" if (violations_triggered or has_pii) else ""
-            enqueue_request_log({
-                "request_id": request_id,
-                "tenant_id": project_id,
-                "timestamp": time.time(),
-                "model": model,
-                "upstream_provider": "OpenAI",
-                "latency_ms": latency_ms,
-                "http_status": http_status_code,
-                "input_tokens": prompt_tokens,
-                "output_tokens": completion_tokens,
-                "violations_triggered": violation_str,
-                "user_query": user_query,
-                "rag_context": rag_context,
-                "response_text": "".join(accumulated_text)
-            })
+                for event in relay.process_line(line):
+                    send_start = time.perf_counter()
+                    yield event
+                    ctx.client_seconds += time.perf_counter() - send_start
 
-    return StreamingResponse(
-        generator(),
-        media_type="text/event-stream"
-    )
+            # Never drop text that was held back waiting for a placeholder to complete.
+            for event in relay.finish():
+                yield event
+            if http_status != 200:
+                yield sse('{"error": {"message": "upstream stream interrupted"}}')
+        finally:
+            ctx.stop_clock()
+            # Shield the clean-up from cancellation (client disconnects) so the
+            # budget hold is always reconciled.
+            with anyio.CancelScope(shield=True):
+                await upstream.aclose()
+                await finish_request(app, ctx, http_status, relay.usage, relay.masked_text(),
+                                     "UPSTREAM_ERROR" if http_status != 200 else "")
 
-@app.post("/v1/chat/completions", tags=["LLM Gateway Proxy"], summary="Proxy Chat Completion request to Upstream Provider")
+    return StreamingResponse(relay(), media_type="text/event-stream",
+                             headers={"X-ShieldWall-Request-Id": ctx.request_id})
+
+
+@app.post("/v1/chat/completions", tags=["Gateway"], summary="OpenAI-compatible chat completion")
 async def chat_completions(
     request: Request,
     background_tasks: BackgroundTasks,
-    body: ChatCompletionRequest = Body(..., example={
+    body: ChatCompletionRequest = Body(..., examples=[{
         "model": "llama-3.1-8b-instant",
-        "messages": [
-            {"role": "user", "content": "Hello, how are you? My email is test@example.com"}
-        ],
-        "stream": False,
-        "user_query": "Hello",
-        "rag_context": ["Greetings and friendly banter"]
-    }),
-    x_project_id: str = Header(..., alias="X-Project-ID", description="Project/Tenant ID for rate limiting and budget tracking")
+        "messages": [{"role": "user", "content": "My email is test@example.com"}],
+    }]),
 ):
-    project_id = x_project_id
+    started = time.perf_counter()
+    app_ = request.app
 
-    # 2. Synchronous budget constraint check
-    current_spend = await check_project_budget(project_id)
-    if current_spend >= BUDGET_LIMIT:
-        logger.warning(f"Blocked request for project '{project_id}': Rolling spend is ${current_spend:.4f} >= limit ${BUDGET_LIMIT:.4f}")
-        
-        # Log budget exceeded event asynchronously in Celery (called directly since it takes ~0.5ms)
-        enqueue_request_log({
-            "request_id": f"req_blocked_{int(time.time() * 1000)}",
-            "tenant_id": project_id,
-            "timestamp": time.time(),
-            "model": "unknown",
-            "upstream_provider": "OpenAI",
-            "latency_ms": 0,
-            "http_status": status.HTTP_429_TOO_MANY_REQUESTS,
-            "input_tokens": 0,
-            "output_tokens": 0,
-            "violations_triggered": "BUDGET_EXCEEDED"
-        })
-        
-        return JSONResponse(
-            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-            content={"detail": "Project rolling 10-minute budget limit exceeded."},
-            headers={"X-ShieldWall-Reason": "Budget Exceeded"}
-        )
+    # 1. Who is calling? (401 if no valid project key)
+    project = await app_.state.auth.authenticate(request)
 
-    # 3. Parse JSON Body
     body_dict = body.model_dump(exclude_none=True)
-
-    # Intercept RAG evaluation metadata from body (pop to avoid forwarding to provider)
     user_query = body_dict.pop("user_query", None)
     rag_context = body_dict.pop("rag_context", None)
+    model = body_dict["model"]
+    request_id = f"req_{uuid.uuid4().hex}"
 
-    model = body_dict.get("model", "gpt-4o-mini")
-    messages = body_dict.get("messages", [])
-    is_stream = body_dict.get("stream", False)
+    # 2. Mask PII. One masker for ALL messages, so placeholders never collide.
+    masker = PiiMasker()
+    body_dict["messages"] = masker.mask_messages(body_dict["messages"])
 
-    # Generate a unique Request ID (trace namespace)
-    request_id = f"req_{int(time.time() * 1000)}_{os.urandom(4).hex()}"
-
-    # Outbound filter: Mask PII in incoming messages
-    mappings = {}
-    masked_messages = []
-    for msg in messages:
-        masked_msg = dict(msg)
-        content = masked_msg.get("content")
-        if isinstance(content, str):
-            masked_msg["content"] = mask_pii(content, project_id, request_id, mappings)
-        elif isinstance(content, list):
-            new_content = []
-            for item in content:
-                if isinstance(item, dict) and item.get("type") == "text":
-                    item_copy = dict(item)
-                    item_copy["text"] = mask_pii(item_copy.get("text", ""), project_id, request_id, mappings)
-                    new_content.append(item_copy)
-                else:
-                    new_content.append(item)
-            masked_msg["content"] = new_content
-        masked_messages.append(masked_msg)
-        
-    body_dict["messages"] = masked_messages
-
-    # Store the trace PII mapping in Redis hash with 5m TTL
-    if mappings:
-        await save_pii_mappings(request_id, mappings)
-
-    # Re-estimate input tokens based on masked messages to forward correct stats
+    # 3. Reserve the worst-case cost. We cap output tokens so the estimate is an upper bound.
+    max_output = body_dict.get("max_tokens") or body_dict.get("max_completion_tokens")
+    if not max_output:
+        max_output = body_dict["max_tokens"] = config.DEFAULT_MAX_OUTPUT_TOKENS
     input_tokens = estimate_input_tokens(body_dict["messages"], model)
+    estimate_micro = cost_micro_usd(model, input_tokens, max_output)
 
-    # Ensure upstream returns usage in streaming mode
-    if is_stream:
-        if "stream_options" not in body_dict:
-            body_dict["stream_options"] = {}
-        body_dict["stream_options"]["include_usage"] = True
+    reservation: Optional[Reservation] = None
+    try:
+        reservation = await app_.state.budget.reserve(
+            project.id, request_id, project.monthly_budget_micro, estimate_micro)
+    except BudgetUnavailable as exc:
+        if config.BUDGET_FAIL_MODE != "open":
+            raise HTTPException(status_code=503, detail="Budget store unavailable; request rejected.",
+                                headers={"X-ShieldWall-Reason": "budget_store_unavailable"}) from exc
+        logger.warning("Redis down, BUDGET_FAIL_MODE=open: %s passes without a budget check (%s)",
+                       request_id, exc)
 
-    # 4. Forwarding Authorization Credentials
-    auth_header = request.headers.get("Authorization")
-    if not auth_header:
-        groq_key = os.getenv("GROQ_API_KEY", "")
-        if groq_key:
-            auth_header = f"Bearer {groq_key}"
-        else:
-            api_key = os.getenv("OPENAI_API_KEY", "")
-            if api_key:
-                auth_header = f"Bearer {api_key}"
+    ctx = RequestContext(project, request_id, model, masker, reservation, input_tokens, started,
+                         user_query, rag_context)
 
-    headers = {"Content-Type": "application/json"}
-    if auth_header:
-        headers["Authorization"] = auth_header
-
-    if is_stream:
-        return await handle_streaming_proxy(
-            body=body_dict,
-            headers=headers,
-            project_id=project_id,
-            request_id=request_id,
-            model=model,
-            input_tokens=input_tokens,
-            background_tasks=background_tasks,
-            violations_triggered="PII_MASKED" if mappings else "",
-            user_query=user_query,
-            rag_context=rag_context
-        )
-    else:
-        return await handle_non_streaming_proxy(
-            body=body_dict,
-            headers=headers,
-            project_id=project_id,
-            request_id=request_id,
-            model=model,
-            input_tokens=input_tokens,
-            background_tasks=background_tasks,
-            violations_triggered="PII_MASKED" if mappings else "",
-            user_query=user_query,
-            rag_context=rag_context
+    if reservation is not None and not reservation.allowed:
+        ctx.reservation = None  # nothing to reconcile
+        ctx.stop_clock()
+        background_tasks.add_task(finish_request, app_, ctx, 429, None, "", "BUDGET_EXCEEDED")
+        return JSONResponse(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            content={"detail": "Monthly project budget exceeded.",
+                     "budget_usd": micro_to_usd(project.monthly_budget_micro),
+                     "spent_usd": micro_to_usd(reservation.spent_micro),
+                     "reserved_usd": micro_to_usd(reservation.reserved_micro)},
+            headers={"X-ShieldWall-Reason": "budget_exceeded", "X-ShieldWall-Request-Id": request_id},
         )
 
-@app.get("/api/analytics", tags=["Dashboard Metrics & Analytics"], summary="Retrieve lookback-specific aggregate analytics")
-async def get_analytics(window: str = "24h"):
-    if window not in ["1h", "24h", "30d"]:
-        raise HTTPException(status_code=400, detail="Invalid window parameter. Choose from 1h, 24h, 30d.")
-        
-    if window == "1h":
-        interval = "1 hour"
-    elif window == "30d":
-        interval = "30 days"
-    else:
-        interval = "24 hours"
-        
-    query = """
-        SELECT 
-            COALESCE(percentile_cont(0.95) WITHIN GROUP (ORDER BY latency_ms), 0.0) as p95_latency,
-            COALESCE(SUM(cost), 0.0) as total_cost,
-            COALESCE(AVG(faithfulness), 0.0) as avg_faithfulness
-        FROM request_logs
-        WHERE timestamp >= NOW() - CAST(%s AS INTERVAL);
-    """
-    
+    if body_dict.get("stream"):
+        body_dict.setdefault("stream_options", {})["include_usage"] = True
+        return await proxy_streaming(app_, ctx, body_dict, background_tasks)
+    return await proxy_non_streaming(app_, ctx, body_dict, background_tasks)
+
+
+@app.get("/health", tags=["System"])
+async def health(request: Request):
+    result = {"status": "ok", "redis": "ok", "postgres": "ok"}
     try:
-        rows = await asyncio.to_thread(query_db, query, (interval,))
-        if not rows:
-            return {"p95_latency": 0.0, "total_cost": 0.0, "avg_faithfulness": 0.0}
-        row = rows[0]
-        return {
-            "p95_latency": round(float(row.get("p95_latency") or 0.0), 2),
-            "total_cost": round(float(row.get("total_cost") or 0.0), 6),
-            "avg_faithfulness": round(float(row.get("avg_faithfulness") or 0.0), 3)
-        }
-    except Exception as e:
-        logger.error(f"Error fetching analytics: {e}")
-        raise HTTPException(status_code=500, detail="Database query failed.")
-
-@app.get("/api/analytics/tenants", tags=["Dashboard Metrics & Analytics"], summary="Retrieve token costs broken down by tenant")
-async def get_tenant_spend(window: str = "24h"):
-    if window not in ["1h", "24h", "30d"]:
-        raise HTTPException(status_code=400, detail="Invalid window parameter. Choose from 1h, 24h, 30d.")
-        
-    if window == "1h":
-        interval = "1 hour"
-    elif window == "30d":
-        interval = "30 days"
-    else:
-        interval = "24 hours"
-        
-    query = """
-        SELECT 
-            tenant_id,
-            COALESCE(SUM(cost), 0.0) as total_cost
-        FROM request_logs
-        WHERE timestamp >= NOW() - CAST(%s AS INTERVAL)
-        GROUP BY tenant_id
-        ORDER BY total_cost DESC;
-    """
-    
+        await request.app.state.redis.ping()
+    except Exception:
+        result["redis"] = "down"
     try:
-        rows = await asyncio.to_thread(query_db, query, (interval,))
-        results = []
-        for row in rows:
-            results.append({
-                "tenant_id": row["tenant_id"],
-                "total_cost": round(float(row["total_cost"]), 6)
-            })
-        return results
-    except Exception as e:
-        logger.error(f"Error fetching tenant spend: {e}")
-        raise HTTPException(status_code=500, detail="Database query failed.")
+        await db.fetch_one(request.app.state.pool, "SELECT 1 AS ok")
+    except Exception:
+        result["postgres"] = "down"
+    if "down" in result.values():
+        result["status"] = "degraded"
+    return result
 
-@app.get("/api/analytics/summary", tags=["Dashboard Metrics & Analytics"], summary="Retrieve lifetime aggregate KPIs")
-async def get_analytics_summary():
-    query = """
-        SELECT 
-            COALESCE(SUM(cost), 0.0) as total_spend,
-            COUNT(*) FILTER (WHERE violations_triggered LIKE '%%BUDGET_EXCEEDED%%' OR violations_triggered LIKE '%%MALICIOUS_INJECTION%%') as blocked_injections,
-            COALESCE(AVG(latency_ms), 0.0) as avg_latency
-        FROM request_logs;
-    """
-    try:
-        rows = await asyncio.to_thread(query_db, query)
-        if not rows:
-            return {"total_spend": 0.0, "blocked_injections": 0, "avg_latency": 0.0}
-        row = rows[0]
-        return {
-            "total_spend": round(float(row.get("total_spend") or 0.0), 6),
-            "blocked_injections": int(row.get("blocked_injections") or 0),
-            "avg_overhead_ms": round(float(row.get("avg_latency") or 0.0), 2)
-        }
-    except Exception as e:
-        logger.error(f"Error fetching analytics summary: {e}")
-        raise HTTPException(status_code=500, detail="Database query failed.")
 
-@app.get("/api/security/logs", tags=["Security & Compliance"], summary="Retrieve live security violation and masking logs")
-async def get_security_logs():
-    query = """
-        SELECT 
-            request_id, 
-            tenant_id, 
-            EXTRACT(EPOCH FROM timestamp) as timestamp, 
-            model, 
-            latency_ms, 
-            http_status, 
-            violations_triggered
-        FROM request_logs
-        WHERE violations_triggered IS NOT NULL AND violations_triggered != ''
-        ORDER BY timestamp DESC
-        LIMIT 100;
-    """
-    try:
-        rows = await asyncio.to_thread(query_db, query)
-        results = []
-        for row in rows:
-            req_id = row["request_id"]
-            # Fetch mappings from Redis if available
-            mappings = {}
-            if redis_client:
-                try:
-                    mappings = await load_pii_mappings(req_id)
-                except Exception:
-                    pass
-            results.append({
-                "request_id": req_id,
-                "tenant_id": row["tenant_id"],
-                "timestamp": float(row["timestamp"]),
-                "model": row["model"],
-                "latency_ms": int(row["latency_ms"]),
-                "http_status": int(row["http_status"]),
-                "violations_triggered": row["violations_triggered"],
-                "pii_mappings": mappings
-            })
-        return results
-    except Exception as e:
-        logger.error(f"Error fetching security logs: {e}")
-        raise HTTPException(status_code=500, detail="Database query failed.")
-
-@app.get("/health", tags=["System Diagnostics"], summary="System health check status")
-async def health_check():
-    redis_status = "unconnected"
-    if redis_client:
-        try:
-            await redis_client.ping()
-            redis_status = "healthy"
-        except Exception:
-            redis_status = "unhealthy"
-            
-    return {
-        "status": "healthy",
-        "redis": redis_status,
-        "fail_safe_mode": FAIL_SAFE_MODE
-    }
-
-# Serve static frontend dashboard if it has been built
-dashboard_dist_path = os.path.join(os.path.dirname(__file__), "dashboard", "dist")
-if os.path.exists(dashboard_dist_path):
+# Serve the built admin dashboard (dashboard/dist) at "/" if present.
+_dashboard_dist = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dashboard", "dist")
+if os.path.isdir(_dashboard_dist):
     from fastapi.staticfiles import StaticFiles
-    app.mount("/", StaticFiles(directory=dashboard_dist_path, html=True), name="static")
-    logger.info("Admin Dashboard Cockpit static files mounted at root.")
-
+    app.mount("/", StaticFiles(directory=_dashboard_dist, html=True), name="dashboard")
