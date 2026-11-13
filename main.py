@@ -74,7 +74,8 @@ async def lifespan(app: FastAPI):
     app.state.budget = BudgetGate(redis_client)
     app.state.http = httpx.AsyncClient(
         timeout=httpx.Timeout(config.UPSTREAM_TIMEOUT_SECONDS, connect=5.0),
-        limits=httpx.Limits(max_connections=500, max_keepalive_connections=100),
+        limits=httpx.Limits(max_connections=config.UPSTREAM_MAX_CONNECTIONS,
+                            max_keepalive_connections=config.UPSTREAM_MAX_KEEPALIVE),
     )
     alert_task = None
     if config.ENABLE_RELEVANCE_EVAL:

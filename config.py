@@ -34,6 +34,10 @@ UPSTREAM_API_KEY = (
     or os.getenv("OPENAI_API_KEY")
     or ""
 )
+# Size of the httpx connection pool towards the provider. httpcore scans every pooled
+# connection on each request, so pool size affects event-loop CPU under load (docs/profiling).
+UPSTREAM_MAX_CONNECTIONS = int(os.getenv("UPSTREAM_MAX_CONNECTIONS", "500"))
+UPSTREAM_MAX_KEEPALIVE = int(os.getenv("UPSTREAM_MAX_KEEPALIVE", "100"))
 UPSTREAM_TIMEOUT_SECONDS = float(os.getenv("UPSTREAM_TIMEOUT_SECONDS", "60"))
 UPSTREAM_PROVIDER_NAME = os.getenv("UPSTREAM_PROVIDER_NAME", "openai-compatible")
 
