@@ -206,6 +206,8 @@ docker compose -f docker-compose.test.yml run --rm --build tests
 docker compose -f docker-compose.test.yml down -v
 ```
 
+104 tests (pytest, run via `docker-compose.test.yml`):
+
 - `tests/unit`: PII rules with positive and hard-negative cases, Luhn and
   Verhoeff vectors, stream unmasking (including Hypothesis property tests that
   split text at random chunk boundaries), pricing.
@@ -254,9 +256,96 @@ What this shows:
 
 - Up to 150 req/s, the gateway adds about 1 ms at p50 and under 10 ms at p99 on top of the
   provider call, and the in-app timer agrees.
-- **A single worker saturates between 150 and 200 req/s.** Past that point requests queue
-  inside the one event loop and latency grows without bound. See "Where the time goes" below.
+- **On that run, a single worker saturated between 150 and 200 req/s.** Past that point requests
+  queue inside the one event loop and latency grows without bound. Conditions differed (one 30 s
+  run per point, unpinned k6, host load not recorded for that run); the cause was not isolated. The repeated idle-machine sweep in "Results: before and
+  after the `sniffio` fix, and 1 vs 2 workers" below supersedes it for single-worker capacity.
+  See "Where the time goes" below for the profile of that saturated state.
 - These are local numbers on one machine, not production capacity.
+
+### Results: before and after the `sniffio` fix, and 1 vs 2 workers
+
+`bench/sweep_v3.sh` (script and summariser: `bench/sweep_v3.sh`, `bench/sweep_summary.py`); raw runs,
+every k6 summary and a `meta.txt` per run: `bench/results/sweep-v3/`; the full per-run table (nothing
+averaged) is `bench/results/sweep-v3/summary.md`.
+
+Method and hardware. All runs 2026-11-13, 01:13 to 03:12 UTC. Apple M4 Pro host, Docker Desktop
+Linux VM with 12 vCPUs / 7.7 GiB. API container on cpuset 0-1 (2 vCPUs). Mock upstream with a fixed
+200 ms latency. k6 0.54.0 (`grafana/k6:0.54.0`), constant-arrival-rate, 60 s per run, same request
+as above. 3 repetitions per configuration, interleaved, with the variant order rotated per repetition,
+30 s cool-down between runs and a fresh stack for each run. Celery worker and mock upstream always
+run the fixed image. A run is healthy when errors < 1%, dropped iterations = 0 and p95 < 400 ms
+(2 x the mock latency). Healthy and unhealthy runs are never averaged together: the medians
+below are over healthy runs only, unhealthy runs are listed separately. Variants: before = image
+without `sniffio`, pool 500/100; after = `sniffio==1.3.1` installed, pool 500/100; alt = `sniffio`
+installed, pool 100/100 (only run at 200 and 250 req/s).
+
+Part A, one worker, before vs after:
+
+| Rate (req/s) | Variant | Healthy runs | Healthy runs: median p50 / p95 / p99 (ms) | Unhealthy runs: median p50 / p95 / p99 (ms) | Unhealthy runs: median errors, median dropped |
+|---:|---|---|---|---|---|
+| 150 | before | 3 of 3 | 201.7 / 203.0 / 204.0 | none | - |
+| 150 | after | 3 of 3 | 201.6 / 202.8 / 203.7 | none | - |
+| 200 | before | 3 of 3 | 201.5 / 202.9 / 204.1 | none | - |
+| 200 | after | 3 of 3 | 201.4 / 202.6 / 203.5 | none | - |
+| 200 | alt | 3 of 3 | 201.4 / 202.6 / 203.5 | none | - |
+| 250 | before | 3 of 3 | 201.3 / 202.6 / 205.2 | none | - |
+| 250 | after | 3 of 3 | 201.3 / 202.5 / 203.9 | none | - |
+| 250 | alt | 3 of 3 | 201.3 / 202.6 / 203.8 | none | - |
+| 300 | before | 1 of 3 | 201.6 / 203.3 / 207.8 | 510.3 / 4226.9 / 7006.2 | 2.92%, 1075 |
+| 300 | after | 2 of 3 | 201.4 / 202.9 / 206.1 | 201.9 / 4809.7 / 6327.7 | 2.52%, 1191 |
+
+Reading it:
+
+- At 150, 200 and 250 req/s both builds were healthy in 3 of 3 runs, with near-identical medians.
+- At 300 req/s, before was healthy in 1 of 3 runs and after in 2 of 3. That is not a claimable
+  difference (the rule used here is that only 0 of 3 against 3 of 3 counts), so the runs show no
+  throughput difference between the builds on one worker.
+- The fix shows up in the CPU profile (next table), not as a measurable single-worker throughput gain.
+  The data do not support saying it raised capacity.
+- On this idle run the original build (before) sustained 250 req/s in 3 of 3 runs. The earlier
+  committed sweep (`bench/results/sweep-50-200/`) saturated at 200 req/s. Conditions differed (one 30 s run per point, unpinned k6, host load not recorded for
+  that run); the cause was not isolated. The idle-machine sweep supersedes it for single-worker capacity.
+
+Part B, scaling, variant after, pool 500/100. The 1-worker and 2-worker runs at each rate were run
+back to back within each repetition. The 2-worker stack uses the same cpuset 0-1 as the 1-worker runs.
+
+| Rate (req/s) | 1 worker: healthy runs; healthy median p50 / p95 / p99 (ms) | 2 workers: healthy runs; healthy median p50 / p95 / p99 (ms) |
+|---:|---|---|
+| 150 | 3 of 3; 201.6 / 202.9 / 203.9 | 3 of 3; 201.7 / 202.9 / 203.7 |
+| 200 | 3 of 3; 201.4 / 202.6 / 203.7 | 3 of 3; 201.5 / 202.7 / 203.6 |
+| 300 | 2 of 3; 201.4 / 202.9 / 206.0 | 3 of 3; 201.4 / 202.7 / 203.8 |
+| 400 | 0 of 3; none | 3 of 3; 201.5 / 203.0 / 206.3 |
+
+- 1 worker: healthy in 3 of 3 runs at 150 and 200 req/s, 2 of 3 at 300 and 0 of 3 at 400. At 400 req/s
+  the three 1-worker runs had 12.98% to 15.84% errors, median p50 950.0 ms, median p95 9041.5 ms.
+- 2 workers: healthy in 3 of 3 runs at every rate tested (150, 200, 300, 400 req/s).
+- At 400 req/s with 2 workers: healthy median p50 / p95 / p99 201.5 / 203.0 / 206.3 ms against the
+  200 ms mock; in-app `gateway_overhead_ms` p99 1.324 to 1.631 ms across the three runs; API
+  container CPU mid-run 75.88% to 83.34% (the figure `docker stats` reports for the container).
+- Nothing was tested above 400 req/s, so no maximum is claimed, and this is not a linear-scaling
+  claim. k6 (4 vCPUs) and the mock upstream (2 vCPUs) share the VM and may limit the highest rates.
+
+Profile at 50 req/s, one worker, py-spy `--gil`, 60 s, 100 Hz, event-loop thread only. Flame graphs:
+[`docs/profiling/flame-1worker-50rps-before.svg`](docs/profiling/flame-1worker-50rps-before.svg),
+[`docs/profiling/flame-1worker-50rps-after.svg`](docs/profiling/flame-1worker-50rps-after.svg); tables:
+[`gil-50rps-before.md`](docs/profiling/analysis/gil-50rps-before.md),
+[`gil-50rps-after.md`](docs/profiling/analysis/gil-50rps-after.md).
+
+| Bucket | Before (1104 loop samples) | After (1212 loop samples) |
+|---|---:|---:|
+| httpcore per-call import probe (`current_async_library` -> importlib) | 6.2% (69) | 0.9% (11) |
+| httpcore connection-pool scan | 3.2% (35) | 4.0% (49) |
+| httpx/httpcore other | 28.7% (317) | 26.4% (320) |
+| framework / residual (uvicorn, starlette, fastapi, anyio, h11, httptools) | 37.2% (411) | 42.7% (518) |
+| Redis round trips (budget) | 15.1% (167) | 14.3% (173) |
+| everything else (JSON 3.4% / 2.9%, event loop idle 2.1% / 3.1%, regex PII 1.8% / 2.1%, tiktoken 1.1% / 0.7%, DB 0.6% / 1.4%, to_thread dispatch 0.5% / 1.4%) | 9.5% (105) | 11.6% (141) |
+
+(Each sample goes to the first matching bucket; columns add to 100%.) The probe fell from 6.2% to
+0.9%. Each variant is one 60 s window; the noise of the small buckets was not quantified, so
+the other differences in the table (for example the framework share) should not be interpreted.
+k6 outcome with py-spy attached: before 203.6 / 207.8 / 210.0 ms p50 / p95 / p99, 0.00% errors, 0
+dropped; after 203.4 / 207.6 / 209.6 ms, 0.00% errors, 0 dropped.
 
 ### Where the time goes at saturation
 
@@ -314,15 +403,20 @@ worst-case reservation of one request (for `gpt-4o`, 17 input tokens and `max_to
 `8 * 1585 = 12680 > 11887`, so exactly 7 of 50 concurrent requests get a 200 and 43 get a 429. The
 script asserts that count exactly, plus no leftover holds in Redis and spend within the budget.
 The mock provider is set to 800 ms so all 50 reservations happen before any is released. Result,
-3 runs each on 1, 2 and 4 workers: 7 x 200 and 43 x 429 every time, holds 0 (9 of 9 PASS).
-Provenance of `bench/results/sweep-v3-race/budget-race.txt`: produced on 2026-11-12 (UTC 23:47) on the
-Apple M4 Pro host, Docker Desktop VM with 12 vCPUs, API container cpuset 0-1 (0-3 for the 4-worker
-stack), by `SWEEP_COOLDOWN=3 SWEEP_OUT=results/sweep-v3-race SWEEP_RACE="1:0-1 2:0-1 4:0-3" bench/sweep_v3.sh R`
-at an earlier revision of the script. That revision printed which worker processes used CPU during the
-burst but did not enforce it (every worker in the 2-worker runs and in two of the three 4-worker runs;
-2 of 4 in the other) and did not check the 429 reason header. The current script enforces both
-(at least 2 workers busy, with up to 2 retries recorded as attempts), so Part R of `bench/sweep_v3.sh`
-(1, 2 and 4 workers) regenerates the file with a provenance header.
+3 checks on 2 workers (API cpuset 0-1), each attempt 1 of 3: `expected 200s = 7, 429s = 43`, observed
+`200=7 429=43`, `holds=0`, `worker processes found: 2; used CPU during the burst: 2`, 3 of 3 PASS
+(the script requires at least 2 busy workers and the 429 reason header). Output with its provenance
+header (command, host, date 2026-11-13 03:04 UTC): `bench/results/sweep-v3/budget-race.txt`
+(Part R of `bench/sweep_v3.sh`, `SWEEP_RACE="2:0-1"`).
+
+An earlier run with an earlier revision of the script, 3 runs each on 1, 2 and 4 workers, also gave
+7 x 200 and 43 x 429 every time with holds 0 (9 of 9 PASS): `bench/results/sweep-v3-race/budget-race.txt`,
+produced on 2026-11-12 (UTC 23:47) on the same host and Docker VM, API container cpuset 0-1 (0-3 for
+the 4-worker stack), by `SWEEP_COOLDOWN=3 SWEEP_OUT=results/sweep-v3-race SWEEP_RACE="1:0-1 2:0-1 4:0-3" bench/sweep_v3.sh R`.
+That revision printed which worker processes used CPU during the burst but did not enforce it (every
+worker in the 2-worker runs and in two of the three 4-worker runs; 2 of 4 in the other) and did not
+check the 429 reason header. The current script enforces both. The 4-worker case has not been re-run
+with the current script.
 
 ## PII detection: precision and recall
 

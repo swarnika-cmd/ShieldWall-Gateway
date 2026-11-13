@@ -1,6 +1,6 @@
 # Profiling the gateway (one uvicorn worker)
 
-Question: why does one worker saturate between 150 and 200 req/s (see `bench/results/sweep-*/summary.md`)?
+Question: why does one worker saturate between 150 and 200 req/s (see `bench/results/sweep-*/summary.md`)? Note: the idle-machine sweep (`bench/results/sweep-v3/`) supersedes the 150-to-200 req/s premise; this analysis covers the earlier saturated state.
 
 - Date: 2026-11-13 IST (runs between 2026-11-12 19:12 and 19:57 UTC).
 - Hardware: Apple M4 Pro host, Docker Desktop Linux VM with 12 vCPUs / 7.7 GiB.
@@ -58,6 +58,10 @@ docker run --rm -v "$PWD":/app -w /app python:3.11-slim python -I bench/analyze_
 | Path | What |
 |---|---|
 | `flame-1worker-200rps.svg` | Flame graph, 200 req/s, `--idle` (wall-clock), 60 s, 100 Hz |
+| `flame-1worker-50rps-before.svg` | Flame graph, 50 req/s, `--gil`, 60 s, 100 Hz, image without `sniffio` (sweep run `P-before-1w-r50`) |
+| `flame-1worker-50rps-after.svg` | Same, with `sniffio==1.3.1` installed (sweep run `P-after-1w-r50`) |
+| `stacks-1worker-50rps-before.txt.gz`, `stacks-1worker-50rps-after.txt.gz` | Raw collapsed stacks of the two 50 req/s runs |
+| `analysis/gil-50rps-before.md`, `analysis/gil-50rps-after.md` | Bucket, inclusive and self tables of the two 50 req/s runs |
 | `stacks-1worker-200rps.txt.gz` | Raw collapsed stacks of the second 60 s window of the same run (gzip of plain text, `stack count`; `zcat` it) |
 | `analysis/<run>.md` | Bucket, inclusive and self tables per run |
 | `runs/<run>/` | `k6-summary.md`, `notes.txt` (date, CPU facts, container CPU), `py-spy-dump.txt`, `flame.svg`, `stacks.txt.gz` |
@@ -105,7 +109,7 @@ Each sample goes to the first bucket that matches anywhere in its stack, so colu
 | DB (psycopg, `db.py`, `auth.py`) | 0.5% | 0.4% | 0.3% | 0.2% |
 | logging | 0% | 0.0% | 0.0% | 0.3% |
 
-Across all nine collapsed-state profiles in `analysis/` the pool-scan share is 46.2% to 66.9% (66.9% is the non-blocking run, whose stacks contain a corrupted line; 65.1% is the highest of the others); the healthy run's 4.7% is the outlier. The tiktoken, PII, JSON and logging buckets are under 2% each in every run.
+Across all nine collapsed-state profiles in `analysis/` the pool-scan share is 46.2% to 65.1% (excluding one run with corrupted stacks, 66.9%); the healthy run's 4.7% is the outlier. The tiktoken, PII, JSON and logging buckets are under 2% each in every run.
 
 ## Result 3: worker threads (asyncio.to_thread pool) and Celery
 
@@ -158,7 +162,7 @@ Same table for the healthy run (`gil-50rps`): `chat_completions` 53.4%, `proxy_n
 
 Evidence-backed:
 
-- The CPU being spent at saturation is inside httpcore's connection pool, on the event loop thread: `handle_async_request` -> `_assign_requests_to_connections` iterates every pooled connection and calls `has_expired` -> `is_socket_readable` (a poll syscall per idle connection) plus `is_idle`/`is_queued` list comprehensions. That is 46.2% to 66.9% of event-loop samples in the nine collapsed-state profiles, against 4.7% in the healthy 50 req/s run. The scan cost per request grows with the number of pooled connections; the pool limit is `UPSTREAM_MAX_CONNECTIONS` (default 500).
+- The CPU being spent at saturation is inside httpcore's connection pool, on the event loop thread: `handle_async_request` -> `_assign_requests_to_connections` iterates every pooled connection and calls `has_expired` -> `is_socket_readable` (a poll syscall per idle connection) plus `is_idle`/`is_queued` list comprehensions. That is 46.2% to 65.1% of event-loop samples in the nine collapsed-state profiles, against 4.7% in the healthy 50 req/s run. The scan cost per request grows with the number of pooled connections; the pool limit is `UPSTREAM_MAX_CONNECTIONS` (default 500).
 - A second, smaller httpcore cost: `current_async_library()` does `import sniffio` on every lock/event creation. `sniffio` is not installed (anyio 4.16 no longer depends on it), so each call fails the import after an importlib path scan (`_path_stat`, `_path_importer_cache`). 5.4% to 17.5% of loop samples across the ten committed profiles.
 - The things the README listed as likely costs are not what dominates: tiktoken 0.4% to 0.8%, regex PII 0.4% to 1.5%, JSON 0.5% to 1.8% of event-loop samples in every run, tiktoken confirmed active (frames in `tiktoken/core.py`, not the byte-count fallback).
 - Event loop blocking: the loop thread does not wait on any synchronous network client. Redis for the budget is `redis.asyncio`; Celery `.delay()` runs via `asyncio.to_thread` and its sync redis-py call happens in a pool thread. Synchronous CPU work on the loop thread is the pii/tiktoken/json code (under 3% together) and the httpcore pool scan (the big one).
@@ -166,17 +170,17 @@ Evidence-backed:
 
 Not established:
 
-- Whether the collapse is a feedback loop (more in-flight requests, larger pool, costlier scan, fewer requests per second, more in-flight requests) is my reading of the 4.7% versus 46.2%-66.9% contrast. I did not count open upstream connections or in-flight requests during a run, and I did not show the pool at its 500-connection cap.
+- Whether the collapse is a feedback loop (more in-flight requests, larger pool, costlier scan, fewer requests per second, more in-flight requests) is my reading of the 4.7% versus 46.2%-65.1% contrast. I did not count open upstream connections or in-flight requests during a run, and I did not show the pool at its 500-connection cap.
 - What tips a healthy run over (py-spy attach, a GC pause, a noisy neighbour) was not isolated. The attach effect was seen at 75 and 100 req/s and not with 10 Hz or `--nonblocking`, so a pure sampling-overhead explanation does not fit; a one-off stall at attach does. Not tested.
 - The 150 s, 200 req/s runs are deeper into collapse than the 30 s baseline; proportions at the 30 s knee may differ somewhat.
 - The healthy profile is a single 60 s window at 50 req/s with 877 loop samples; with so few samples, small buckets are noisy; the noise was not quantified.
 - `idle-100rps-nb` (non-blocking) stacks contain at least one corrupted line (a module docstring fragment was read as a frame); it is kept only for its k6 outcome.
-- Effect of any fix (smaller pool, a different HTTP client, installing `sniffio`, more workers) is untested in this phase; see `bench/sweep_v3.sh`.
+- Effect of any fix (smaller pool, a different HTTP client, installing `sniffio`, more workers) is untested in this phase; it was measured afterwards with `bench/sweep_v3.sh`, see "Changes made afterwards" and the README.
 
 ## Multi-worker stack and the 50-request budget check
 
 - Worker count: neither the Dockerfile nor `docker-compose.yml` sets `--workers`, so the API runs one process. `bench/docker-compose.bench.yml` now passes `--workers ${UVICORN_WORKERS:-1}` (default unchanged). Give the container as many vCPUs as workers: `UVICORN_WORKERS=4 BENCH_CPUS_API=0-3 bench/run.sh`. (uvicorn also reads `WEB_CONCURRENCY` when `--workers` is not given.)
-- `tests/integration/test_budget.py::test_concurrent_requests_never_overspend` fires 50 concurrent requests, but through `httpx.ASGITransport` into one in-process app, so it cannot see cross-process races. `scripts/budget_race_check.py` runs the same scenario over HTTP against a running stack (7 requests fit the budget, expects 7 x 200, 43 x 429, no leftover holds). Results: `bench/results/sweep-v3-race/budget-race.txt` (3 runs each on 1, 2 and 4 workers, 9 of 9 PASS; see the README for the provenance of that file and how Part R of `bench/sweep_v3.sh` regenerates it).
+- `tests/integration/test_budget.py::test_concurrent_requests_never_overspend` fires 50 concurrent requests, but through `httpx.ASGITransport` into one in-process app, so it cannot see cross-process races. `scripts/budget_race_check.py` runs the same scenario over HTTP against a running stack (7 requests fit the budget, expects 7 x 200, 43 x 429, no leftover holds). Results: `bench/results/sweep-v3/budget-race.txt` (current script, 2 workers, 3 of 3 PASS; provenance header in the file) and, from an earlier revision of the script, `bench/results/sweep-v3-race/budget-race.txt` (3 runs each on 1, 2 and 4 workers, 9 of 9 PASS; see the README for both).
 
 ```bash
 cd bench
@@ -192,3 +196,5 @@ $C down -v
 - `requirements.txt`: `httpcore==1.0.9` (the version in the image) and `sniffio==1.3.1`, so the import becomes a cached lookup instead of a failing path search on every call.
 - `UPSTREAM_MAX_CONNECTIONS` / `UPSTREAM_MAX_KEEPALIVE` make the httpx pool limits configurable; the defaults stay at 500 / 100.
 - `bench/sweep_v3.sh` compares before and after on an idle machine (repeated, interleaved runs; healthy runs reported separately from saturated ones) and takes the 50 req/s py-spy profiles of both, written as `flame-1worker-50rps-before.svg` / `-after.svg` in this directory.
+
+Result (sweep run 2026-11-13 01:13 to 03:12 UTC, `bench/results/sweep-v3/`, tables in the README): at 50 req/s the httpcore per-call import probe fell from 6.2% (69 of 1104 event-loop samples, `analysis/gil-50rps-before.md`) to 0.9% (11 of 1212, `analysis/gil-50rps-after.md`). Both profiles are one 60 s window each; the noise of the small buckets was not quantified. The profile change did not show up as a measurable single-worker throughput difference (see the README).
