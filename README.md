@@ -192,6 +192,7 @@ measures that end to end.
 | `DEFAULT_MAX_OUTPUT_TOKENS` | `1024` | Output cap when the client sets none |
 | `RESERVATION_TTL_SECONDS` | `600` | When an unreconciled hold is dropped |
 | `AUTH_CACHE_TTL_SECONDS` | `60` | In-process key cache lifetime |
+| `UPSTREAM_MAX_CONNECTIONS` / `UPSTREAM_MAX_KEEPALIVE` | `500` / `100` | Size of the httpx connection pool towards the provider. Every request makes httpcore scan the pooled connections, so the size affects event-loop CPU under load |
 | `DB_POOL_MIN` / `DB_POOL_MAX` | `1` / `10` | API's Postgres pool |
 | `ENABLE_RELEVANCE_EVAL` | `false` | Score retrieval relevance in the worker (needs `requirements-eval.txt`, build with `--build-arg INSTALL_EVAL=true`) |
 
@@ -254,12 +255,106 @@ What this shows:
 - Up to 150 req/s, the gateway adds about 1 ms at p50 and under 10 ms at p99 on top of the
   provider call, and the in-app timer agrees.
 - **A single worker saturates between 150 and 200 req/s.** Past that point requests queue
-  inside the one event loop and latency grows without bound. This has not been profiled yet.
-  The likely costs per request are tokenizer counting, regex PII scans, JSON
-  parsing/serialisation, and the Redis and Celery round trips. The next steps are profiling
-  with `py-spy`, then running one uvicorn worker per core behind the same Redis budget
-  (budgets are already atomic across processes).
+  inside the one event loop and latency grows without bound. See "Where the time goes" below.
 - These are local numbers on one machine, not production capacity.
+
+### Where the time goes at saturation
+
+Profiled with `py-spy` against one uvicorn worker at 200 req/s (`bench/profile.sh`, method,
+hardware, date and every run in [`docs/profiling/README.md`](docs/profiling/README.md); flame graph:
+[`docs/profiling/flame-1worker-200rps.svg`](docs/profiling/flame-1worker-200rps.svg)).
+Share of event-loop samples by bucket (each sample counted once):
+
+| Bucket | Healthy run, 50 req/s (GIL held) | Saturated, 200 req/s (GIL held) | Saturated, 200 req/s (wall clock) |
+|---|---:|---:|---:|
+| httpcore connection-pool scan | 4.7% | 46.2% | 53.5% |
+| httpcore `import sniffio` probe (module not installed) | 6.5% | 7.5% | 15.1% |
+| httpx/httpcore other | 29.6% | 21.2% | 13.1% |
+| framework / residual (uvicorn, starlette, fastapi, anyio) | 38.9% | 12.7% | 8.9% |
+| Redis round trips (budget) | 13.0% | 6.9% | 6.1% |
+| event loop idle (stack ends at the asyncio runner) | 1.8% | 1.6% | 1.0% |
+| regex PII scans | 1.5% | 1.5% | 0.6% |
+| JSON / pydantic | 1.8% | 1.2% | 0.5% |
+| tiktoken | 0.5% | 0.4% | 0.8% |
+| asyncio.to_thread dispatch, DB, logging | 1.8% | 0.9% | 0.5% |
+
+A sample that matches both the import probe and the pool scan (the probe runs inside the scan) is
+counted as the import probe.
+
+- The earlier guess (tokenizer, regex, JSON, Redis and Celery) did not hold for tokenizer, regex and
+  JSON, which are each under 2% of event-loop samples in every run (Redis is 4.6% to 13.0% of loop
+  samples; Celery publishing holds the GIL for 6.7% to 9.2% of GIL-held samples). At saturation the
+  loop spends most of its samples in httpcore's per-request scan of the pooled connections (a poll
+  per idle connection) and in an `import sniffio` that fails and searches the import path on every
+  call.
+- Celery publishing is a synchronous call, but it runs in a worker thread (`asyncio.to_thread`),
+  not on the loop.
+- Caveats. Attaching py-spy changed the outcome: every profiled run at 75 req/s or more went into
+  the saturated state, including 10 Hz and non-blocking sampling, while unprofiled controls at
+  100 req/s stayed clean. So the saturated profiles show the saturated state, not what tips a
+  healthy run over. The healthy column is one 60 s window with 877 loop samples. The machine was
+  shared and busy during these runs.
+- Changes made in response: `sniffio` is now installed (with `httpcore` pinned to 1.0.9), so the
+  import becomes a cached lookup instead of a failing path search on every call; and the size of
+  the upstream connection pool is configurable (`UPSTREAM_MAX_CONNECTIONS` /
+  `UPSTREAM_MAX_KEEPALIVE`, defaults unchanged at 500 / 100). `bench/sweep_v3.sh` measures before
+  and after: repeated, interleaved runs with the variant order rotated per repetition, and for the
+  multi-worker scaling the 1-worker and N-worker runs at each rate are run back to back within each
+  repetition, so each pair sees similar machine conditions.
+
+## Multi-worker budget correctness
+
+The budget check-and-hold is one Lua script executed atomically by Redis, so adding uvicorn
+workers (`UVICORN_WORKERS` in the bench stack) does not let requests overspend a project's budget.
+`scripts/budget_race_check.py` checks this over HTTP, which the in-process integration test cannot.
+It creates a project whose budget is `7 * estimate + estimate // 2`, where `estimate` is the
+worst-case reservation of one request (for `gpt-4o`, 17 input tokens and `max_tokens` 100:
+`17 * 5 + 100 * 15 = 1585` micro-USD, so a budget of 11887 micro-USD). A request is granted only if
+`spent + reserved + estimate <= budget`; with nothing finished yet, the 8th request would need
+`8 * 1585 = 12680 > 11887`, so exactly 7 of 50 concurrent requests get a 200 and 43 get a 429. The
+script asserts that count exactly, plus no leftover holds in Redis and spend within the budget.
+The mock provider is set to 800 ms so all 50 reservations happen before any is released. Result,
+3 runs each on 1, 2 and 4 workers: 7 x 200 and 43 x 429 every time, holds 0 (9 of 9 PASS).
+Provenance of `bench/results/sweep-v3-race/budget-race.txt`: produced on 2026-11-12 (UTC 23:47) on the
+Apple M4 Pro host, Docker Desktop VM with 12 vCPUs, API container cpuset 0-1 (0-3 for the 4-worker
+stack), by `SWEEP_COOLDOWN=3 SWEEP_OUT=results/sweep-v3-race SWEEP_RACE="1:0-1 2:0-1 4:0-3" bench/sweep_v3.sh R`
+at an earlier revision of the script. That revision printed which worker processes used CPU during the
+burst but did not enforce it (every worker in the 2-worker runs and in two of the three 4-worker runs;
+2 of 4 in the other) and did not check the 429 reason header. The current script enforces both
+(at least 2 workers busy, with up to 2 retries recorded as attempts), so Part R of `bench/sweep_v3.sh`
+(1, 2 and 4 workers) regenerates the file with a provenance header.
+
+## PII detection: precision and recall
+
+`scripts/make_pii_dataset.py` builds a labelled set (seed 20261113, 1,000 sentences, 742 labelled
+spans: emails, Indian mobiles, PAN, Aadhaar with valid Verhoeff checksums, Luhn-valid cards, plus
+hard negatives such as order ids, timestamps, 16-digit non-Luhn and 12-digit non-Verhoeff numbers,
+invoice numbers, non-Indian phone numbers and malformed PAN-like strings).
+`scripts/eval_pii.py` runs `pii.py` over it; a prediction matches a labelled span when the type is
+the same and the spans overlap. Details: `bench/results/pii-eval.md`.
+
+| Type | Labelled | TP | FP | FN | Precision | Recall | F1 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| AADHAAR | 119 | 119 | 1 | 0 | 0.992 | 1.000 | 0.996 |
+| CREDIT_CARD | 142 | 142 | 0 | 0 | 1.000 | 1.000 | 1.000 |
+| EMAIL | 176 | 176 | 15 | 0 | 0.921 | 1.000 | 0.959 |
+| IN_MOBILE | 185 | 184 | 0 | 1 | 1.000 | 0.995 | 0.997 |
+| PAN | 120 | 120 | 0 | 0 | 1.000 | 1.000 | 1.000 |
+
+These measure this dataset, whose negatives I chose; they are not production rates. The numeric
+negatives (order ids, references, 16-digit numbers) were constructed to fail their checksums, so
+precision is measured against checksum-invalid lookalikes. By arithmetic, about 1 in 10 random
+12-digit references (first digit 2-9) pass Verhoeff and about 1 in 10 random 13 to 19 digit numbers
+starting with 2-6 or 8 pass Luhn by chance, and those would be masked; this is a probability, not a
+measurement. Recall covers only the formats the generator emits. Known gaps, each pinned by a test in
+`tests/unit/test_pii_known_gaps.py`: mobiles written like `98-7654-3210` or `9876-543210`, lowercase
+PANs, and Aadhaar numbers with mixed separators (`2341 2341-2346`) are not detected. Two known
+limitations of what is detected:
+
+- A mobile written as `+91XXXXXXXXXX` with no separator is a 12-digit string; about 1 in 10 pass the
+  Verhoeff check by chance and are masked as AADHAAR instead of IN_MOBILE (still masked, wrong label).
+- File names such as `logo@2x.png` and `git@github.com` (from a git remote) match the email rule and
+  are masked as EMAIL (15 false positives, all in the 20-row email-lookalike category).
 
 ## Database
 
