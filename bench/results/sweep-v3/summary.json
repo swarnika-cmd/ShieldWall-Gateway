@@ -1,0 +1,205 @@
+{
+  "healthy_definition": "error rate < 1% AND dropped = 0 AND p95 < 2 x mock latency",
+  "groups": {
+    "A-before-1w-r150": {
+      "runs": 3,
+      "healthy": 3,
+      "healthy_median": {
+        "p50": 201.686208,
+        "p95": 202.970041,
+        "p99": 203.959167
+      },
+      "unhealthy_median": null
+    },
+    "A-after-1w-r150": {
+      "runs": 3,
+      "healthy": 3,
+      "healthy_median": {
+        "p50": 201.551666,
+        "p95": 202.837708,
+        "p99": 203.740208
+      },
+      "unhealthy_median": null
+    },
+    "A-before-1w-r200": {
+      "runs": 3,
+      "healthy": 3,
+      "healthy_median": {
+        "p50": 201.544917,
+        "p95": 202.851959,
+        "p99": 204.050861
+      },
+      "unhealthy_median": null
+    },
+    "A-after-1w-r200": {
+      "runs": 3,
+      "healthy": 3,
+      "healthy_median": {
+        "p50": 201.4085,
+        "p95": 202.60075,
+        "p99": 203.481167
+      },
+      "unhealthy_median": null
+    },
+    "A-alt-1w-r200": {
+      "runs": 3,
+      "healthy": 3,
+      "healthy_median": {
+        "p50": 201.395583,
+        "p95": 202.587125,
+        "p99": 203.538792
+      },
+      "unhealthy_median": null
+    },
+    "A-before-1w-r250": {
+      "runs": 3,
+      "healthy": 3,
+      "healthy_median": {
+        "p50": 201.300167,
+        "p95": 202.645,
+        "p99": 205.1765
+      },
+      "unhealthy_median": null
+    },
+    "A-after-1w-r250": {
+      "runs": 3,
+      "healthy": 3,
+      "healthy_median": {
+        "p50": 201.2595,
+        "p95": 202.496917,
+        "p99": 203.853583
+      },
+      "unhealthy_median": null
+    },
+    "A-alt-1w-r250": {
+      "runs": 3,
+      "healthy": 3,
+      "healthy_median": {
+        "p50": 201.296625,
+        "p95": 202.556708,
+        "p99": 203.833542
+      },
+      "unhealthy_median": null
+    },
+    "A-before-1w-r300": {
+      "runs": 3,
+      "healthy": 1,
+      "healthy_median": {
+        "p50": 201.62025,
+        "p95": 203.258167,
+        "p99": 207.772708
+      },
+      "unhealthy_median": {
+        "p50": 510.25743750000004,
+        "p95": 4226.884862049998,
+        "p99": 7006.24229923,
+        "error_rate": 0.029166986080755727,
+        "dropped": 1075.0
+      }
+    },
+    "A-after-1w-r300": {
+      "runs": 3,
+      "healthy": 2,
+      "healthy_median": {
+        "p50": 201.392521,
+        "p95": 202.863875,
+        "p99": 206.08800050000002
+      },
+      "unhealthy_median": {
+        "p50": 201.9004165,
+        "p95": 4809.719169449996,
+        "p99": 6327.739810469999,
+        "error_rate": 0.025223081499107673,
+        "dropped": 1191
+      }
+    },
+    "B-after-1w-r150": {
+      "runs": 3,
+      "healthy": 3,
+      "healthy_median": {
+        "p50": 201.614708,
+        "p95": 202.883167,
+        "p99": 203.857625
+      },
+      "unhealthy_median": null
+    },
+    "B-after-2w-r150": {
+      "runs": 3,
+      "healthy": 3,
+      "healthy_median": {
+        "p50": 201.650236,
+        "p95": 202.917167,
+        "p99": 203.696625
+      },
+      "unhealthy_median": null
+    },
+    "B-after-1w-r200": {
+      "runs": 3,
+      "healthy": 3,
+      "healthy_median": {
+        "p50": 201.413208,
+        "p95": 202.649333,
+        "p99": 203.732667
+      },
+      "unhealthy_median": null
+    },
+    "B-after-2w-r200": {
+      "runs": 3,
+      "healthy": 3,
+      "healthy_median": {
+        "p50": 201.467376,
+        "p95": 202.702041,
+        "p99": 203.600041
+      },
+      "unhealthy_median": null
+    },
+    "B-after-1w-r300": {
+      "runs": 3,
+      "healthy": 2,
+      "healthy_median": {
+        "p50": 201.392542,
+        "p95": 202.891834,
+        "p99": 205.998062
+      },
+      "unhealthy_median": {
+        "p50": 2433.280292,
+        "p95": 7210.461628199999,
+        "p99": 9854.9997616,
+        "error_rate": 0.07193708048003254,
+        "dropped": 3251
+      }
+    },
+    "B-after-2w-r300": {
+      "runs": 3,
+      "healthy": 3,
+      "healthy_median": {
+        "p50": 201.371166,
+        "p95": 202.675375,
+        "p99": 203.813291
+      },
+      "unhealthy_median": null
+    },
+    "B-after-1w-r400": {
+      "runs": 3,
+      "healthy": 0,
+      "healthy_median": null,
+      "unhealthy_median": {
+        "p50": 950.009417,
+        "p95": 9041.52638,
+        "p99": 10545.0627054,
+        "error_rate": 0.13214713074241716,
+        "dropped": 4593
+      }
+    },
+    "B-after-2w-r400": {
+      "runs": 3,
+      "healthy": 3,
+      "healthy_median": {
+        "p50": 201.502417,
+        "p95": 202.987125,
+        "p99": 206.28089025
+      },
+      "unhealthy_median": null
+    }
+  }
+}

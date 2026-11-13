@@ -1,0 +1,24 @@
+Process 1: /usr/local/bin/python3.11 /usr/local/bin/uvicorn main:app --host 0.0.0.0 --port 8000 --no-access-log --workers 1
+Python v3.11.18 (/usr/local/bin/python3.11)
+
+Thread 1 (active): "MainThread"
+    run (asyncio/runners.py:118)
+    asyncio_run (uvicorn/_compat.py:30)
+    run (uvicorn/server.py:86)
+    run (uvicorn/main.py:632)
+    main (uvicorn/main.py:499)
+    invoke (click/core.py:911)
+    invoke (click/core.py:1414)
+    main (click/core.py:1560)
+    __call__ (click/core.py:1653)
+    <module> (uvicorn:8)
+Thread 11 (idle): "uvloop_0"
+    _worker (concurrent/futures/thread.py:81)
+    run (threading.py:982)
+    _bootstrap_inner (threading.py:1045)
+    _bootstrap (threading.py:1002)
+Thread 152 (idle): "uvloop_1"
+    _worker (concurrent/futures/thread.py:81)
+    run (threading.py:982)
+    _bootstrap_inner (threading.py:1045)
+    _bootstrap (threading.py:1002)

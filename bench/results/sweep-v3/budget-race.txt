@@ -1,0 +1,24 @@
+# provenance: bench/sweep_v3.sh part R; host: Darwin 27.2.0 arm64; Apple M4 Pro (12 cores), Docker Desktop Linux VM (12 vCPUs, 7.7 GiB); Docker 12 CPUs
+# command: SWEEP_RACE="2:0-1" bench/sweep_v3.sh all  (this check: dc exec -T api python scripts/budget_race_check.py --workers 2)
+== 2-workers: uvicorn_workers=2 api_cpuset=0-1 mock_latency_ms=800 date_utc=2026-11-13T03:04:49Z
+attempt 1 of 3
+tokenizer: tiktoken; input_tokens=17 estimate=17*5 + 100*15 = 1585 micro-USD
+budget stored = 11887 micro-USD; 11887 // 1585 = 7 reservations fit -> expected 200s = 7, 429s = 43
+worker processes found: 2; used CPU during the burst: 2
+statuses: [200, 429] 200=7 429=43  spent=1190 budget=11887 holds=0
+PASS (attempts: 1)
+exit=0
+attempt 1 of 3
+tokenizer: tiktoken; input_tokens=17 estimate=17*5 + 100*15 = 1585 micro-USD
+budget stored = 11887 micro-USD; 11887 // 1585 = 7 reservations fit -> expected 200s = 7, 429s = 43
+worker processes found: 2; used CPU during the burst: 2
+statuses: [200, 429] 200=7 429=43  spent=1190 budget=11887 holds=0
+PASS (attempts: 1)
+exit=0
+attempt 1 of 3
+tokenizer: tiktoken; input_tokens=17 estimate=17*5 + 100*15 = 1585 micro-USD
+budget stored = 11887 micro-USD; 11887 // 1585 = 7 reservations fit -> expected 200s = 7, 429s = 43
+worker processes found: 2; used CPU during the burst: 2
+statuses: [200, 429] 200=7 429=43  spent=1190 budget=11887 holds=0
+PASS (attempts: 1)
+exit=0

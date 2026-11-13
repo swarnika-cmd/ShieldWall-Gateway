@@ -1,0 +1,5 @@
+sw-v3-api-1 cpu=65.01% mem=366.3MiB / 7.748GiB
+sw-v3-mock-upstream-1 cpu=6.02% mem=37.7MiB / 7.748GiB
+sw-v3-postgres-1 cpu=3.36% mem=105.1MiB / 7.748GiB
+sw-v3-redis-1 cpu=5.20% mem=11.96MiB / 7.748GiB
+sw-v3-worker-1 cpu=22.16% mem=103.3MiB / 7.748GiB

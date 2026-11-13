@@ -1,0 +1,24 @@
+date_utc=2026-11-13T01:23:45Z
+host=Darwin 27.2.0 arm64; Apple M4 Pro (12 cores), Docker Desktop Linux VM (12 vCPUs, 7.7 GiB)
+docker_cpus=12
+docker_mem_bytes=8319238144
+part=A
+variant=before
+rep=1
+image=shieldwall-gateway:v3-nosniffio
+image_id=sha256:0b85dcb7580d51b6c98364ed93b02255b69fe22cb443365db0da4a5fc9349eb5
+worker_and_mock_image=shieldwall-gateway:v3-fixed id=sha256:e2257e759bf796d73eaf35873f646008022cead89981ef56d3b0d5181a8fe69b
+k6_image=grafana/k6:0.54.0 id=sha256:1f40432b1cbe7234e977f96c362c9bc550a2d2b583d014dd8669fe40d3e9e755
+upstream_max_connections=500
+upstream_max_keepalive=100
+uvicorn_workers=1
+api_container_cpuset=0-1
+mock_latency_ms=200
+k6=executor=constant-arrival-rate rate=250/s duration=60s preAllocatedVUs=250 maxVUs=1000 targets=gateway
+load_average_before=2.40 3.29 4.20
+sniffio_installed=no
+httpcore_version=1.0.9
+loaded_pool_max_connections=500
+loaded_pool_max_keepalive=100
+worker_processes_seen=0 (0 = single in-process server)
+celery_queue_depth_after_wait=0

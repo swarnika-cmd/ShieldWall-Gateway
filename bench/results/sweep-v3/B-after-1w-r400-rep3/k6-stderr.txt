@@ -1,0 +1,3 @@
+ Container sw-v3-k6-run-d00807db5f7f Creating 
+ Container sw-v3-k6-run-d00807db5f7f Created 
+time="2026-11-13T03:01:13Z" level=warning msg="Insufficient VUs, reached 1600 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=gateway_400
