@@ -1,0 +1,1000 @@
+{"id": "pii-0001", "category": "pos_aadhaar", "text": "Verification needed for UIDAI number 5228 3262 3717.", "entities": [{"type": "AADHAAR", "start": 37, "end": 51, "value": "5228 3262 3717"}]}
+{"id": "pii-0002", "category": "pos_aadhaar", "text": "Verification needed for UIDAI number 4847-2406-5535.", "entities": [{"type": "AADHAAR", "start": 37, "end": 51, "value": "4847-2406-5535"}]}
+{"id": "pii-0003", "category": "neg_timestamp", "text": "Request received 03/01/2023 16:06, response sent shortly after.", "entities": []}
+{"id": "pii-0004", "category": "neg_timestamp", "text": "Compare the events at 2026-08-14T16:37:48Z and the retry that followed.", "entities": []}
+{"id": "pii-0005", "category": "neg_invoice", "text": "Credit note against PO-7665-500832 was issued to Pandya, Bhatia and Hayre.", "entities": []}
+{"id": "pii-0006", "category": "neg_invoice", "text": "Please find attached PO-5914-455649 for the services rendered.", "entities": []}
+{"id": "pii-0007", "category": "neg_misc_numeric", "text": "The trace id is 97271295-2651-2589-8998-423685400720.", "entities": []}
+{"id": "pii-0008", "category": "neg_plain", "text": "Can you summarise the main differences between a savings account and a current account?", "entities": []}
+{"id": "pii-0009", "category": "neg_timestamp", "text": "Compare the events at 1634617574320 and the retry that followed.", "entities": []}
+{"id": "pii-0010", "category": "pos_credit_card", "text": "My card number is 3589 3842 7407 6950, expiry 08/28.", "entities": [{"type": "CREDIT_CARD", "start": 18, "end": 37, "value": "3589 3842 7407 6950"}]}
+{"id": "pii-0011", "category": "pos_in_mobile", "text": "My number is +91 67432 90693, please WhatsApp me the tracking link.", "entities": [{"type": "IN_MOBILE", "start": 13, "end": 28, "value": "+91 67432 90693"}]}
+{"id": "pii-0012", "category": "pos_in_mobile", "text": "Update the contact number for Neha Cherian to +91 7591198832.", "entities": [{"type": "IN_MOBILE", "start": 46, "end": 60, "value": "+91 7591198832"}]}
+{"id": "pii-0013", "category": "neg_invoice", "text": "Credit note against INV-2026-6654176 was issued to Kakar, Chopra and Wadhwa.", "entities": []}
+{"id": "pii-0014", "category": "pos_email", "text": "I signed up with tristan30@example.com but never got the confirmation.", "entities": [{"type": "EMAIL", "start": 17, "end": 38, "value": "tristan30@example.com"}]}
+{"id": "pii-0015", "category": "pos_aadhaar", "text": "aadhaar_no=292783853791", "entities": [{"type": "AADHAAR", "start": 11, "end": 23, "value": "292783853791"}]}
+{"id": "pii-0016", "category": "neg_misc_numeric", "text": "The trace id is 54287426-8958-5225-4064-683158018358.", "entities": []}
+{"id": "pii-0017", "category": "pos_credit_card", "text": "cc=8188-2705-4031-6771&cvv_required=true", "entities": [{"type": "CREDIT_CARD", "start": 3, "end": 22, "value": "8188-2705-4031-6771"}]}
+{"id": "pii-0018", "category": "pos_credit_card", "text": "cc=3054 772650 8686&cvv_required=true", "entities": [{"type": "CREDIT_CARD", "start": 3, "end": 19, "value": "3054 772650 8686"}]}
+{"id": "pii-0019", "category": "pos_pan", "text": "For TDS purposes, the deductee PAN is PQVPK1062H.", "entities": [{"type": "PAN", "start": 38, "end": 48, "value": "PQVPK1062H"}]}
+{"id": "pii-0020", "category": "pos_in_mobile", "text": "Update the contact number for Bachittar Chatterjee to 91 9164954933.", "entities": [{"type": "IN_MOBILE", "start": 54, "end": 67, "value": "91 9164954933"}]}
+{"id": "pii-0021", "category": "pos_aadhaar", "text": "Verification needed for UIDAI number 922737645300.", "entities": [{"type": "AADHAAR", "start": 37, "end": 49, "value": "922737645300"}]}
+{"id": "pii-0022", "category": "pos_in_mobile", "text": "Draft an SMS to 6471728327 confirming the appointment tomorrow.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 26, "value": "6471728327"}]}
+{"id": "pii-0023", "category": "pos_multi", "text": "Customer Pushti Bansal from Vijayanagaram wrote from loke-gaurangi@outlook.com; call back on 91-9770037051.", "entities": [{"type": "EMAIL", "start": 53, "end": 78, "value": "loke-gaurangi@outlook.com"}, {"type": "IN_MOBILE", "start": 93, "end": 106, "value": "91-9770037051"}]}
+{"id": "pii-0024", "category": "neg_invoice", "text": "PO number BILL7824141883", "entities": []}
+{"id": "pii-0025", "category": "pos_credit_card", "text": "Customer Arunima Ghosh pasted their card 3528 4305 0099 5903 into the chat by mistake.", "entities": [{"type": "CREDIT_CARD", "start": 41, "end": 60, "value": "3528 4305 0099 5903"}]}
+{"id": "pii-0026", "category": "pos_pan", "text": "I am attaching my PAN (YQRPJ7916J) and a cancelled cheque.", "entities": [{"type": "PAN", "start": 23, "end": 33, "value": "YQRPJ7916J"}]}
+{"id": "pii-0027", "category": "pos_credit_card", "text": "cc=4429409298582733&cvv_required=true", "entities": [{"type": "CREDIT_CARD", "start": 3, "end": 19, "value": "4429409298582733"}]}
+{"id": "pii-0028", "category": "pos_multi", "text": "I'm Anthony Kumer. My mobile is +91-9035655208 and my backup email is DBAIL@IITB.AC.IN.", "entities": [{"type": "IN_MOBILE", "start": 32, "end": 46, "value": "+91-9035655208"}, {"type": "EMAIL", "start": 70, "end": 86, "value": "DBAIL@IITB.AC.IN"}]}
+{"id": "pii-0029", "category": "pos_multi", "text": "Ticket from krishnaosha@example.net: card 5111-8808-4186-7732 was charged twice; mobile 60055 86928.", "entities": [{"type": "EMAIL", "start": 12, "end": 35, "value": "krishnaosha@example.net"}, {"type": "CREDIT_CARD", "start": 42, "end": 61, "value": "5111-8808-4186-7732"}, {"type": "IN_MOBILE", "start": 88, "end": 99, "value": "60055 86928"}]}
+{"id": "pii-0030", "category": "pos_in_mobile", "text": "Customer mobile 06422281682 is linked to two accounts. How do I merge them?", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 27, "value": "06422281682"}]}
+{"id": "pii-0031", "category": "neg_misc_numeric", "text": "Card ending in 8468 was used for the last purchase.", "entities": []}
+{"id": "pii-0032", "category": "neg_invoice", "text": "PO number INV-2024-0853578", "entities": []}
+{"id": "pii-0033", "category": "pos_email", "text": "Please send the invoice to rbail@rediffmail.com and copy accounts.", "entities": [{"type": "EMAIL", "start": 27, "end": 47, "value": "rbail@rediffmail.com"}]}
+{"id": "pii-0034", "category": "pos_aadhaar", "text": "I entered my Aadhaar (5846 1106 1134) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 36, "value": "5846 1106 1134"}]}
+{"id": "pii-0035", "category": "neg_order_id", "text": "Order ID: 4713889747", "entities": []}
+{"id": "pii-0036", "category": "pos_pan", "text": "Customer Vansha Nanda gave PAN IEOHD3876T during onboarding at Aligarh.", "entities": [{"type": "PAN", "start": 31, "end": 41, "value": "IEOHD3876T"}]}
+{"id": "pii-0037", "category": "neg_invoice", "text": "Reconcile INV/25-27/68976 with the bank statement.", "entities": []}
+{"id": "pii-0038", "category": "pos_in_mobile", "text": "The delivery partner could not reach +91 79665 33193. Please retry.", "entities": [{"type": "IN_MOBILE", "start": 37, "end": 52, "value": "+91 79665 33193"}]}
+{"id": "pii-0039", "category": "pos_pan", "text": "Customer Eiravati Bansal gave PAN SPZAT8709I during onboarding at Bilaspur.", "entities": [{"type": "PAN", "start": 34, "end": 44, "value": "SPZAT8709I"}]}
+{"id": "pii-0040", "category": "neg_timestamp", "text": "Request received 1742291945538, response sent shortly after.", "entities": []}
+{"id": "pii-0041", "category": "neg_timestamp", "text": "The error occurred at 2023-05-03T04:23:42Z according to the logs.", "entities": []}
+{"id": "pii-0042", "category": "pos_credit_card", "text": "Card on file: 6011 3718 2076 0212", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 33, "value": "6011 3718 2076 0212"}]}
+{"id": "pii-0043", "category": "neg_aadhaar_like_non_verhoeff", "text": "UPI reference number 868126973482 for the transfer to Halder LLC.", "entities": []}
+{"id": "pii-0044", "category": "pos_multi", "text": "KYC for Mason Varty: PAN ISCPY7263S, Aadhaar 6710 9472 6603, mobile +91 94041 99402.", "entities": [{"type": "PAN", "start": 25, "end": 35, "value": "ISCPY7263S"}, {"type": "AADHAAR", "start": 45, "end": 59, "value": "6710 9472 6603"}, {"type": "IN_MOBILE", "start": 68, "end": 83, "value": "+91 94041 99402"}]}
+{"id": "pii-0045", "category": "pos_email", "text": "From: Faqid Ramanathan <nathaniel54@outlook.com>\nSubject: Delivery delay", "entities": [{"type": "EMAIL", "start": 24, "end": 47, "value": "nathaniel54@outlook.com"}]}
+{"id": "pii-0046", "category": "pos_credit_card", "text": "cc=3589 4266 9302 5454&cvv_required=true", "entities": [{"type": "CREDIT_CARD", "start": 3, "end": 22, "value": "3589 4266 9302 5454"}]}
+{"id": "pii-0047", "category": "neg_order_id", "text": "Order ID: FKT82427391136", "entities": []}
+{"id": "pii-0048", "category": "pos_aadhaar", "text": "I entered my Aadhaar (2483 5351 3844) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 36, "value": "2483 5351 3844"}]}
+{"id": "pii-0049", "category": "pos_in_mobile", "text": "Draft an SMS to 91 9188883014 confirming the appointment tomorrow.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 29, "value": "91 9188883014"}]}
+{"id": "pii-0050", "category": "pos_credit_card", "text": "The payment with card 36342073366621 was declined. Why?", "entities": [{"type": "CREDIT_CARD", "start": 22, "end": 36, "value": "36342073366621"}]}
+{"id": "pii-0051", "category": "pos_aadhaar", "text": "Link 5892 7948 8221 with the bank account for DBT.", "entities": [{"type": "AADHAAR", "start": 5, "end": 19, "value": "5892 7948 8221"}]}
+{"id": "pii-0052", "category": "pos_email", "text": "Summarise the complaint from harini.pathak@outlook.com in two lines.", "entities": [{"type": "EMAIL", "start": 29, "end": 54, "value": "harini.pathak@outlook.com"}]}
+{"id": "pii-0053", "category": "pos_credit_card", "text": "Charge 3055 780073 3688 for the annual plan.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 23, "value": "3055 780073 3688"}]}
+{"id": "pii-0054", "category": "pos_credit_card", "text": "Refund to 3744 329010 84338 please, the order was cancelled.", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 27, "value": "3744 329010 84338"}]}
+{"id": "pii-0055", "category": "pos_pan", "text": "I am attaching my PAN (VXSPD7564D) and a cancelled cheque.", "entities": [{"type": "PAN", "start": 23, "end": 33, "value": "VXSPD7564D"}]}
+{"id": "pii-0056", "category": "pos_aadhaar", "text": "Link 5200 3750 9150 with the bank account for DBT.", "entities": [{"type": "AADHAAR", "start": 5, "end": 19, "value": "5200 3750 9150"}]}
+{"id": "pii-0057", "category": "pos_pan", "text": "PAN: QPSPX9471L", "entities": [{"type": "PAN", "start": 5, "end": 15, "value": "QPSPX9471L"}]}
+{"id": "pii-0058", "category": "pos_multi", "text": "Billing contact lucky_dara+orders@iitb.ac.in / +91 81038 65225, card 6011 5002 6888 3827.", "entities": [{"type": "EMAIL", "start": 16, "end": 44, "value": "lucky_dara+orders@iitb.ac.in"}, {"type": "IN_MOBILE", "start": 47, "end": 62, "value": "+91 81038 65225"}, {"type": "CREDIT_CARD", "start": 69, "end": 88, "value": "6011 5002 6888 3827"}]}
+{"id": "pii-0059", "category": "pos_multi", "text": "Verify NBOPC1959W and 6519 5061 0856 for Oscar Jain, then SMS 9778226185.", "entities": [{"type": "PAN", "start": 7, "end": 17, "value": "NBOPC1959W"}, {"type": "AADHAAR", "start": 22, "end": 36, "value": "6519 5061 0856"}, {"type": "IN_MOBILE", "start": 62, "end": 72, "value": "9778226185"}]}
+{"id": "pii-0060", "category": "pos_in_mobile", "text": "Customer mobile +91 8616677981 is linked to two accounts. How do I merge them?", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 30, "value": "+91 8616677981"}]}
+{"id": "pii-0061", "category": "pos_email", "text": "My login email is andrewde@example.com, but I can't reset my password.", "entities": [{"type": "EMAIL", "start": 18, "end": 38, "value": "andrewde@example.com"}]}
+{"id": "pii-0062", "category": "neg_plain", "text": "What is the best way to prepare for a system design interview?", "entities": []}
+{"id": "pii-0063", "category": "neg_order_id", "text": "ref=1846444417&status=pending", "entities": []}
+{"id": "pii-0064", "category": "neg_invoice", "text": "PO number INV/26-26/63532", "entities": []}
+{"id": "pii-0065", "category": "pos_multi", "text": "I'm Eta Thakur. My mobile is +91-6549812201 and my backup email is cdin@iitb.ac.in.", "entities": [{"type": "IN_MOBILE", "start": 29, "end": 43, "value": "+91-6549812201"}, {"type": "EMAIL", "start": 67, "end": 82, "value": "cdin@iitb.ac.in"}]}
+{"id": "pii-0066", "category": "pos_multi", "text": "Refund 3589 7776 4362 3156 (owner Ekbal Sarin); proof of identity: PAN ZGCPB1363Y.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 26, "value": "3589 7776 4362 3156"}, {"type": "PAN", "start": 71, "end": 81, "value": "ZGCPB1363Y"}]}
+{"id": "pii-0067", "category": "pos_pan", "text": "Add JLCPT8956O to the vendor master for Khanna and Sons.", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "JLCPT8956O"}]}
+{"id": "pii-0068", "category": "pos_pan", "text": "The form was rejected because the PAN card number OLOHJ6032U did not match.", "entities": [{"type": "PAN", "start": 50, "end": 60, "value": "OLOHJ6032U"}]}
+{"id": "pii-0069", "category": "neg_misc_numeric", "text": "Upgrade to v2.18.18 before the next release.", "entities": []}
+{"id": "pii-0070", "category": "neg_card_like_non_luhn", "text": "Reference 2990 3307 2118 6055 was created by the billing system.", "entities": []}
+{"id": "pii-0071", "category": "pos_email", "text": "From: Eshana Kakar <chakradev.jani@mail.corp.example.org>\nSubject: Delivery delay", "entities": [{"type": "EMAIL", "start": 20, "end": 56, "value": "chakradev.jani@mail.corp.example.org"}]}
+{"id": "pii-0072", "category": "pos_email", "text": "Can you draft a reply to yogi-utkarsh@rediffmail.com thanking them for the demo?", "entities": [{"type": "EMAIL", "start": 25, "end": 52, "value": "yogi-utkarsh@rediffmail.com"}]}
+{"id": "pii-0073", "category": "pos_credit_card", "text": "Charge 36280696228218 for the annual plan.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 21, "value": "36280696228218"}]}
+{"id": "pii-0074", "category": "neg_timestamp", "text": "Request received 21/01/2023 01:26, response sent shortly after.", "entities": []}
+{"id": "pii-0075", "category": "pos_in_mobile", "text": "Phone: +91 7801785670", "entities": [{"type": "IN_MOBILE", "start": 7, "end": 21, "value": "+91 7801785670"}]}
+{"id": "pii-0076", "category": "neg_aadhaar_like_non_verhoeff", "text": "The 12-digit transaction id 652408752437 does not appear in our records.", "entities": []}
+{"id": "pii-0077", "category": "pos_email", "text": "My login email is aditya59@gmail.com, but I can't reset my password.", "entities": [{"type": "EMAIL", "start": 18, "end": 36, "value": "aditya59@gmail.com"}]}
+{"id": "pii-0078", "category": "pos_multi", "text": "Ticket from lbhat@outlook.com: card 5185 7269 3713 1775 was charged twice; mobile +918062361366.", "entities": [{"type": "EMAIL", "start": 12, "end": 29, "value": "lbhat@outlook.com"}, {"type": "CREDIT_CARD", "start": 36, "end": 55, "value": "5185 7269 3713 1775"}, {"type": "IN_MOBILE", "start": 82, "end": 95, "value": "+918062361366"}]}
+{"id": "pii-0079", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 800565067389 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 36, "value": "800565067389"}]}
+{"id": "pii-0080", "category": "neg_pan_like_wrong_structure", "text": "Part number AXZQ2494W, quantity 12.", "entities": []}
+{"id": "pii-0081", "category": "neg_order_id", "text": "Where is my order #095256-9363? It was supposed to arrive yesterday.", "entities": []}
+{"id": "pii-0082", "category": "neg_misc_numeric", "text": "Card ending in 6819 was used for the last purchase.", "entities": []}
+{"id": "pii-0083", "category": "neg_plain", "text": "Narasimhan-Das wants a one-page note on our data retention policy.", "entities": []}
+{"id": "pii-0084", "category": "pos_in_mobile", "text": "Phone: +917287354050", "entities": [{"type": "IN_MOBILE", "start": 7, "end": 20, "value": "+917287354050"}]}
+{"id": "pii-0085", "category": "pos_email", "text": "Forward this thread to rohantalwar@example.net.", "entities": [{"type": "EMAIL", "start": 23, "end": 46, "value": "rohantalwar@example.net"}]}
+{"id": "pii-0086", "category": "pos_credit_card", "text": "Can I use 8180698944551494 for an international transaction?", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 26, "value": "8180698944551494"}]}
+{"id": "pii-0087", "category": "pos_in_mobile", "text": "Call me on +91 7007481796 after 5 pm.", "entities": [{"type": "IN_MOBILE", "start": 11, "end": 25, "value": "+91 7007481796"}]}
+{"id": "pii-0088", "category": "pos_in_mobile", "text": "Customer mobile 90083 87401 is linked to two accounts. How do I merge them?", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 27, "value": "90083 87401"}]}
+{"id": "pii-0089", "category": "pos_in_mobile", "text": "My number is 91 8275890768, please WhatsApp me the tracking link.", "entities": [{"type": "IN_MOBILE", "start": 13, "end": 26, "value": "91 8275890768"}]}
+{"id": "pii-0090", "category": "neg_aadhaar_like_non_verhoeff", "text": "Case number 459397317492 has been escalated.", "entities": []}
+{"id": "pii-0091", "category": "pos_in_mobile", "text": "The delivery partner could not reach 77147-90491. Please retry.", "entities": [{"type": "IN_MOBILE", "start": 37, "end": 48, "value": "77147-90491"}]}
+{"id": "pii-0092", "category": "pos_credit_card", "text": "Refund to 3059 839424 4039 please, the order was cancelled.", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 26, "value": "3059 839424 4039"}]}
+{"id": "pii-0093", "category": "pos_pan", "text": "PAN: YNXTO6654Y", "entities": [{"type": "PAN", "start": 5, "end": 15, "value": "YNXTO6654Y"}]}
+{"id": "pii-0094", "category": "pos_in_mobile", "text": "Hello, this is Ijaya Iyer from Baranagar. Ring +91 70890 62568 if the address is unclear.", "entities": [{"type": "IN_MOBILE", "start": 47, "end": 62, "value": "+91 70890 62568"}]}
+{"id": "pii-0095", "category": "neg_plain", "text": "Suggest a weekend itinerary for Phagwara with a focus on food.", "entities": []}
+{"id": "pii-0096", "category": "pos_in_mobile", "text": "Please block the SIM registered as 91 7976384384.", "entities": [{"type": "IN_MOBILE", "start": 35, "end": 48, "value": "91 7976384384"}]}
+{"id": "pii-0097", "category": "pos_email", "text": "Contact: vasatika64@example.com", "entities": [{"type": "EMAIL", "start": 9, "end": 31, "value": "vasatika64@example.com"}]}
+{"id": "pii-0098", "category": "pos_credit_card", "text": "My card number is 4484-5130-4680-8183, expiry 08/28.", "entities": [{"type": "CREDIT_CARD", "start": 18, "end": 37, "value": "4484-5130-4680-8183"}]}
+{"id": "pii-0099", "category": "pos_multi", "text": "Verify CMGPY8933K and 6599-5342-5452 for Neelima Mody, then SMS 91-7132442755.", "entities": [{"type": "PAN", "start": 7, "end": 17, "value": "CMGPY8933K"}, {"type": "AADHAAR", "start": 22, "end": 36, "value": "6599-5342-5452"}, {"type": "IN_MOBILE", "start": 64, "end": 77, "value": "91-7132442755"}]}
+{"id": "pii-0100", "category": "neg_plain", "text": "Draft a friendly reminder to Nicholas Rao about the quarterly review meeting.", "entities": []}
+{"id": "pii-0101", "category": "pos_in_mobile", "text": "Alternate contact for the Dhar, Ray and Raja account: 83479-42155.", "entities": [{"type": "IN_MOBILE", "start": 54, "end": 65, "value": "83479-42155"}]}
+{"id": "pii-0102", "category": "neg_order_id", "text": "Tracking number 3674056158 shows no movement for three days.", "entities": []}
+{"id": "pii-0103", "category": "pos_credit_card", "text": "Customer Aadi Ram pasted their card 4641 0607 0594 8165 into the chat by mistake.", "entities": [{"type": "CREDIT_CARD", "start": 36, "end": 55, "value": "4641 0607 0594 8165"}]}
+{"id": "pii-0104", "category": "pos_in_mobile", "text": "Draft an SMS to +916342172076 confirming the appointment tomorrow.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 29, "value": "+916342172076"}]}
+{"id": "pii-0105", "category": "neg_email_like", "text": "Why does the config still point to logo@2x.png?", "entities": []}
+{"id": "pii-0106", "category": "neg_aadhaar_like_non_verhoeff", "text": "The 12-digit transaction id 541113597126 does not appear in our records.", "entities": []}
+{"id": "pii-0107", "category": "pos_multi", "text": "KYC for Saksham Vala: PAN GXWFS8508S, Aadhaar 924542020110, mobile +918759446844.", "entities": [{"type": "PAN", "start": 26, "end": 36, "value": "GXWFS8508S"}, {"type": "AADHAAR", "start": 46, "end": 58, "value": "924542020110"}, {"type": "IN_MOBILE", "start": 67, "end": 80, "value": "+918759446844"}]}
+{"id": "pii-0108", "category": "pos_aadhaar", "text": "My Aadhaar number is 3784 6555 6526, link it to my account.", "entities": [{"type": "AADHAAR", "start": 21, "end": 35, "value": "3784 6555 6526"}]}
+{"id": "pii-0109", "category": "pos_multi", "text": "I'm Netra Dhawan. My mobile is +91-9171150739 and my backup email is xiti_misra+orders@outlook.com.", "entities": [{"type": "IN_MOBILE", "start": 31, "end": 45, "value": "+91-9171150739"}, {"type": "EMAIL", "start": 69, "end": 98, "value": "xiti_misra+orders@outlook.com"}]}
+{"id": "pii-0110", "category": "neg_aadhaar_like_non_verhoeff", "text": "UTR 4291 0035 1610 credited on the same day.", "entities": []}
+{"id": "pii-0111", "category": "neg_email_like", "text": "The reference logo@3x.png is missing from the build output.", "entities": []}
+{"id": "pii-0112", "category": "pos_in_mobile", "text": "The delivery partner could not reach 06262371811. Please retry.", "entities": [{"type": "IN_MOBILE", "start": 37, "end": 48, "value": "06262371811"}]}
+{"id": "pii-0113", "category": "neg_aadhaar_like_non_verhoeff", "text": "Reference no. 6131 5508 2642", "entities": []}
+{"id": "pii-0114", "category": "pos_pan", "text": "PAN: GIYPY8567M", "entities": [{"type": "PAN", "start": 5, "end": 15, "value": "GIYPY8567M"}]}
+{"id": "pii-0115", "category": "pos_multi", "text": "Refund 4684929777065 (owner Warhi Saran); proof of identity: PAN AICPZ5219E.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 20, "value": "4684929777065"}, {"type": "PAN", "start": 65, "end": 75, "value": "AICPZ5219E"}]}
+{"id": "pii-0116", "category": "neg_phone_like_non_indian", "text": "Landline of the Kharagpur branch: 1800-687-7227", "entities": []}
+{"id": "pii-0117", "category": "pos_email", "text": "Customer Imaran Mody (girishbava@example.com) reported that the app crashes on login.", "entities": [{"type": "EMAIL", "start": 22, "end": 44, "value": "girishbava@example.com"}]}
+{"id": "pii-0118", "category": "pos_in_mobile", "text": "Call me on 76981 55493 after 5 pm.", "entities": [{"type": "IN_MOBILE", "start": 11, "end": 22, "value": "76981 55493"}]}
+{"id": "pii-0119", "category": "pos_aadhaar", "text": "Link 3667 4588 2999 with the bank account for DBT.", "entities": [{"type": "AADHAAR", "start": 5, "end": 19, "value": "3667 4588 2999"}]}
+{"id": "pii-0120", "category": "neg_aadhaar_like_non_verhoeff", "text": "UTR 240962957840 credited on the same day.", "entities": []}
+{"id": "pii-0121", "category": "neg_phone_like_non_indian", "text": "Customer support: 080-38000998", "entities": []}
+{"id": "pii-0122", "category": "pos_pan", "text": "pan=QEDPZ5787K&state=KA", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "QEDPZ5787K"}]}
+{"id": "pii-0123", "category": "neg_misc_numeric", "text": "The meeting is on 11/08/2023 in Hindupur.", "entities": []}
+{"id": "pii-0124", "category": "neg_order_id", "text": "ref=#482952-9234&status=pending", "entities": []}
+{"id": "pii-0125", "category": "neg_pan_like_wrong_structure", "text": "Employee code: GMUAK28330", "entities": []}
+{"id": "pii-0126", "category": "pos_credit_card", "text": "Customer Nakul Bumb pasted their card 8170 1918 6015 1087 into the chat by mistake.", "entities": [{"type": "CREDIT_CARD", "start": 38, "end": 57, "value": "8170 1918 6015 1087"}]}
+{"id": "pii-0127", "category": "pos_credit_card", "text": "Refund to 6521483038615717 please, the order was cancelled.", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 26, "value": "6521483038615717"}]}
+{"id": "pii-0128", "category": "neg_email_like", "text": "Why does the config still point to git@github.com:acme/api.git?", "entities": []}
+{"id": "pii-0129", "category": "pos_aadhaar", "text": "I entered my Aadhaar (498978215276) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 34, "value": "498978215276"}]}
+{"id": "pii-0130", "category": "pos_multi", "text": "Ticket from wkanda@yahoo.co.in: card 4839147131572453 was charged twice; mobile 6841242760.", "entities": [{"type": "EMAIL", "start": 12, "end": 30, "value": "wkanda@yahoo.co.in"}, {"type": "CREDIT_CARD", "start": 37, "end": 53, "value": "4839147131572453"}, {"type": "IN_MOBILE", "start": 80, "end": 90, "value": "6841242760"}]}
+{"id": "pii-0131", "category": "pos_multi", "text": "I'm Nirja Bhardwaj. My mobile is 8225695763 and my backup email is warda_patel+orders@outlook.com.", "entities": [{"type": "IN_MOBILE", "start": 33, "end": 43, "value": "8225695763"}, {"type": "EMAIL", "start": 67, "end": 97, "value": "warda_patel+orders@outlook.com"}]}
+{"id": "pii-0132", "category": "neg_invoice", "text": "PO number INV/24-25/20338", "entities": []}
+{"id": "pii-0133", "category": "neg_order_id", "text": "Tracking number OD314377600490441327 shows no movement for three days.", "entities": []}
+{"id": "pii-0134", "category": "neg_invoice", "text": "Credit note against INV-2024-4829195 was issued to Pau-Prabhu.", "entities": []}
+{"id": "pii-0135", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 373559172251 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 36, "value": "373559172251"}]}
+{"id": "pii-0136", "category": "pos_pan", "text": "pan=DUBFD4307N&state=KA", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "DUBFD4307N"}]}
+{"id": "pii-0137", "category": "neg_misc_numeric", "text": "The server at 45.83.160.72 is not responding.", "entities": []}
+{"id": "pii-0138", "category": "pos_aadhaar", "text": "aadhaar_no=9184 2126 0768", "entities": [{"type": "AADHAAR", "start": 11, "end": 25, "value": "9184 2126 0768"}]}
+{"id": "pii-0139", "category": "pos_in_mobile", "text": "Customer mobile +91 73525 64078 is linked to two accounts. How do I merge them?", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 31, "value": "+91 73525 64078"}]}
+{"id": "pii-0140", "category": "pos_credit_card", "text": "Customer Harish Memon pasted their card 6011 2741 4565 2769 into the chat by mistake.", "entities": [{"type": "CREDIT_CARD", "start": 40, "end": 59, "value": "6011 2741 4565 2769"}]}
+{"id": "pii-0141", "category": "pos_credit_card", "text": "My card number is 3426 845344 73119, expiry 08/28.", "entities": [{"type": "CREDIT_CARD", "start": 18, "end": 35, "value": "3426 845344 73119"}]}
+{"id": "pii-0142", "category": "pos_email", "text": "Summarise the complaint from lall-maanav@acme.co.in in two lines.", "entities": [{"type": "EMAIL", "start": 29, "end": 51, "value": "lall-maanav@acme.co.in"}]}
+{"id": "pii-0143", "category": "pos_aadhaar", "text": "aadhaar_no=5769-9685-6214", "entities": [{"type": "AADHAAR", "start": 11, "end": 25, "value": "5769-9685-6214"}]}
+{"id": "pii-0144", "category": "neg_invoice", "text": "Reconcile INV/26-26/71791 with the bank statement.", "entities": []}
+{"id": "pii-0145", "category": "pos_pan", "text": "Add PMXPR1813F to the vendor master for Rastogi PLC.", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "PMXPR1813F"}]}
+{"id": "pii-0146", "category": "pos_in_mobile", "text": "OTP was sent to +91 97502 67675 but has not arrived.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 31, "value": "+91 97502 67675"}]}
+{"id": "pii-0147", "category": "neg_plain", "text": "Explain GST input tax credit in simple terms for a small shop in North Dumdum.", "entities": []}
+{"id": "pii-0148", "category": "neg_phone_like_non_indian", "text": "Call the regional team on +1 689 981 0268.", "entities": []}
+{"id": "pii-0149", "category": "pos_email", "text": "Can you draft a reply to kroy@acme.co.in thanking them for the demo?", "entities": [{"type": "EMAIL", "start": 25, "end": 40, "value": "kroy@acme.co.in"}]}
+{"id": "pii-0150", "category": "pos_aadhaar", "text": "I entered my Aadhaar (519322487639) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 34, "value": "519322487639"}]}
+{"id": "pii-0151", "category": "neg_email_like", "text": "Why does the config still point to user@localhost?", "entities": []}
+{"id": "pii-0152", "category": "pos_credit_card", "text": "Charge 3589189306572037 for the annual plan.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 23, "value": "3589189306572037"}]}
+{"id": "pii-0153", "category": "neg_card_like_non_luhn", "text": "Invoice batch id 5917375298900681 failed to import.", "entities": []}
+{"id": "pii-0154", "category": "pos_credit_card", "text": "The payment with card 3734-879996-45664 was declined. Why?", "entities": [{"type": "CREDIT_CARD", "start": 22, "end": 39, "value": "3734-879996-45664"}]}
+{"id": "pii-0155", "category": "pos_pan", "text": "My PAN is JMPPT7709K, please update it in the KYC form.", "entities": [{"type": "PAN", "start": 10, "end": 20, "value": "JMPPT7709K"}]}
+{"id": "pii-0156", "category": "pos_email", "text": "Can you draft a reply to udyati.chakrabarti@rediffmail.com thanking them for the demo?", "entities": [{"type": "EMAIL", "start": 25, "end": 58, "value": "udyati.chakrabarti@rediffmail.com"}]}
+{"id": "pii-0157", "category": "pos_pan", "text": "Customer Edhitha Bhavsar gave PAN DXQPS8234B during onboarding at Bongaigaon.", "entities": [{"type": "PAN", "start": 34, "end": 44, "value": "DXQPS8234B"}]}
+{"id": "pii-0158", "category": "neg_aadhaar_like_non_verhoeff", "text": "UTR 432670782596 credited on the same day.", "entities": []}
+{"id": "pii-0159", "category": "pos_in_mobile", "text": "Phone: 08876553916", "entities": [{"type": "IN_MOBILE", "start": 7, "end": 18, "value": "08876553916"}]}
+{"id": "pii-0160", "category": "pos_multi", "text": "Please charge 376472666774622 and email the receipt to rayaan.deol@iitb.ac.in.", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 29, "value": "376472666774622"}, {"type": "EMAIL", "start": 55, "end": 77, "value": "rayaan.deol@iitb.ac.in"}]}
+{"id": "pii-0161", "category": "neg_phone_like_non_indian", "text": "Call the regional team on 080-41656474.", "entities": []}
+{"id": "pii-0162", "category": "neg_aadhaar_like_non_verhoeff", "text": "UPI reference number 972758960454 for the transfer to Chopra, Parsa and Nazareth.", "entities": []}
+{"id": "pii-0163", "category": "neg_order_id", "text": "ref=SWG95871100591&status=pending", "entities": []}
+{"id": "pii-0164", "category": "pos_aadhaar", "text": "I entered my Aadhaar (4606 2545 1150) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 36, "value": "4606 2545 1150"}]}
+{"id": "pii-0165", "category": "pos_credit_card", "text": "Customer Chandani Hayer pasted their card 3589750423286668 into the chat by mistake.", "entities": [{"type": "CREDIT_CARD", "start": 42, "end": 58, "value": "3589750423286668"}]}
+{"id": "pii-0166", "category": "neg_misc_numeric", "text": "Total payable amount is Rs 6,73,74,44,19,433.00.", "entities": []}
+{"id": "pii-0167", "category": "neg_timestamp", "text": "Compare the events at 1733958955861 and the retry that followed.", "entities": []}
+{"id": "pii-0168", "category": "neg_invoice", "text": "Please find attached INV/25-26/88731 for the services rendered.", "entities": []}
+{"id": "pii-0169", "category": "pos_pan", "text": "For TDS purposes, the deductee PAN is BLXGU3474Z.", "entities": [{"type": "PAN", "start": 38, "end": 48, "value": "BLXGU3474Z"}]}
+{"id": "pii-0170", "category": "pos_in_mobile", "text": "Call me on 6500899071 after 5 pm.", "entities": [{"type": "IN_MOBILE", "start": 11, "end": 21, "value": "6500899071"}]}
+{"id": "pii-0171", "category": "pos_aadhaar", "text": "I entered my Aadhaar (3023 2247 5022) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 36, "value": "3023 2247 5022"}]}
+{"id": "pii-0172", "category": "pos_pan", "text": "Customer Azaan Chandran gave PAN BTAPM1699R during onboarding at Navi Mumbai.", "entities": [{"type": "PAN", "start": 33, "end": 43, "value": "BTAPM1699R"}]}
+{"id": "pii-0173", "category": "pos_aadhaar", "text": "Aadhaar: 6393 7922 3926", "entities": [{"type": "AADHAAR", "start": 9, "end": 23, "value": "6393 7922 3926"}]}
+{"id": "pii-0174", "category": "pos_pan", "text": "The form was rejected because the PAN card number MMFGA3968E did not match.", "entities": [{"type": "PAN", "start": 50, "end": 60, "value": "MMFGA3968E"}]}
+{"id": "pii-0175", "category": "pos_multi", "text": "Name: Bachittar Doshi. Email kiaan57@gmail.com, phone +91-7774763407.", "entities": [{"type": "EMAIL", "start": 29, "end": 46, "value": "kiaan57@gmail.com"}, {"type": "IN_MOBILE", "start": 54, "end": 68, "value": "+91-7774763407"}]}
+{"id": "pii-0176", "category": "pos_multi", "text": "I'm Chandani Pathak. My mobile is +91 8425803926 and my backup email is tanay.sangha@gmail.com.", "entities": [{"type": "IN_MOBILE", "start": 34, "end": 48, "value": "+91 8425803926"}, {"type": "EMAIL", "start": 72, "end": 94, "value": "tanay.sangha@gmail.com"}]}
+{"id": "pii-0177", "category": "pos_email", "text": "From: Jonathan Ramesh <edhitha86@gmail.com>\nSubject: Delivery delay", "entities": [{"type": "EMAIL", "start": 23, "end": 42, "value": "edhitha86@gmail.com"}]}
+{"id": "pii-0178", "category": "neg_phone_like_non_indian", "text": "Our overseas office is at +49 30 94262551.", "entities": []}
+{"id": "pii-0179", "category": "neg_phone_like_non_indian", "text": "Our overseas office is at +44 20 7384 2119.", "entities": []}
+{"id": "pii-0180", "category": "neg_plain", "text": "Sen, Rege and Narayanan wants a one-page note on our data retention policy.", "entities": []}
+{"id": "pii-0181", "category": "pos_in_mobile", "text": "Alternate contact for the Subramaniam-Venkataraman account: +91-8173358331.", "entities": [{"type": "IN_MOBILE", "start": 60, "end": 74, "value": "+91-8173358331"}]}
+{"id": "pii-0182", "category": "neg_card_like_non_luhn", "text": "Shipment AWB 4631912959618925 was handed to the courier.", "entities": []}
+{"id": "pii-0183", "category": "pos_multi", "text": "Refund 3528155596671486 (owner Kiaan Kamdar); proof of identity: PAN EVQPJ2236M.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 23, "value": "3528155596671486"}, {"type": "PAN", "start": 69, "end": 79, "value": "EVQPJ2236M"}]}
+{"id": "pii-0184", "category": "neg_order_id", "text": "ref=3636649513&status=pending", "entities": []}
+{"id": "pii-0185", "category": "pos_in_mobile", "text": "My number is 91 6471759960, please WhatsApp me the tracking link.", "entities": [{"type": "IN_MOBILE", "start": 13, "end": 26, "value": "91 6471759960"}]}
+{"id": "pii-0186", "category": "pos_email", "text": "Customer Oscar Bedi (gkamdar@example.com) reported that the app crashes on login.", "entities": [{"type": "EMAIL", "start": 21, "end": 40, "value": "gkamdar@example.com"}]}
+{"id": "pii-0187", "category": "neg_misc_numeric", "text": "Upgrade to v3.0.21 before the next release.", "entities": []}
+{"id": "pii-0188", "category": "pos_credit_card", "text": "Can I use 6011-2553-2169-7553 for an international transaction?", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 29, "value": "6011-2553-2169-7553"}]}
+{"id": "pii-0189", "category": "neg_timestamp", "text": "The error occurred at 2023-05-28 01:03:57.698798 according to the logs.", "entities": []}
+{"id": "pii-0190", "category": "pos_aadhaar", "text": "e-KYC failed for Aadhaar 896372712992. What should I do?", "entities": [{"type": "AADHAAR", "start": 25, "end": 37, "value": "896372712992"}]}
+{"id": "pii-0191", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 456167132426 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 36, "value": "456167132426"}]}
+{"id": "pii-0192", "category": "neg_email_like", "text": "The reference user@localhost is missing from the build output.", "entities": []}
+{"id": "pii-0193", "category": "neg_pan_like_wrong_structure", "text": "Employee code: WKTN6577V", "entities": []}
+{"id": "pii-0194", "category": "pos_email", "text": "Customer Dalaja Mander (warhi_mistry+orders@acme.co.in) reported that the app crashes on login.", "entities": [{"type": "EMAIL", "start": 24, "end": 54, "value": "warhi_mistry+orders@acme.co.in"}]}
+{"id": "pii-0195", "category": "neg_misc_numeric", "text": "The meeting is on 09/06/2025 in Gorakhpur.", "entities": []}
+{"id": "pii-0196", "category": "pos_credit_card", "text": "My card number is 8185 9862 2281 7876, expiry 08/28.", "entities": [{"type": "CREDIT_CARD", "start": 18, "end": 37, "value": "8185 9862 2281 7876"}]}
+{"id": "pii-0197", "category": "pos_credit_card", "text": "Charge 2221452667830600 for the annual plan.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 23, "value": "2221452667830600"}]}
+{"id": "pii-0198", "category": "pos_in_mobile", "text": "My number is 91 6265527347, please WhatsApp me the tracking link.", "entities": [{"type": "IN_MOBILE", "start": 13, "end": 26, "value": "91 6265527347"}]}
+{"id": "pii-0199", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 3762 9382 2458 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 38, "value": "3762 9382 2458"}]}
+{"id": "pii-0200", "category": "pos_credit_card", "text": "Customer Yauvani Dada pasted their card 6440 6267 0113 9914 into the chat by mistake.", "entities": [{"type": "CREDIT_CARD", "start": 40, "end": 59, "value": "6440 6267 0113 9914"}]}
+{"id": "pii-0201", "category": "neg_timestamp", "text": "Compare the events at 09/03/2024 18:21 and the retry that followed.", "entities": []}
+{"id": "pii-0202", "category": "neg_aadhaar_like_non_verhoeff", "text": "Application number 2734 5508 7819 for the passport appointment in Bhagalpur.", "entities": []}
+{"id": "pii-0203", "category": "pos_pan", "text": "Verify the PAN IZGFY7232Z against the name Yashasvi Tandon.", "entities": [{"type": "PAN", "start": 15, "end": 25, "value": "IZGFY7232Z"}]}
+{"id": "pii-0204", "category": "neg_misc_numeric", "text": "The meeting is on 13/04/2024 in Mirzapur.", "entities": []}
+{"id": "pii-0205", "category": "pos_aadhaar", "text": "Aadhaar: 7161 0216 1696", "entities": [{"type": "AADHAAR", "start": 9, "end": 23, "value": "7161 0216 1696"}]}
+{"id": "pii-0206", "category": "pos_multi", "text": "Name: Ekaraj Goda. Email zayan27@acme.co.in, phone +91 9512420673.", "entities": [{"type": "EMAIL", "start": 25, "end": 43, "value": "zayan27@acme.co.in"}, {"type": "IN_MOBILE", "start": 51, "end": 65, "value": "+91 9512420673"}]}
+{"id": "pii-0207", "category": "neg_pan_like_wrong_structure", "text": "Is AA824M7497G a valid PAN?", "entities": []}
+{"id": "pii-0208", "category": "pos_aadhaar", "text": "Link 8140 9550 7127 with the bank account for DBT.", "entities": [{"type": "AADHAAR", "start": 5, "end": 19, "value": "8140 9550 7127"}]}
+{"id": "pii-0209", "category": "neg_order_id", "text": "Tracking number ORD-2026-14893238 shows no movement for three days.", "entities": []}
+{"id": "pii-0210", "category": "pos_aadhaar", "text": "e-KYC failed for Aadhaar 7950 4686 6071. What should I do?", "entities": [{"type": "AADHAAR", "start": 25, "end": 39, "value": "7950 4686 6071"}]}
+{"id": "pii-0211", "category": "pos_pan", "text": "For TDS purposes, the deductee PAN is BUSPF5845X.", "entities": [{"type": "PAN", "start": 38, "end": 48, "value": "BUSPF5845X"}]}
+{"id": "pii-0212", "category": "pos_email", "text": "My login email is ria.sahni@outlook.com, but I can't reset my password.", "entities": [{"type": "EMAIL", "start": 18, "end": 39, "value": "ria.sahni@outlook.com"}]}
+{"id": "pii-0213", "category": "pos_credit_card", "text": "My card number is 6443-3422-7618-4791, expiry 08/28.", "entities": [{"type": "CREDIT_CARD", "start": 18, "end": 37, "value": "6443-3422-7618-4791"}]}
+{"id": "pii-0214", "category": "pos_in_mobile", "text": "Please block the SIM registered as +91 6817874239.", "entities": [{"type": "IN_MOBILE", "start": 35, "end": 49, "value": "+91 6817874239"}]}
+{"id": "pii-0215", "category": "neg_pan_like_wrong_structure", "text": "Part number HRHFL693LN, quantity 12.", "entities": []}
+{"id": "pii-0216", "category": "pos_in_mobile", "text": "Hello, this is Michael Deol from Hazaribagh. Ring 91 8260785659 if the address is unclear.", "entities": [{"type": "IN_MOBILE", "start": 50, "end": 63, "value": "91 8260785659"}]}
+{"id": "pii-0217", "category": "neg_plain", "text": "Translate 'Where is the nearest railway station?' into Hindi and Tamil.", "entities": []}
+{"id": "pii-0218", "category": "neg_pan_like_wrong_structure", "text": "Promo code IMEHF35651 expires tonight.", "entities": []}
+{"id": "pii-0219", "category": "pos_credit_card", "text": "Customer Xiti Joshi pasted their card 4152521890322 into the chat by mistake.", "entities": [{"type": "CREDIT_CARD", "start": 38, "end": 51, "value": "4152521890322"}]}
+{"id": "pii-0220", "category": "pos_in_mobile", "text": "Call me on 6484662937 after 5 pm.", "entities": [{"type": "IN_MOBILE", "start": 11, "end": 21, "value": "6484662937"}]}
+{"id": "pii-0221", "category": "neg_aadhaar_like_non_verhoeff", "text": "UPI reference number 7550-4764-1015 for the transfer to Varma and Sons.", "entities": []}
+{"id": "pii-0222", "category": "neg_card_like_non_luhn", "text": "Reference 2937259531401 was created by the billing system.", "entities": []}
+{"id": "pii-0223", "category": "neg_card_like_non_luhn", "text": "Invoice batch id 5187010535278 failed to import.", "entities": []}
+{"id": "pii-0224", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 269586082126 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 36, "value": "269586082126"}]}
+{"id": "pii-0225", "category": "pos_credit_card", "text": "Can I use 3406-568502-03348 for an international transaction?", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 27, "value": "3406-568502-03348"}]}
+{"id": "pii-0226", "category": "neg_order_id", "text": "Return request for shipment OD501559868221690989 from Batta, Rattan and Murty.", "entities": []}
+{"id": "pii-0227", "category": "pos_credit_card", "text": "The payment with card 5285 1783 0706 7313 was declined. Why?", "entities": [{"type": "CREDIT_CARD", "start": 22, "end": 41, "value": "5285 1783 0706 7313"}]}
+{"id": "pii-0228", "category": "pos_in_mobile", "text": "The delivery partner could not reach 91-9000930672. Please retry.", "entities": [{"type": "IN_MOBILE", "start": 37, "end": 50, "value": "91-9000930672"}]}
+{"id": "pii-0229", "category": "pos_credit_card", "text": "cc=30594513190047&cvv_required=true", "entities": [{"type": "CREDIT_CARD", "start": 3, "end": 17, "value": "30594513190047"}]}
+{"id": "pii-0230", "category": "neg_timestamp", "text": "created_at: 2026-04-09 18:41:20.765816", "entities": []}
+{"id": "pii-0231", "category": "pos_credit_card", "text": "The payment with card 5397 6882 1946 8156 was declined. Why?", "entities": [{"type": "CREDIT_CARD", "start": 22, "end": 41, "value": "5397 6882 1946 8156"}]}
+{"id": "pii-0232", "category": "neg_order_id", "text": "Return request for shipment #916656-8636 from Bhakta Group.", "entities": []}
+{"id": "pii-0233", "category": "neg_invoice", "text": "PO number INV/24-27/61821", "entities": []}
+{"id": "pii-0234", "category": "neg_pan_like_wrong_structure", "text": "The code VLUM8397Q was printed on the label.", "entities": []}
+{"id": "pii-0235", "category": "pos_email", "text": "email=skorpal@yahoo.co.in&source=webform", "entities": [{"type": "EMAIL", "start": 6, "end": 25, "value": "skorpal@yahoo.co.in"}]}
+{"id": "pii-0236", "category": "neg_email_like", "text": "Why does the config still point to icon-user@2x.png?", "entities": []}
+{"id": "pii-0237", "category": "pos_multi", "text": "Ticket from lopa_kaur+orders@mail.corp.example.org: card 6446 0691 6785 4383 was charged twice; mobile 93698-09487.", "entities": [{"type": "EMAIL", "start": 12, "end": 50, "value": "lopa_kaur+orders@mail.corp.example.org"}, {"type": "CREDIT_CARD", "start": 57, "end": 76, "value": "6446 0691 6785 4383"}, {"type": "IN_MOBILE", "start": 103, "end": 114, "value": "93698-09487"}]}
+{"id": "pii-0238", "category": "neg_plain", "text": "Draft a friendly reminder to Ethan Kunda about the quarterly review meeting.", "entities": []}
+{"id": "pii-0239", "category": "neg_card_like_non_luhn", "text": "Invoice batch id 6228-2421-0157-7480 failed to import.", "entities": []}
+{"id": "pii-0240", "category": "neg_order_id", "text": "Tracking number ORD-2026-99766446 shows no movement for three days.", "entities": []}
+{"id": "pii-0241", "category": "neg_order_id", "text": "Please cancel order #OD233310496611087319 placed by Yagnesh Dar.", "entities": []}
+{"id": "pii-0242", "category": "neg_misc_numeric", "text": "Total payable amount is Rs 6,05,27,46,10,423.00.", "entities": []}
+{"id": "pii-0243", "category": "pos_pan", "text": "pan=SKVFC9522S&state=KA", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "SKVFC9522S"}]}
+{"id": "pii-0244", "category": "pos_multi", "text": "Billing contact ramawarhi@example.net / 91-8356563012, card 6011343002953576.", "entities": [{"type": "EMAIL", "start": 16, "end": 37, "value": "ramawarhi@example.net"}, {"type": "IN_MOBILE", "start": 40, "end": 53, "value": "91-8356563012"}, {"type": "CREDIT_CARD", "start": 60, "end": 76, "value": "6011343002953576"}]}
+{"id": "pii-0245", "category": "pos_credit_card", "text": "Card on file: 6066 6830 3477 5339", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 33, "value": "6066 6830 3477 5339"}]}
+{"id": "pii-0246", "category": "neg_card_like_non_luhn", "text": "Payment gateway txn id 4041-3839-1394-8766, status success.", "entities": []}
+{"id": "pii-0247", "category": "pos_aadhaar", "text": "Owen Konda's UID is 650174923408, born in Khandwa.", "entities": [{"type": "AADHAAR", "start": 20, "end": 32, "value": "650174923408"}]}
+{"id": "pii-0248", "category": "pos_pan", "text": "The form was rejected because the PAN card number MGVCE6809H did not match.", "entities": [{"type": "PAN", "start": 50, "end": 60, "value": "MGVCE6809H"}]}
+{"id": "pii-0249", "category": "neg_timestamp", "text": "Session started at 03/04/2024 11:06 from Kumbakonam.", "entities": []}
+{"id": "pii-0250", "category": "pos_email", "text": "I signed up with oni.wali@mail.corp.example.org but never got the confirmation.", "entities": [{"type": "EMAIL", "start": 17, "end": 47, "value": "oni.wali@mail.corp.example.org"}]}
+{"id": "pii-0251", "category": "neg_plain", "text": "Explain GST input tax credit in simple terms for a small shop in Ichalkaranji.", "entities": []}
+{"id": "pii-0252", "category": "neg_timestamp", "text": "{\"ts\": \"12/12/2026 21:21\", \"level\": \"warn\"}", "entities": []}
+{"id": "pii-0253", "category": "neg_timestamp", "text": "Compare the events at 2025-12-20T17:41:38Z and the retry that followed.", "entities": []}
+{"id": "pii-0254", "category": "pos_pan", "text": "My PAN is ECPPB9690J, please update it in the KYC form.", "entities": [{"type": "PAN", "start": 10, "end": 20, "value": "ECPPB9690J"}]}
+{"id": "pii-0255", "category": "pos_credit_card", "text": "Charge 6092 3292 8532 2482 for the annual plan.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 26, "value": "6092 3292 8532 2482"}]}
+{"id": "pii-0256", "category": "pos_credit_card", "text": "Update billing for Dugar Group to the card 3715 745122 76580.", "entities": [{"type": "CREDIT_CARD", "start": 43, "end": 60, "value": "3715 745122 76580"}]}
+{"id": "pii-0257", "category": "pos_in_mobile", "text": "Hello, this is Oni Chatterjee from Durgapur. Ring +91 7044088997 if the address is unclear.", "entities": [{"type": "IN_MOBILE", "start": 50, "end": 64, "value": "+91 7044088997"}]}
+{"id": "pii-0258", "category": "neg_card_like_non_luhn", "text": "Invoice batch id 4336-0660-0520-9288 failed to import.", "entities": []}
+{"id": "pii-0259", "category": "neg_phone_like_non_indian", "text": "Call the regional team on +49 30 66673168.", "entities": []}
+{"id": "pii-0260", "category": "pos_credit_card", "text": "cc=340866185486910&cvv_required=true", "entities": [{"type": "CREDIT_CARD", "start": 3, "end": 18, "value": "340866185486910"}]}
+{"id": "pii-0261", "category": "pos_credit_card", "text": "Update billing for Sunder LLC to the card 4994 3324 1130 6761.", "entities": [{"type": "CREDIT_CARD", "start": 42, "end": 61, "value": "4994 3324 1130 6761"}]}
+{"id": "pii-0262", "category": "pos_multi", "text": "Please charge 3705 762880 76749 and email the receipt to dsidhu@iitb.ac.in.", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 31, "value": "3705 762880 76749"}, {"type": "EMAIL", "start": 57, "end": 74, "value": "dsidhu@iitb.ac.in"}]}
+{"id": "pii-0263", "category": "pos_multi", "text": "Billing contact alad@outlook.com / 08992008359, card 30000585386398.", "entities": [{"type": "EMAIL", "start": 16, "end": 32, "value": "alad@outlook.com"}, {"type": "IN_MOBILE", "start": 35, "end": 46, "value": "08992008359"}, {"type": "CREDIT_CARD", "start": 53, "end": 67, "value": "30000585386398"}]}
+{"id": "pii-0264", "category": "neg_order_id", "text": "Tracking number OD526704480041352762 shows no movement for three days.", "entities": []}
+{"id": "pii-0265", "category": "neg_plain", "text": "How do I explain a gap year on my resume?", "entities": []}
+{"id": "pii-0266", "category": "pos_email", "text": "Forward this thread to inaya64@acme.co.in.", "entities": [{"type": "EMAIL", "start": 23, "end": 41, "value": "inaya64@acme.co.in"}]}
+{"id": "pii-0267", "category": "neg_card_like_non_luhn", "text": "Serial number: 3987071097488523", "entities": []}
+{"id": "pii-0268", "category": "neg_pan_like_wrong_structure", "text": "Is VKXR7061O a valid PAN?", "entities": []}
+{"id": "pii-0269", "category": "pos_multi", "text": "I'm Mohini Kalla. My mobile is 91 8303298577 and my backup email is naik-ekaja@outlook.com.", "entities": [{"type": "IN_MOBILE", "start": 31, "end": 44, "value": "91 8303298577"}, {"type": "EMAIL", "start": 68, "end": 90, "value": "naik-ekaja@outlook.com"}]}
+{"id": "pii-0270", "category": "neg_card_like_non_luhn", "text": "Shipment AWB 3759441899545 was handed to the courier.", "entities": []}
+{"id": "pii-0271", "category": "pos_multi", "text": "Customer Aadhya Sarin from Vijayanagaram wrote from wridesh19@example.com; call back on +91-9932223759.", "entities": [{"type": "EMAIL", "start": 52, "end": 73, "value": "wridesh19@example.com"}, {"type": "IN_MOBILE", "start": 88, "end": 102, "value": "+91-9932223759"}]}
+{"id": "pii-0272", "category": "pos_aadhaar", "text": "Aadhaar: 2227 3876 8439", "entities": [{"type": "AADHAAR", "start": 9, "end": 23, "value": "2227 3876 8439"}]}
+{"id": "pii-0273", "category": "neg_email_like", "text": "The reference logo@2x.png is missing from the build output.", "entities": []}
+{"id": "pii-0274", "category": "neg_timestamp", "text": "Session started at 1757981017 from Naihati.", "entities": []}
+{"id": "pii-0275", "category": "pos_aadhaar", "text": "Dalbir Barman's UID is 443154665611, born in Bathinda.", "entities": [{"type": "AADHAAR", "start": 23, "end": 35, "value": "443154665611"}]}
+{"id": "pii-0276", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 2850 6095 7552 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 38, "value": "2850 6095 7552"}]}
+{"id": "pii-0277", "category": "pos_multi", "text": "Refund 6448 7709 8487 5174 (owner Hemang Setty); proof of identity: PAN PTLPT4682Z.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 26, "value": "6448 7709 8487 5174"}, {"type": "PAN", "start": 72, "end": 82, "value": "PTLPT4682Z"}]}
+{"id": "pii-0278", "category": "neg_invoice", "text": "Invoice BILL9736389765 is overdue, please advise.", "entities": []}
+{"id": "pii-0279", "category": "pos_credit_card", "text": "Can I use 5500077793638067 for an international transaction?", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 26, "value": "5500077793638067"}]}
+{"id": "pii-0280", "category": "pos_credit_card", "text": "Card on file: 3003 552327 8455", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 30, "value": "3003 552327 8455"}]}
+{"id": "pii-0281", "category": "pos_credit_card", "text": "My card number is 3528978970620823, expiry 08/28.", "entities": [{"type": "CREDIT_CARD", "start": 18, "end": 34, "value": "3528978970620823"}]}
+{"id": "pii-0282", "category": "neg_misc_numeric", "text": "The trace id is 44220379-4058-2116-0464-759127528360.", "entities": []}
+{"id": "pii-0283", "category": "pos_pan", "text": "PAN: EDBPK8768Z", "entities": [{"type": "PAN", "start": 5, "end": 15, "value": "EDBPK8768Z"}]}
+{"id": "pii-0284", "category": "pos_in_mobile", "text": "My number is +91-6380370632, please WhatsApp me the tracking link.", "entities": [{"type": "IN_MOBILE", "start": 13, "end": 27, "value": "+91-6380370632"}]}
+{"id": "pii-0285", "category": "neg_card_like_non_luhn", "text": "Shipment AWB 2636351173742 was handed to the courier.", "entities": []}
+{"id": "pii-0286", "category": "neg_invoice", "text": "Invoice INV-2025-7029503 is overdue, please advise.", "entities": []}
+{"id": "pii-0287", "category": "pos_in_mobile", "text": "The delivery partner could not reach +91 78288 18524. Please retry.", "entities": [{"type": "IN_MOBILE", "start": 37, "end": 52, "value": "+91 78288 18524"}]}
+{"id": "pii-0288", "category": "pos_pan", "text": "For TDS purposes, the deductee PAN is YXAHX6188R.", "entities": [{"type": "PAN", "start": 38, "end": 48, "value": "YXAHX6188R"}]}
+{"id": "pii-0289", "category": "neg_order_id", "text": "Where is my order 4247061835? It was supposed to arrive yesterday.", "entities": []}
+{"id": "pii-0290", "category": "neg_invoice", "text": "Credit note against PO-8051-010446 was issued to Krishnamurthy, Mahajan and Chaudry.", "entities": []}
+{"id": "pii-0291", "category": "pos_email", "text": "Please send the invoice to DVARMA@YAHOO.CO.IN and copy accounts.", "entities": [{"type": "EMAIL", "start": 27, "end": 45, "value": "DVARMA@YAHOO.CO.IN"}]}
+{"id": "pii-0292", "category": "pos_credit_card", "text": "Update billing for Shetty, Lata and Andra to the card 5080-2301-0266-3270.", "entities": [{"type": "CREDIT_CARD", "start": 54, "end": 73, "value": "5080-2301-0266-3270"}]}
+{"id": "pii-0293", "category": "pos_in_mobile", "text": "OTP was sent to +91 90310 12646 but has not arrived.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 31, "value": "+91 90310 12646"}]}
+{"id": "pii-0294", "category": "pos_multi", "text": "Please charge 3589 2855 8975 8754 and email the receipt to lopa52@mail.corp.example.org.", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 33, "value": "3589 2855 8975 8754"}, {"type": "EMAIL", "start": 59, "end": 87, "value": "lopa52@mail.corp.example.org"}]}
+{"id": "pii-0295", "category": "neg_card_like_non_luhn", "text": "Reference 586347055501035 was created by the billing system.", "entities": []}
+{"id": "pii-0296", "category": "neg_aadhaar_like_non_verhoeff", "text": "UPI reference number 3615-9636-0191 for the transfer to Mand, Khalsa and Zachariah.", "entities": []}
+{"id": "pii-0297", "category": "pos_pan", "text": "I am attaching my PAN (EODPR0998Q) and a cancelled cheque.", "entities": [{"type": "PAN", "start": 23, "end": 33, "value": "EODPR0998Q"}]}
+{"id": "pii-0298", "category": "pos_in_mobile", "text": "Call me on 8527369740 after 5 pm.", "entities": [{"type": "IN_MOBILE", "start": 11, "end": 21, "value": "8527369740"}]}
+{"id": "pii-0299", "category": "pos_aadhaar", "text": "Link 5623 8046 3870 with the bank account for DBT.", "entities": [{"type": "AADHAAR", "start": 5, "end": 19, "value": "5623 8046 3870"}]}
+{"id": "pii-0300", "category": "neg_invoice", "text": "Invoice PO-3108-935285 is overdue, please advise.", "entities": []}
+{"id": "pii-0301", "category": "pos_aadhaar", "text": "aadhaar_no=9025 0967 5384", "entities": [{"type": "AADHAAR", "start": 11, "end": 25, "value": "9025 0967 5384"}]}
+{"id": "pii-0302", "category": "pos_in_mobile", "text": "Please block the SIM registered as 93322-67526.", "entities": [{"type": "IN_MOBILE", "start": 35, "end": 46, "value": "93322-67526"}]}
+{"id": "pii-0303", "category": "pos_pan", "text": "For TDS purposes, the deductee PAN is ETTFV4193K.", "entities": [{"type": "PAN", "start": 38, "end": 48, "value": "ETTFV4193K"}]}
+{"id": "pii-0304", "category": "pos_credit_card", "text": "Customer Leena Sekhon pasted their card 3058 610548 1008 into the chat by mistake.", "entities": [{"type": "CREDIT_CARD", "start": 40, "end": 56, "value": "3058 610548 1008"}]}
+{"id": "pii-0305", "category": "pos_email", "text": "Please send the invoice to bhanumati_bhavsar+orders@yahoo.co.in and copy accounts.", "entities": [{"type": "EMAIL", "start": 27, "end": 63, "value": "bhanumati_bhavsar+orders@yahoo.co.in"}]}
+{"id": "pii-0306", "category": "pos_email", "text": "Summarise the complaint from omaja.kaul@iitb.ac.in in two lines.", "entities": [{"type": "EMAIL", "start": 29, "end": 50, "value": "omaja.kaul@iitb.ac.in"}]}
+{"id": "pii-0307", "category": "neg_card_like_non_luhn", "text": "Bank account number 5038838876957946448, IFSC listed separately.", "entities": []}
+{"id": "pii-0308", "category": "pos_in_mobile", "text": "Call me on 8063650995 after 5 pm.", "entities": [{"type": "IN_MOBILE", "start": 11, "end": 21, "value": "8063650995"}]}
+{"id": "pii-0309", "category": "pos_credit_card", "text": "Card on file: 3422-831041-41303", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 31, "value": "3422-831041-41303"}]}
+{"id": "pii-0310", "category": "pos_aadhaar", "text": "aadhaar_no=2811 9733 1509", "entities": [{"type": "AADHAAR", "start": 11, "end": 25, "value": "2811 9733 1509"}]}
+{"id": "pii-0311", "category": "pos_email", "text": "Please send the invoice to abeerchaudry@example.net and copy accounts.", "entities": [{"type": "EMAIL", "start": 27, "end": 51, "value": "abeerchaudry@example.net"}]}
+{"id": "pii-0312", "category": "neg_order_id", "text": "Order ID: OD432884760849355270", "entities": []}
+{"id": "pii-0313", "category": "pos_credit_card", "text": "Can I use 375386383344769 for an international transaction?", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 25, "value": "375386383344769"}]}
+{"id": "pii-0314", "category": "pos_pan", "text": "pan=SZPAU6229M&state=KA", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "SZPAU6229M"}]}
+{"id": "pii-0315", "category": "pos_multi", "text": "Billing contact arunima.nagy@mail.corp.example.org / 08189653653, card 3009 827679 5224.", "entities": [{"type": "EMAIL", "start": 16, "end": 50, "value": "arunima.nagy@mail.corp.example.org"}, {"type": "IN_MOBILE", "start": 53, "end": 64, "value": "08189653653"}, {"type": "CREDIT_CARD", "start": 71, "end": 87, "value": "3009 827679 5224"}]}
+{"id": "pii-0316", "category": "pos_email", "text": "From: Karan Pandit <iryatata@example.com>\nSubject: Delivery delay", "entities": [{"type": "EMAIL", "start": 20, "end": 40, "value": "iryatata@example.com"}]}
+{"id": "pii-0317", "category": "pos_aadhaar", "text": "I entered my Aadhaar (638748918382) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 34, "value": "638748918382"}]}
+{"id": "pii-0318", "category": "pos_in_mobile", "text": "Phone: +916823295883", "entities": [{"type": "IN_MOBILE", "start": 7, "end": 20, "value": "+916823295883"}]}
+{"id": "pii-0319", "category": "pos_pan", "text": "pan=NZYPO0529E&state=KA", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "NZYPO0529E"}]}
+{"id": "pii-0320", "category": "pos_pan", "text": "For TDS purposes, the deductee PAN is GLQCF6141C.", "entities": [{"type": "PAN", "start": 38, "end": 48, "value": "GLQCF6141C"}]}
+{"id": "pii-0321", "category": "neg_misc_numeric", "text": "The meeting is on 28/10/2026 in Khandwa.", "entities": []}
+{"id": "pii-0322", "category": "pos_in_mobile", "text": "mobile=9621114524", "entities": [{"type": "IN_MOBILE", "start": 7, "end": 17, "value": "9621114524"}]}
+{"id": "pii-0323", "category": "pos_pan", "text": "Customer Hiral Pai gave PAN NZCPO2800L during onboarding at Faridabad.", "entities": [{"type": "PAN", "start": 28, "end": 38, "value": "NZCPO2800L"}]}
+{"id": "pii-0324", "category": "neg_misc_numeric", "text": "Upgrade to v2.7.20 before the next release.", "entities": []}
+{"id": "pii-0325", "category": "pos_email", "text": "Hi, I'm Chavvi Sanghvi. You can reach me at nathan73@outlook.com about the refund.", "entities": [{"type": "EMAIL", "start": 44, "end": 64, "value": "nathan73@outlook.com"}]}
+{"id": "pii-0326", "category": "neg_timestamp", "text": "Compare the events at 20/08/2024 04:41 and the retry that followed.", "entities": []}
+{"id": "pii-0327", "category": "pos_email", "text": "Contact: noah.barad@yahoo.co.in", "entities": [{"type": "EMAIL", "start": 9, "end": 31, "value": "noah.barad@yahoo.co.in"}]}
+{"id": "pii-0328", "category": "neg_email_like", "text": "Why does the config still point to logo@2x.png?", "entities": []}
+{"id": "pii-0329", "category": "neg_timestamp", "text": "Session started at 2026-11-25T14:57:15Z from Ambarnath.", "entities": []}
+{"id": "pii-0330", "category": "neg_pan_like_wrong_structure", "text": "The code PTNRO3451I was printed on the label.", "entities": []}
+{"id": "pii-0331", "category": "pos_aadhaar", "text": "Falguni Randhawa's UID is 772657989689, born in Nashik.", "entities": [{"type": "AADHAAR", "start": 26, "end": 38, "value": "772657989689"}]}
+{"id": "pii-0332", "category": "neg_pan_like_wrong_structure", "text": "Is WU867H7922E a valid PAN?", "entities": []}
+{"id": "pii-0333", "category": "pos_in_mobile", "text": "Please block the SIM registered as +91-8631052360.", "entities": [{"type": "IN_MOBILE", "start": 35, "end": 49, "value": "+91-8631052360"}]}
+{"id": "pii-0334", "category": "pos_pan", "text": "PAN: ZNTTN0660F", "entities": [{"type": "PAN", "start": 5, "end": 15, "value": "ZNTTN0660F"}]}
+{"id": "pii-0335", "category": "neg_phone_like_non_indian", "text": "Our overseas office is at (941) 626-5660.", "entities": []}
+{"id": "pii-0336", "category": "pos_pan", "text": "For TDS purposes, the deductee PAN is OMHHY1615T.", "entities": [{"type": "PAN", "start": 38, "end": 48, "value": "OMHHY1615T"}]}
+{"id": "pii-0337", "category": "pos_multi", "text": "Ticket from UMURTY@YAHOO.CO.IN: card 4181 5131 9878 9385 was charged twice; mobile +91 91627 79578.", "entities": [{"type": "EMAIL", "start": 12, "end": 30, "value": "UMURTY@YAHOO.CO.IN"}, {"type": "CREDIT_CARD", "start": 37, "end": 56, "value": "4181 5131 9878 9385"}, {"type": "IN_MOBILE", "start": 83, "end": 98, "value": "+91 91627 79578"}]}
+{"id": "pii-0338", "category": "pos_email", "text": "Contact: kseth@yahoo.co.in", "entities": [{"type": "EMAIL", "start": 9, "end": 26, "value": "kseth@yahoo.co.in"}]}
+{"id": "pii-0339", "category": "pos_credit_card", "text": "Update billing for Sarraf and Sons to the card 3528 0543 9942 8006.", "entities": [{"type": "CREDIT_CARD", "start": 47, "end": 66, "value": "3528 0543 9942 8006"}]}
+{"id": "pii-0340", "category": "neg_pan_like_wrong_structure", "text": "Employee code: TMHHV696PD", "entities": []}
+{"id": "pii-0341", "category": "pos_multi", "text": "Billing contact leela47@gmail.com / +91 9249840448, card 346619781765078.", "entities": [{"type": "EMAIL", "start": 16, "end": 33, "value": "leela47@gmail.com"}, {"type": "IN_MOBILE", "start": 36, "end": 50, "value": "+91 9249840448"}, {"type": "CREDIT_CARD", "start": 57, "end": 72, "value": "346619781765078"}]}
+{"id": "pii-0342", "category": "pos_email", "text": "Forward this thread to william.bahri@yahoo.co.in.", "entities": [{"type": "EMAIL", "start": 23, "end": 48, "value": "william.bahri@yahoo.co.in"}]}
+{"id": "pii-0343", "category": "neg_card_like_non_luhn", "text": "Reference 6037 0116 4643 9625 was created by the billing system.", "entities": []}
+{"id": "pii-0344", "category": "neg_aadhaar_like_non_verhoeff", "text": "Reference no. 6393-6664-9098", "entities": []}
+{"id": "pii-0345", "category": "neg_pan_like_wrong_structure", "text": "Part number YSKY7745L, quantity 12.", "entities": []}
+{"id": "pii-0346", "category": "pos_aadhaar", "text": "I entered my Aadhaar (5270 7257 0743) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 36, "value": "5270 7257 0743"}]}
+{"id": "pii-0347", "category": "neg_card_like_non_luhn", "text": "Invoice batch id 6241172708975540 failed to import.", "entities": []}
+{"id": "pii-0348", "category": "pos_email", "text": "email=bakhshi17@yahoo.co.in&source=webform", "entities": [{"type": "EMAIL", "start": 6, "end": 27, "value": "bakhshi17@yahoo.co.in"}]}
+{"id": "pii-0349", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 7506 2762 5874 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 38, "value": "7506 2762 5874"}]}
+{"id": "pii-0350", "category": "neg_invoice", "text": "PO number INV-2025-5664497", "entities": []}
+{"id": "pii-0351", "category": "neg_order_id", "text": "Order ID: ORD-2025-70333036", "entities": []}
+{"id": "pii-0352", "category": "pos_multi", "text": "KYC for Christopher Palla: PAN UJBPG1619Y, Aadhaar 406939022518, mobile +91 9686835358.", "entities": [{"type": "PAN", "start": 31, "end": 41, "value": "UJBPG1619Y"}, {"type": "AADHAAR", "start": 51, "end": 63, "value": "406939022518"}, {"type": "IN_MOBILE", "start": 72, "end": 86, "value": "+91 9686835358"}]}
+{"id": "pii-0353", "category": "neg_phone_like_non_indian", "text": "The helpline +1 252 891 1171 is open 24x7.", "entities": []}
+{"id": "pii-0354", "category": "pos_email", "text": "My login email is nadig-chanakya@acme.co.in, but I can't reset my password.", "entities": [{"type": "EMAIL", "start": 18, "end": 43, "value": "nadig-chanakya@acme.co.in"}]}
+{"id": "pii-0355", "category": "neg_aadhaar_like_non_verhoeff", "text": "Reference no. 7750-6781-9876", "entities": []}
+{"id": "pii-0356", "category": "pos_in_mobile", "text": "Hello, this is Maanas Shankar from Nizamabad. Ring 6371688125 if the address is unclear.", "entities": [{"type": "IN_MOBILE", "start": 51, "end": 61, "value": "6371688125"}]}
+{"id": "pii-0357", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 9830 9168 1840 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 38, "value": "9830 9168 1840"}]}
+{"id": "pii-0358", "category": "neg_invoice", "text": "Reconcile PO-5322-749184 with the bank statement.", "entities": []}
+{"id": "pii-0359", "category": "pos_email", "text": "Hi, I'm Agastya Pandya. You can reach me at anthony.wagle@acme.co.in about the refund.", "entities": [{"type": "EMAIL", "start": 44, "end": 68, "value": "anthony.wagle@acme.co.in"}]}
+{"id": "pii-0360", "category": "pos_aadhaar", "text": "Netra Jha's UID is 4122 3869 0030, born in Arrah.", "entities": [{"type": "AADHAAR", "start": 19, "end": 33, "value": "4122 3869 0030"}]}
+{"id": "pii-0361", "category": "pos_multi", "text": "Name: Baljiwan Bansal. Email badami-jagrati@outlook.com, phone 08358113158.", "entities": [{"type": "EMAIL", "start": 29, "end": 55, "value": "badami-jagrati@outlook.com"}, {"type": "IN_MOBILE", "start": 63, "end": 74, "value": "08358113158"}]}
+{"id": "pii-0362", "category": "pos_multi", "text": "Name: Victor Misra. Email neha40@acme.co.in, phone 8073046486.", "entities": [{"type": "EMAIL", "start": 26, "end": 43, "value": "neha40@acme.co.in"}, {"type": "IN_MOBILE", "start": 51, "end": 61, "value": "8073046486"}]}
+{"id": "pii-0363", "category": "neg_timestamp", "text": "The error occurred at 1704755241 according to the logs.", "entities": []}
+{"id": "pii-0364", "category": "neg_misc_numeric", "text": "Card ending in 9348 was used for the last purchase.", "entities": []}
+{"id": "pii-0365", "category": "pos_aadhaar", "text": "Aadhaar: 437878147167", "entities": [{"type": "AADHAAR", "start": 9, "end": 21, "value": "437878147167"}]}
+{"id": "pii-0366", "category": "neg_misc_numeric", "text": "Upgrade to v1.7.19 before the next release.", "entities": []}
+{"id": "pii-0367", "category": "neg_order_id", "text": "Order ID: ORD-2026-33594280", "entities": []}
+{"id": "pii-0368", "category": "pos_pan", "text": "PAN: MRTPN8394U", "entities": [{"type": "PAN", "start": 5, "end": 15, "value": "MRTPN8394U"}]}
+{"id": "pii-0369", "category": "neg_misc_numeric", "text": "The meeting is on 28/04/2025 in Amravati.", "entities": []}
+{"id": "pii-0370", "category": "neg_pan_like_wrong_structure", "text": "Registration BHVBZH5910R was found in the register.", "entities": []}
+{"id": "pii-0371", "category": "neg_phone_like_non_indian", "text": "Fax +44 20 7363 1725", "entities": []}
+{"id": "pii-0372", "category": "pos_in_mobile", "text": "mobile=+917602172344", "entities": [{"type": "IN_MOBILE", "start": 7, "end": 20, "value": "+917602172344"}]}
+{"id": "pii-0373", "category": "pos_pan", "text": "I am attaching my PAN (IAECE3119W) and a cancelled cheque.", "entities": [{"type": "PAN", "start": 23, "end": 33, "value": "IAECE3119W"}]}
+{"id": "pii-0374", "category": "pos_email", "text": "Summarise the complaint from pranit.ramesh@mail.corp.example.org in two lines.", "entities": [{"type": "EMAIL", "start": 29, "end": 64, "value": "pranit.ramesh@mail.corp.example.org"}]}
+{"id": "pii-0375", "category": "pos_in_mobile", "text": "Update the contact number for Ganga Ramanathan to +91 73533 99471.", "entities": [{"type": "IN_MOBILE", "start": 50, "end": 65, "value": "+91 73533 99471"}]}
+{"id": "pii-0376", "category": "pos_email", "text": "Can you draft a reply to FSOM@IITB.AC.IN thanking them for the demo?", "entities": [{"type": "EMAIL", "start": 25, "end": 40, "value": "FSOM@IITB.AC.IN"}]}
+{"id": "pii-0377", "category": "neg_misc_numeric", "text": "Card ending in 9540 was used for the last purchase.", "entities": []}
+{"id": "pii-0378", "category": "neg_plain", "text": "Gour, Kari and Tara wants a one-page note on our data retention policy.", "entities": []}
+{"id": "pii-0379", "category": "pos_email", "text": "email=aadhya.deo@mail.corp.example.org&source=webform", "entities": [{"type": "EMAIL", "start": 6, "end": 38, "value": "aadhya.deo@mail.corp.example.org"}]}
+{"id": "pii-0380", "category": "pos_pan", "text": "My PAN is KIVPA3789W, please update it in the KYC form.", "entities": [{"type": "PAN", "start": 10, "end": 20, "value": "KIVPA3789W"}]}
+{"id": "pii-0381", "category": "neg_email_like", "text": "Why does the config still point to user@localhost?", "entities": []}
+{"id": "pii-0382", "category": "pos_aadhaar", "text": "Link 603235719192 with the bank account for DBT.", "entities": [{"type": "AADHAAR", "start": 5, "end": 17, "value": "603235719192"}]}
+{"id": "pii-0383", "category": "pos_multi", "text": "Onboarding form: Aadhaar 5672 9187 4393, PAN SYLPT0728W, email iiyengar@outlook.com.", "entities": [{"type": "AADHAAR", "start": 25, "end": 39, "value": "5672 9187 4393"}, {"type": "PAN", "start": 45, "end": 55, "value": "SYLPT0728W"}, {"type": "EMAIL", "start": 63, "end": 83, "value": "iiyengar@outlook.com"}]}
+{"id": "pii-0384", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 9796 3359 8076 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 38, "value": "9796 3359 8076"}]}
+{"id": "pii-0385", "category": "pos_email", "text": "Summarise the complaint from mistryxalak@example.org in two lines.", "entities": [{"type": "EMAIL", "start": 29, "end": 52, "value": "mistryxalak@example.org"}]}
+{"id": "pii-0386", "category": "pos_email", "text": "email=jsant@yahoo.co.in&source=webform", "entities": [{"type": "EMAIL", "start": 6, "end": 23, "value": "jsant@yahoo.co.in"}]}
+{"id": "pii-0387", "category": "pos_email", "text": "Hi, I'm Dayamai Mallick. You can reach me at anmol07@example.net about the refund.", "entities": [{"type": "EMAIL", "start": 45, "end": 64, "value": "anmol07@example.net"}]}
+{"id": "pii-0388", "category": "neg_pan_like_wrong_structure", "text": "Part number MJAPYP1434K, quantity 12.", "entities": []}
+{"id": "pii-0389", "category": "pos_in_mobile", "text": "mobile=8575584631", "entities": [{"type": "IN_MOBILE", "start": 7, "end": 17, "value": "8575584631"}]}
+{"id": "pii-0390", "category": "neg_aadhaar_like_non_verhoeff", "text": "The 12-digit transaction id 541061257250 does not appear in our records.", "entities": []}
+{"id": "pii-0391", "category": "neg_invoice", "text": "Reconcile BILL7683022751 with the bank statement.", "entities": []}
+{"id": "pii-0392", "category": "pos_multi", "text": "Name: Vaishnavi Savant. Email ekaraj.peri@mail.corp.example.org, phone 6013658593.", "entities": [{"type": "EMAIL", "start": 30, "end": 63, "value": "ekaraj.peri@mail.corp.example.org"}, {"type": "IN_MOBILE", "start": 71, "end": 81, "value": "6013658593"}]}
+{"id": "pii-0393", "category": "neg_timestamp", "text": "Session started at 2023-12-24T22:23:48Z from Thane.", "entities": []}
+{"id": "pii-0394", "category": "pos_multi", "text": "Ticket from hiral_parikh+orders@iitb.ac.in: card 2221-2348-1976-1267 was charged twice; mobile 06900644739.", "entities": [{"type": "EMAIL", "start": 12, "end": 42, "value": "hiral_parikh+orders@iitb.ac.in"}, {"type": "CREDIT_CARD", "start": 49, "end": 68, "value": "2221-2348-1976-1267"}, {"type": "IN_MOBILE", "start": 95, "end": 106, "value": "06900644739"}]}
+{"id": "pii-0395", "category": "pos_email", "text": "Contact: IWALI@IITB.AC.IN", "entities": [{"type": "EMAIL", "start": 9, "end": 25, "value": "IWALI@IITB.AC.IN"}]}
+{"id": "pii-0396", "category": "pos_aadhaar", "text": "Verification needed for UIDAI number 5455 1131 1482.", "entities": [{"type": "AADHAAR", "start": 37, "end": 51, "value": "5455 1131 1482"}]}
+{"id": "pii-0397", "category": "pos_email", "text": "Customer Nikita Deshmukh (andrew75@outlook.com) reported that the app crashes on login.", "entities": [{"type": "EMAIL", "start": 26, "end": 46, "value": "andrew75@outlook.com"}]}
+{"id": "pii-0398", "category": "pos_credit_card", "text": "Customer Jasmit Prakash pasted their card 4001 7963 5403 7974 into the chat by mistake.", "entities": [{"type": "CREDIT_CARD", "start": 42, "end": 61, "value": "4001 7963 5403 7974"}]}
+{"id": "pii-0399", "category": "pos_multi", "text": "Billing contact vedika_bhasin+orders@mail.corp.example.org / 8509481735, card 3528 2808 5546 1641.", "entities": [{"type": "EMAIL", "start": 16, "end": 58, "value": "vedika_bhasin+orders@mail.corp.example.org"}, {"type": "IN_MOBILE", "start": 61, "end": 71, "value": "8509481735"}, {"type": "CREDIT_CARD", "start": 78, "end": 97, "value": "3528 2808 5546 1641"}]}
+{"id": "pii-0400", "category": "pos_pan", "text": "For TDS purposes, the deductee PAN is JBOCZ2305H.", "entities": [{"type": "PAN", "start": 38, "end": 48, "value": "JBOCZ2305H"}]}
+{"id": "pii-0401", "category": "pos_credit_card", "text": "Update billing for Roy Ltd to the card 5227679991391506.", "entities": [{"type": "CREDIT_CARD", "start": 39, "end": 55, "value": "5227679991391506"}]}
+{"id": "pii-0402", "category": "neg_invoice", "text": "Credit note against INV-2024-3744433 was issued to Salvi, Sandhu and Bains.", "entities": []}
+{"id": "pii-0403", "category": "pos_multi", "text": "Ticket from panchal-bhavna@gmail.com: card 3782 538409 48193 was charged twice; mobile +91-7613338472.", "entities": [{"type": "EMAIL", "start": 12, "end": 36, "value": "panchal-bhavna@gmail.com"}, {"type": "CREDIT_CARD", "start": 43, "end": 60, "value": "3782 538409 48193"}, {"type": "IN_MOBILE", "start": 87, "end": 101, "value": "+91-7613338472"}]}
+{"id": "pii-0404", "category": "neg_phone_like_non_indian", "text": "Call the regional team on (218) 250-6141.", "entities": []}
+{"id": "pii-0405", "category": "pos_email", "text": "Customer Kamya Pall (BBAJWA@IITB.AC.IN) reported that the app crashes on login.", "entities": [{"type": "EMAIL", "start": 21, "end": 38, "value": "BBAJWA@IITB.AC.IN"}]}
+{"id": "pii-0406", "category": "pos_email", "text": "From: Vedhika Cheema <llall@example.com>\nSubject: Delivery delay", "entities": [{"type": "EMAIL", "start": 22, "end": 39, "value": "llall@example.com"}]}
+{"id": "pii-0407", "category": "neg_phone_like_non_indian", "text": "Landline of the Ambala branch: +44 20 7668 1113", "entities": []}
+{"id": "pii-0408", "category": "pos_in_mobile", "text": "Draft an SMS to 64231 91265 confirming the appointment tomorrow.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 27, "value": "64231 91265"}]}
+{"id": "pii-0409", "category": "pos_email", "text": "Contact: ahuja-yashoda@rediffmail.com", "entities": [{"type": "EMAIL", "start": 9, "end": 37, "value": "ahuja-yashoda@rediffmail.com"}]}
+{"id": "pii-0410", "category": "neg_timestamp", "text": "Compare the events at 1689636665629 and the retry that followed.", "entities": []}
+{"id": "pii-0411", "category": "pos_in_mobile", "text": "Customer mobile +91 90682 94685 is linked to two accounts. How do I merge them?", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 31, "value": "+91 90682 94685"}]}
+{"id": "pii-0412", "category": "pos_multi", "text": "Customer Onkar Rout from Pali wrote from wpau@gmail.com; call back on 91 9209410119.", "entities": [{"type": "EMAIL", "start": 41, "end": 55, "value": "wpau@gmail.com"}, {"type": "IN_MOBILE", "start": 70, "end": 83, "value": "91 9209410119"}]}
+{"id": "pii-0413", "category": "neg_timestamp", "text": "created_at: 2023-01-19T09:23:56Z", "entities": []}
+{"id": "pii-0414", "category": "pos_email", "text": "Summarise the complaint from avi02@example.net in two lines.", "entities": [{"type": "EMAIL", "start": 29, "end": 46, "value": "avi02@example.net"}]}
+{"id": "pii-0415", "category": "pos_aadhaar", "text": "I entered my Aadhaar (5762 5142 9226) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 36, "value": "5762 5142 9226"}]}
+{"id": "pii-0416", "category": "pos_pan", "text": "pan=GMCFD9912G&state=KA", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "GMCFD9912G"}]}
+{"id": "pii-0417", "category": "pos_credit_card", "text": "Customer Tanish Soni pasted their card 5337 8488 5571 2894 into the chat by mistake.", "entities": [{"type": "CREDIT_CARD", "start": 39, "end": 58, "value": "5337 8488 5571 2894"}]}
+{"id": "pii-0418", "category": "neg_pan_like_wrong_structure", "text": "The code UZ066E5414V was printed on the label.", "entities": []}
+{"id": "pii-0419", "category": "pos_email", "text": "Write a polite follow-up to gavin_mander+orders@iitb.ac.in, they have not replied in a week.", "entities": [{"type": "EMAIL", "start": 28, "end": 58, "value": "gavin_mander+orders@iitb.ac.in"}]}
+{"id": "pii-0420", "category": "pos_pan", "text": "I am attaching my PAN (WFQPY4359T) and a cancelled cheque.", "entities": [{"type": "PAN", "start": 23, "end": 33, "value": "WFQPY4359T"}]}
+{"id": "pii-0421", "category": "pos_email", "text": "Write a polite follow-up to lohit91@iitb.ac.in, they have not replied in a week.", "entities": [{"type": "EMAIL", "start": 28, "end": 46, "value": "lohit91@iitb.ac.in"}]}
+{"id": "pii-0422", "category": "pos_credit_card", "text": "The payment with card 3636 134520 2430 was declined. Why?", "entities": [{"type": "CREDIT_CARD", "start": 22, "end": 38, "value": "3636 134520 2430"}]}
+{"id": "pii-0423", "category": "pos_credit_card", "text": "My card number is 3706-432255-19924, expiry 08/28.", "entities": [{"type": "CREDIT_CARD", "start": 18, "end": 35, "value": "3706-432255-19924"}]}
+{"id": "pii-0424", "category": "pos_email", "text": "From: Wishi Mitra <samuel.mannan@outlook.com>\nSubject: Delivery delay", "entities": [{"type": "EMAIL", "start": 19, "end": 44, "value": "samuel.mannan@outlook.com"}]}
+{"id": "pii-0425", "category": "pos_in_mobile", "text": "OTP was sent to +91-9220652017 but has not arrived.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 30, "value": "+91-9220652017"}]}
+{"id": "pii-0426", "category": "neg_invoice", "text": "PO number INV-2024-7911704", "entities": []}
+{"id": "pii-0427", "category": "pos_multi", "text": "Onboarding form: Aadhaar 939791796880, PAN PSJPB2134G, email rohan.pal@rediffmail.com.", "entities": [{"type": "AADHAAR", "start": 25, "end": 37, "value": "939791796880"}, {"type": "PAN", "start": 43, "end": 53, "value": "PSJPB2134G"}, {"type": "EMAIL", "start": 61, "end": 85, "value": "rohan.pal@rediffmail.com"}]}
+{"id": "pii-0428", "category": "pos_pan", "text": "pan=FUEPL1483W&state=KA", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "FUEPL1483W"}]}
+{"id": "pii-0429", "category": "pos_multi", "text": "KYC for Zarna Handa: PAN XUTPJ8986L, Aadhaar 4746 2268 5016, mobile +91 8576360620.", "entities": [{"type": "PAN", "start": 25, "end": 35, "value": "XUTPJ8986L"}, {"type": "AADHAAR", "start": 45, "end": 59, "value": "4746 2268 5016"}, {"type": "IN_MOBILE", "start": 68, "end": 82, "value": "+91 8576360620"}]}
+{"id": "pii-0430", "category": "pos_credit_card", "text": "Charge 3781 268969 05418 for the annual plan.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 24, "value": "3781 268969 05418"}]}
+{"id": "pii-0431", "category": "neg_phone_like_non_indian", "text": "Landline of the Aizawl branch: (884) 987-1648", "entities": []}
+{"id": "pii-0432", "category": "pos_in_mobile", "text": "OTP was sent to 09436566560 but has not arrived.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 27, "value": "09436566560"}]}
+{"id": "pii-0433", "category": "pos_multi", "text": "Refund 5321 8867 8478 8062 (owner Fiyaz Dora); proof of identity: PAN JGMPB4009Q.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 26, "value": "5321 8867 8478 8062"}, {"type": "PAN", "start": 70, "end": 80, "value": "JGMPB4009Q"}]}
+{"id": "pii-0434", "category": "pos_email", "text": "Forward this thread to sara65@example.com.", "entities": [{"type": "EMAIL", "start": 23, "end": 41, "value": "sara65@example.com"}]}
+{"id": "pii-0435", "category": "neg_pan_like_wrong_structure", "text": "Registration RN781V9179L was found in the register.", "entities": []}
+{"id": "pii-0436", "category": "pos_multi", "text": "Please charge 3005 549045 1927 and email the receipt to atharv_goswami+orders@gmail.com.", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 30, "value": "3005 549045 1927"}, {"type": "EMAIL", "start": 56, "end": 87, "value": "atharv_goswami+orders@gmail.com"}]}
+{"id": "pii-0437", "category": "pos_email", "text": "Hi, I'm Samesh Deo. You can reach me at chavvi_iyer+orders@yahoo.co.in about the refund.", "entities": [{"type": "EMAIL", "start": 40, "end": 70, "value": "chavvi_iyer+orders@yahoo.co.in"}]}
+{"id": "pii-0438", "category": "pos_in_mobile", "text": "Customer mobile +91 9813494423 is linked to two accounts. How do I merge them?", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 30, "value": "+91 9813494423"}]}
+{"id": "pii-0439", "category": "neg_timestamp", "text": "Compare the events at 2025-01-13T20:35:49Z and the retry that followed.", "entities": []}
+{"id": "pii-0440", "category": "neg_phone_like_non_indian", "text": "Landline of the Shivpuri branch: +44 20 7050 2404", "entities": []}
+{"id": "pii-0441", "category": "neg_plain", "text": "Translate 'Where is the nearest railway station?' into Hindi and Tamil.", "entities": []}
+{"id": "pii-0442", "category": "neg_invoice", "text": "Credit note against PO-2627-871665 was issued to Dara-Lanka.", "entities": []}
+{"id": "pii-0443", "category": "pos_email", "text": "Please send the invoice to urishilla_deep+orders@rediffmail.com and copy accounts.", "entities": [{"type": "EMAIL", "start": 27, "end": 63, "value": "urishilla_deep+orders@rediffmail.com"}]}
+{"id": "pii-0444", "category": "neg_phone_like_non_indian", "text": "The helpline 080-44875392 is open 24x7.", "entities": []}
+{"id": "pii-0445", "category": "pos_email", "text": "Forward this thread to pavani_bir+orders@gmail.com.", "entities": [{"type": "EMAIL", "start": 23, "end": 50, "value": "pavani_bir+orders@gmail.com"}]}
+{"id": "pii-0446", "category": "pos_email", "text": "Summarise the complaint from gavin29@acme.co.in in two lines.", "entities": [{"type": "EMAIL", "start": 29, "end": 47, "value": "gavin29@acme.co.in"}]}
+{"id": "pii-0447", "category": "pos_in_mobile", "text": "OTP was sent to 91-7820004678 but has not arrived.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 29, "value": "91-7820004678"}]}
+{"id": "pii-0448", "category": "neg_pan_like_wrong_structure", "text": "Employee code: DRGE6839I", "entities": []}
+{"id": "pii-0449", "category": "pos_multi", "text": "Customer Pavani Mukherjee from Ongole wrote from indira_gala+orders@gmail.com; call back on +91-6632013307.", "entities": [{"type": "EMAIL", "start": 49, "end": 77, "value": "indira_gala+orders@gmail.com"}, {"type": "IN_MOBILE", "start": 92, "end": 106, "value": "+91-6632013307"}]}
+{"id": "pii-0450", "category": "pos_aadhaar", "text": "I entered my Aadhaar (2606 2041 3229) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 36, "value": "2606 2041 3229"}]}
+{"id": "pii-0451", "category": "pos_multi", "text": "Refund 3528 8162 4996 7015 (owner Lakshit Devi); proof of identity: PAN EXVPI8217L.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 26, "value": "3528 8162 4996 7015"}, {"type": "PAN", "start": 72, "end": 82, "value": "EXVPI8217L"}]}
+{"id": "pii-0452", "category": "pos_email", "text": "I signed up with dev.devi@rediffmail.com but never got the confirmation.", "entities": [{"type": "EMAIL", "start": 17, "end": 40, "value": "dev.devi@rediffmail.com"}]}
+{"id": "pii-0453", "category": "neg_misc_numeric", "text": "Our pincode for dispatch is 958220.", "entities": []}
+{"id": "pii-0454", "category": "pos_in_mobile", "text": "mobile=08089767865", "entities": [{"type": "IN_MOBILE", "start": 7, "end": 18, "value": "08089767865"}]}
+{"id": "pii-0455", "category": "neg_order_id", "text": "Order ID: AMZ64768687032", "entities": []}
+{"id": "pii-0456", "category": "pos_aadhaar", "text": "My Aadhaar number is 8328 5697 1538, link it to my account.", "entities": [{"type": "AADHAAR", "start": 21, "end": 35, "value": "8328 5697 1538"}]}
+{"id": "pii-0457", "category": "pos_multi", "text": "Name: Jeremiah Sachar. Email bhatti-ekani@yahoo.co.in, phone +91 74215 78666.", "entities": [{"type": "EMAIL", "start": 29, "end": 53, "value": "bhatti-ekani@yahoo.co.in"}, {"type": "IN_MOBILE", "start": 61, "end": 76, "value": "+91 74215 78666"}]}
+{"id": "pii-0458", "category": "pos_multi", "text": "Ticket from vrishti33@example.com: card 4325000664665965 was charged twice; mobile 91-7135567827.", "entities": [{"type": "EMAIL", "start": 12, "end": 33, "value": "vrishti33@example.com"}, {"type": "CREDIT_CARD", "start": 40, "end": 56, "value": "4325000664665965"}, {"type": "IN_MOBILE", "start": 83, "end": 96, "value": "91-7135567827"}]}
+{"id": "pii-0459", "category": "pos_in_mobile", "text": "Hello, this is Arya Gala from Pune. Ring +916340823645 if the address is unclear.", "entities": [{"type": "IN_MOBILE", "start": 41, "end": 54, "value": "+916340823645"}]}
+{"id": "pii-0460", "category": "neg_phone_like_non_indian", "text": "Landline of the Kirari Suleman Nagar branch: +49 30 22532656", "entities": []}
+{"id": "pii-0461", "category": "pos_pan", "text": "I am attaching my PAN (SHKPD5377O) and a cancelled cheque.", "entities": [{"type": "PAN", "start": 23, "end": 33, "value": "SHKPD5377O"}]}
+{"id": "pii-0462", "category": "neg_invoice", "text": "Reconcile PO-8513-325392 with the bank statement.", "entities": []}
+{"id": "pii-0463", "category": "neg_phone_like_non_indian", "text": "Call the regional team on +1 935 558 4883.", "entities": []}
+{"id": "pii-0464", "category": "pos_credit_card", "text": "Update billing for Bala Inc to the card 6444180632618832.", "entities": [{"type": "CREDIT_CARD", "start": 40, "end": 56, "value": "6444180632618832"}]}
+{"id": "pii-0465", "category": "pos_credit_card", "text": "My card number is 3052 654687 1508, expiry 08/28.", "entities": [{"type": "CREDIT_CARD", "start": 18, "end": 34, "value": "3052 654687 1508"}]}
+{"id": "pii-0466", "category": "neg_aadhaar_like_non_verhoeff", "text": "UTR 3593-6153-5639 credited on the same day.", "entities": []}
+{"id": "pii-0467", "category": "neg_card_like_non_luhn", "text": "Reference 4659887095544149 was created by the billing system.", "entities": []}
+{"id": "pii-0468", "category": "pos_in_mobile", "text": "Please block the SIM registered as +917042225898.", "entities": [{"type": "IN_MOBILE", "start": 35, "end": 48, "value": "+917042225898"}]}
+{"id": "pii-0469", "category": "pos_credit_card", "text": "cc=4779-4888-3254-7325&cvv_required=true", "entities": [{"type": "CREDIT_CARD", "start": 3, "end": 22, "value": "4779-4888-3254-7325"}]}
+{"id": "pii-0470", "category": "pos_aadhaar", "text": "aadhaar_no=9302 4955 7603", "entities": [{"type": "AADHAAR", "start": 11, "end": 25, "value": "9302 4955 7603"}]}
+{"id": "pii-0471", "category": "pos_multi", "text": "Verify FSBCO6746U and 4661-0535-0078 for Jyoti Dewan, then SMS 95233-82592.", "entities": [{"type": "PAN", "start": 7, "end": 17, "value": "FSBCO6746U"}, {"type": "AADHAAR", "start": 22, "end": 36, "value": "4661-0535-0078"}, {"type": "IN_MOBILE", "start": 63, "end": 74, "value": "95233-82592"}]}
+{"id": "pii-0472", "category": "neg_card_like_non_luhn", "text": "Invoice batch id 54788013950590 failed to import.", "entities": []}
+{"id": "pii-0473", "category": "pos_pan", "text": "The form was rejected because the PAN card number HNJPC4394Z did not match.", "entities": [{"type": "PAN", "start": 50, "end": 60, "value": "HNJPC4394Z"}]}
+{"id": "pii-0474", "category": "pos_credit_card", "text": "Can I use 5544-5902-0068-4738 for an international transaction?", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 29, "value": "5544-5902-0068-4738"}]}
+{"id": "pii-0475", "category": "pos_in_mobile", "text": "Alternate contact for the Mistry Inc account: +917837386589.", "entities": [{"type": "IN_MOBILE", "start": 46, "end": 59, "value": "+917837386589"}]}
+{"id": "pii-0476", "category": "pos_pan", "text": "Add DMOPL2449F to the vendor master for Ganesh, Tella and Joshi.", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "DMOPL2449F"}]}
+{"id": "pii-0477", "category": "neg_misc_numeric", "text": "Upgrade to v1.0.15 before the next release.", "entities": []}
+{"id": "pii-0478", "category": "neg_card_like_non_luhn", "text": "Serial number: 431081456313829", "entities": []}
+{"id": "pii-0479", "category": "pos_in_mobile", "text": "OTP was sent to 62700-22490 but has not arrived.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 27, "value": "62700-22490"}]}
+{"id": "pii-0480", "category": "neg_misc_numeric", "text": "Upgrade to v3.6.20 before the next release.", "entities": []}
+{"id": "pii-0481", "category": "neg_invoice", "text": "Credit note against BILL4310306607 was issued to Chanda LLC.", "entities": []}
+{"id": "pii-0482", "category": "pos_in_mobile", "text": "Please block the SIM registered as 91 9446160068.", "entities": [{"type": "IN_MOBILE", "start": 35, "end": 48, "value": "91 9446160068"}]}
+{"id": "pii-0483", "category": "neg_aadhaar_like_non_verhoeff", "text": "Application number 267981008075 for the passport appointment in Jorhat.", "entities": []}
+{"id": "pii-0484", "category": "pos_email", "text": "From: Rudra Ahuja <neha_sabharwal+orders@example.com>\nSubject: Delivery delay", "entities": [{"type": "EMAIL", "start": 19, "end": 52, "value": "neha_sabharwal+orders@example.com"}]}
+{"id": "pii-0485", "category": "pos_aadhaar", "text": "I entered my Aadhaar (7759 8048 9880) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 36, "value": "7759 8048 9880"}]}
+{"id": "pii-0486", "category": "pos_pan", "text": "Add ZXPLA4365X to the vendor master for Puri, Naik and Kashyap.", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "ZXPLA4365X"}]}
+{"id": "pii-0487", "category": "pos_in_mobile", "text": "Update the contact number for Darsh Lad to 91-9900134495.", "entities": [{"type": "IN_MOBILE", "start": 43, "end": 56, "value": "91-9900134495"}]}
+{"id": "pii-0488", "category": "pos_email", "text": "Write a polite follow-up to kbava@gmail.com, they have not replied in a week.", "entities": [{"type": "EMAIL", "start": 28, "end": 43, "value": "kbava@gmail.com"}]}
+{"id": "pii-0489", "category": "pos_pan", "text": "Verify the PAN CIPPC3197B against the name Charan Mall.", "entities": [{"type": "PAN", "start": 15, "end": 25, "value": "CIPPC3197B"}]}
+{"id": "pii-0490", "category": "neg_timestamp", "text": "Session started at 25/02/2026 01:13 from Berhampore.", "entities": []}
+{"id": "pii-0491", "category": "pos_pan", "text": "I am attaching my PAN (UBTFG2983V) and a cancelled cheque.", "entities": [{"type": "PAN", "start": 23, "end": 33, "value": "UBTFG2983V"}]}
+{"id": "pii-0492", "category": "neg_misc_numeric", "text": "Our pincode for dispatch is 751717.", "entities": []}
+{"id": "pii-0493", "category": "pos_pan", "text": "I am attaching my PAN (LLDPM5842M) and a cancelled cheque.", "entities": [{"type": "PAN", "start": 23, "end": 33, "value": "LLDPM5842M"}]}
+{"id": "pii-0494", "category": "pos_multi", "text": "I'm Rohan Chakrabarti. My mobile is +91 79354 94797 and my backup email is bsaran@iitb.ac.in.", "entities": [{"type": "IN_MOBILE", "start": 36, "end": 51, "value": "+91 79354 94797"}, {"type": "EMAIL", "start": 75, "end": 92, "value": "bsaran@iitb.ac.in"}]}
+{"id": "pii-0495", "category": "pos_in_mobile", "text": "Alternate contact for the Saini PLC account: 09521171179.", "entities": [{"type": "IN_MOBILE", "start": 45, "end": 56, "value": "09521171179"}]}
+{"id": "pii-0496", "category": "pos_email", "text": "I signed up with IKRISH@EXAMPLE.COM but never got the confirmation.", "entities": [{"type": "EMAIL", "start": 17, "end": 35, "value": "IKRISH@EXAMPLE.COM"}]}
+{"id": "pii-0497", "category": "pos_email", "text": "Write a polite follow-up to vbandi@outlook.com, they have not replied in a week.", "entities": [{"type": "EMAIL", "start": 28, "end": 46, "value": "vbandi@outlook.com"}]}
+{"id": "pii-0498", "category": "pos_credit_card", "text": "My card number is 3059 310671 5582, expiry 08/28.", "entities": [{"type": "CREDIT_CARD", "start": 18, "end": 34, "value": "3059 310671 5582"}]}
+{"id": "pii-0499", "category": "pos_pan", "text": "My PAN is UZDPW4478T, please update it in the KYC form.", "entities": [{"type": "PAN", "start": 10, "end": 20, "value": "UZDPW4478T"}]}
+{"id": "pii-0500", "category": "pos_multi", "text": "I'm Isaac Mody. My mobile is +91-6934698527 and my backup email is krishna.arya@mail.corp.example.org.", "entities": [{"type": "IN_MOBILE", "start": 29, "end": 43, "value": "+91-6934698527"}, {"type": "EMAIL", "start": 67, "end": 101, "value": "krishna.arya@mail.corp.example.org"}]}
+{"id": "pii-0501", "category": "neg_phone_like_non_indian", "text": "Landline of the Tenali branch: +49 30 37492511", "entities": []}
+{"id": "pii-0502", "category": "neg_plain", "text": "Suggest a weekend itinerary for Imphal with a focus on food.", "entities": []}
+{"id": "pii-0503", "category": "neg_phone_like_non_indian", "text": "Call the regional team on 080-40167019.", "entities": []}
+{"id": "pii-0504", "category": "pos_pan", "text": "The form was rejected because the PAN card number JFFPQ7645E did not match.", "entities": [{"type": "PAN", "start": 50, "end": 60, "value": "JFFPQ7645E"}]}
+{"id": "pii-0505", "category": "pos_in_mobile", "text": "Alternate contact for the Chand, Varty and Kota account: 7014594324.", "entities": [{"type": "IN_MOBILE", "start": 57, "end": 67, "value": "7014594324"}]}
+{"id": "pii-0506", "category": "neg_plain", "text": "What is the best way to prepare for a system design interview?", "entities": []}
+{"id": "pii-0507", "category": "pos_credit_card", "text": "Charge 4431223398582675 for the annual plan.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 23, "value": "4431223398582675"}]}
+{"id": "pii-0508", "category": "pos_multi", "text": "Onboarding form: Aadhaar 382159324846, PAN LQQPQ2881E, email yashvi.pandya@gmail.com.", "entities": [{"type": "AADHAAR", "start": 25, "end": 37, "value": "382159324846"}, {"type": "PAN", "start": 43, "end": 53, "value": "LQQPQ2881E"}, {"type": "EMAIL", "start": 61, "end": 84, "value": "yashvi.pandya@gmail.com"}]}
+{"id": "pii-0509", "category": "neg_pan_like_wrong_structure", "text": "Is PWVUS548VD a valid PAN?", "entities": []}
+{"id": "pii-0510", "category": "neg_phone_like_non_indian", "text": "Landline of the Mumbai branch: +49 30 71703736", "entities": []}
+{"id": "pii-0511", "category": "neg_timestamp", "text": "Compare the events at 19/10/2023 07:59 and the retry that followed.", "entities": []}
+{"id": "pii-0512", "category": "neg_card_like_non_luhn", "text": "Payment gateway txn id 2826498801484465, status success.", "entities": []}
+{"id": "pii-0513", "category": "neg_plain", "text": "Malhotra-Shenoy wants a one-page note on our data retention policy.", "entities": []}
+{"id": "pii-0514", "category": "pos_email", "text": "From: Vinaya Gandhi <tank-siya@mail.corp.example.org>\nSubject: Delivery delay", "entities": [{"type": "EMAIL", "start": 21, "end": 52, "value": "tank-siya@mail.corp.example.org"}]}
+{"id": "pii-0515", "category": "pos_pan", "text": "The form was rejected because the PAN card number VNFPW5861H did not match.", "entities": [{"type": "PAN", "start": 50, "end": 60, "value": "VNFPW5861H"}]}
+{"id": "pii-0516", "category": "neg_card_like_non_luhn", "text": "Payment gateway txn id 3918118121057, status success.", "entities": []}
+{"id": "pii-0517", "category": "neg_order_id", "text": "Tracking number SWG73293268369 shows no movement for three days.", "entities": []}
+{"id": "pii-0518", "category": "pos_email", "text": "Can you draft a reply to udarsh_ratta+orders@example.com thanking them for the demo?", "entities": [{"type": "EMAIL", "start": 25, "end": 56, "value": "udarsh_ratta+orders@example.com"}]}
+{"id": "pii-0519", "category": "pos_in_mobile", "text": "Customer mobile 91-8205382648 is linked to two accounts. How do I merge them?", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 29, "value": "91-8205382648"}]}
+{"id": "pii-0520", "category": "neg_invoice", "text": "PO number BILL4522707981", "entities": []}
+{"id": "pii-0521", "category": "neg_timestamp", "text": "Compare the events at 2024-12-27T13:58:57Z and the retry that followed.", "entities": []}
+{"id": "pii-0522", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 3871 3992 8424 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 38, "value": "3871 3992 8424"}]}
+{"id": "pii-0523", "category": "pos_credit_card", "text": "My card number is 3005 625408 4862, expiry 08/28.", "entities": [{"type": "CREDIT_CARD", "start": 18, "end": 34, "value": "3005 625408 4862"}]}
+{"id": "pii-0524", "category": "neg_invoice", "text": "Please find attached BILL8679231080 for the services rendered.", "entities": []}
+{"id": "pii-0525", "category": "neg_phone_like_non_indian", "text": "Fax 1800-939-5116", "entities": []}
+{"id": "pii-0526", "category": "neg_phone_like_non_indian", "text": "Fax +44 20 7912 8599", "entities": []}
+{"id": "pii-0527", "category": "pos_credit_card", "text": "Refund to 6521765685399839 please, the order was cancelled.", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 26, "value": "6521765685399839"}]}
+{"id": "pii-0528", "category": "pos_in_mobile", "text": "The delivery partner could not reach 08265836594. Please retry.", "entities": [{"type": "IN_MOBILE", "start": 37, "end": 48, "value": "08265836594"}]}
+{"id": "pii-0529", "category": "pos_multi", "text": "Billing contact bhardwaj-bakhshi@gmail.com / 90709-40374, card 3783 541799 34828.", "entities": [{"type": "EMAIL", "start": 16, "end": 42, "value": "bhardwaj-bakhshi@gmail.com"}, {"type": "IN_MOBILE", "start": 45, "end": 56, "value": "90709-40374"}, {"type": "CREDIT_CARD", "start": 63, "end": 80, "value": "3783 541799 34828"}]}
+{"id": "pii-0530", "category": "neg_timestamp", "text": "The error occurred at 1624191943 according to the logs.", "entities": []}
+{"id": "pii-0531", "category": "neg_timestamp", "text": "Request received 1621509173892, response sent shortly after.", "entities": []}
+{"id": "pii-0532", "category": "neg_email_like", "text": "The string user@localhost loads slowly on mobile, any idea why?", "entities": []}
+{"id": "pii-0533", "category": "neg_phone_like_non_indian", "text": "The helpline (740) 667-3618 is open 24x7.", "entities": []}
+{"id": "pii-0534", "category": "pos_aadhaar", "text": "Verification needed for UIDAI number 2956 9108 0925.", "entities": [{"type": "AADHAAR", "start": 37, "end": 51, "value": "2956 9108 0925"}]}
+{"id": "pii-0535", "category": "pos_in_mobile", "text": "My number is 91-6897391050, please WhatsApp me the tracking link.", "entities": [{"type": "IN_MOBILE", "start": 13, "end": 26, "value": "91-6897391050"}]}
+{"id": "pii-0536", "category": "neg_aadhaar_like_non_verhoeff", "text": "Application number 469729617904 for the passport appointment in Mehsana.", "entities": []}
+{"id": "pii-0537", "category": "neg_timestamp", "text": "Compare the events at 2023-04-26T04:11:15Z and the retry that followed.", "entities": []}
+{"id": "pii-0538", "category": "neg_card_like_non_luhn", "text": "Invoice batch id 693421627684872 failed to import.", "entities": []}
+{"id": "pii-0539", "category": "neg_misc_numeric", "text": "Total payable amount is Rs 6,81,32,84,28,615.00.", "entities": []}
+{"id": "pii-0540", "category": "pos_aadhaar", "text": "Verification needed for UIDAI number 4097 8955 4945.", "entities": [{"type": "AADHAAR", "start": 37, "end": 51, "value": "4097 8955 4945"}]}
+{"id": "pii-0541", "category": "neg_plain", "text": "Solanki-Ganesh wants a one-page note on our data retention policy.", "entities": []}
+{"id": "pii-0542", "category": "pos_email", "text": "Can you draft a reply to rmadan@gmail.com thanking them for the demo?", "entities": [{"type": "EMAIL", "start": 25, "end": 41, "value": "rmadan@gmail.com"}]}
+{"id": "pii-0543", "category": "pos_pan", "text": "My PAN is GPSPU5723P, please update it in the KYC form.", "entities": [{"type": "PAN", "start": 10, "end": 20, "value": "GPSPU5723P"}]}
+{"id": "pii-0544", "category": "neg_timestamp", "text": "Compare the events at 1701266353 and the retry that followed.", "entities": []}
+{"id": "pii-0545", "category": "pos_multi", "text": "I'm Ikshita Doshi. My mobile is +91 83023 86066 and my backup email is pranav_keer+orders@yahoo.co.in.", "entities": [{"type": "IN_MOBILE", "start": 32, "end": 47, "value": "+91 83023 86066"}, {"type": "EMAIL", "start": 71, "end": 101, "value": "pranav_keer+orders@yahoo.co.in"}]}
+{"id": "pii-0546", "category": "pos_email", "text": "My login email is yagnesh62@example.net, but I can't reset my password.", "entities": [{"type": "EMAIL", "start": 18, "end": 39, "value": "yagnesh62@example.net"}]}
+{"id": "pii-0547", "category": "pos_in_mobile", "text": "mobile=95356 62724", "entities": [{"type": "IN_MOBILE", "start": 7, "end": 18, "value": "95356 62724"}]}
+{"id": "pii-0548", "category": "neg_aadhaar_like_non_verhoeff", "text": "UPI reference number 6638 8260 0060 for the transfer to Dube-Krishnan.", "entities": []}
+{"id": "pii-0549", "category": "pos_email", "text": "Please send the invoice to henry.aurora@gmail.com and copy accounts.", "entities": [{"type": "EMAIL", "start": 27, "end": 49, "value": "henry.aurora@gmail.com"}]}
+{"id": "pii-0550", "category": "neg_timestamp", "text": "The error occurred at 01/01/2025 03:38 according to the logs.", "entities": []}
+{"id": "pii-0551", "category": "neg_phone_like_non_indian", "text": "Landline of the Chapra branch: 080-59766891", "entities": []}
+{"id": "pii-0552", "category": "pos_in_mobile", "text": "Hello, this is Yachana Nagi from Naihati. Ring +91 8314308990 if the address is unclear.", "entities": [{"type": "IN_MOBILE", "start": 47, "end": 61, "value": "+91 8314308990"}]}
+{"id": "pii-0553", "category": "pos_email", "text": "Please send the invoice to ssunder@yahoo.co.in and copy accounts.", "entities": [{"type": "EMAIL", "start": 27, "end": 46, "value": "ssunder@yahoo.co.in"}]}
+{"id": "pii-0554", "category": "pos_aadhaar", "text": "Devika Tripathi's UID is 3934 2454 0882, born in Jaunpur.", "entities": [{"type": "AADHAAR", "start": 25, "end": 39, "value": "3934 2454 0882"}]}
+{"id": "pii-0555", "category": "neg_email_like", "text": "The string icon-cart@2x.png loads slowly on mobile, any idea why?", "entities": []}
+{"id": "pii-0556", "category": "pos_email", "text": "I signed up with hiteshborde@example.org but never got the confirmation.", "entities": [{"type": "EMAIL", "start": 17, "end": 40, "value": "hiteshborde@example.org"}]}
+{"id": "pii-0557", "category": "pos_credit_card", "text": "Refund to 8176 5443 6294 5568 please, the order was cancelled.", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 29, "value": "8176 5443 6294 5568"}]}
+{"id": "pii-0558", "category": "pos_multi", "text": "Please charge 5564 1227 5253 3819 and email the receipt to hayer-xavier@yahoo.co.in.", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 33, "value": "5564 1227 5253 3819"}, {"type": "EMAIL", "start": 59, "end": 83, "value": "hayer-xavier@yahoo.co.in"}]}
+{"id": "pii-0559", "category": "pos_aadhaar", "text": "I entered my Aadhaar (4648 5000 5016) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 36, "value": "4648 5000 5016"}]}
+{"id": "pii-0560", "category": "neg_misc_numeric", "text": "Total payable amount is Rs 3,05,53,68,86,750.00.", "entities": []}
+{"id": "pii-0561", "category": "pos_in_mobile", "text": "Please block the SIM registered as +91 8925236001.", "entities": [{"type": "IN_MOBILE", "start": 35, "end": 49, "value": "+91 8925236001"}]}
+{"id": "pii-0562", "category": "neg_card_like_non_luhn", "text": "Reference 3863909401554211 was created by the billing system.", "entities": []}
+{"id": "pii-0563", "category": "pos_pan", "text": "pan=CWHPG7971U&state=KA", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "CWHPG7971U"}]}
+{"id": "pii-0564", "category": "pos_aadhaar", "text": "My Aadhaar number is 334259990966, link it to my account.", "entities": [{"type": "AADHAAR", "start": 21, "end": 33, "value": "334259990966"}]}
+{"id": "pii-0565", "category": "neg_order_id", "text": "ref=FKT11604735155&status=pending", "entities": []}
+{"id": "pii-0566", "category": "pos_pan", "text": "Verify the PAN YFGPU0361Z against the name Yashawini Ganesan.", "entities": [{"type": "PAN", "start": 15, "end": 25, "value": "YFGPU0361Z"}]}
+{"id": "pii-0567", "category": "pos_in_mobile", "text": "Please block the SIM registered as 09610880592.", "entities": [{"type": "IN_MOBILE", "start": 35, "end": 46, "value": "09610880592"}]}
+{"id": "pii-0568", "category": "pos_multi", "text": "Ticket from akari@iitb.ac.in: card 6521 7886 2389 5668 was charged twice; mobile 09666257982.", "entities": [{"type": "EMAIL", "start": 12, "end": 28, "value": "akari@iitb.ac.in"}, {"type": "CREDIT_CARD", "start": 35, "end": 54, "value": "6521 7886 2389 5668"}, {"type": "IN_MOBILE", "start": 81, "end": 92, "value": "09666257982"}]}
+{"id": "pii-0569", "category": "neg_card_like_non_luhn", "text": "Reference 2531882340580 was created by the billing system.", "entities": []}
+{"id": "pii-0570", "category": "neg_aadhaar_like_non_verhoeff", "text": "Reference no. 984197800319", "entities": []}
+{"id": "pii-0571", "category": "pos_credit_card", "text": "Update billing for Nazareth-Sandhu to the card 30542916866879.", "entities": [{"type": "CREDIT_CARD", "start": 47, "end": 61, "value": "30542916866879"}]}
+{"id": "pii-0572", "category": "pos_in_mobile", "text": "Alternate contact for the Sarkar Inc account: 08040023823.", "entities": [{"type": "IN_MOBILE", "start": 46, "end": 57, "value": "08040023823"}]}
+{"id": "pii-0573", "category": "pos_credit_card", "text": "Charge 6011203139761989 for the annual plan.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 23, "value": "6011203139761989"}]}
+{"id": "pii-0574", "category": "pos_in_mobile", "text": "Draft an SMS to 86276 88038 confirming the appointment tomorrow.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 27, "value": "86276 88038"}]}
+{"id": "pii-0575", "category": "neg_pan_like_wrong_structure", "text": "Part number BKFWA0809V, quantity 12.", "entities": []}
+{"id": "pii-0576", "category": "pos_aadhaar", "text": "Link 486811229026 with the bank account for DBT.", "entities": [{"type": "AADHAAR", "start": 5, "end": 17, "value": "486811229026"}]}
+{"id": "pii-0577", "category": "pos_credit_card", "text": "My card number is 8188-3369-2100-2916, expiry 08/28.", "entities": [{"type": "CREDIT_CARD", "start": 18, "end": 37, "value": "8188-3369-2100-2916"}]}
+{"id": "pii-0578", "category": "pos_in_mobile", "text": "Hello, this is Girindra Balay from Faridabad. Ring 9582417201 if the address is unclear.", "entities": [{"type": "IN_MOBILE", "start": 51, "end": 61, "value": "9582417201"}]}
+{"id": "pii-0579", "category": "pos_credit_card", "text": "Card on file: 6011 2601 2330 5496", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 33, "value": "6011 2601 2330 5496"}]}
+{"id": "pii-0580", "category": "neg_plain", "text": "Translate 'Where is the nearest railway station?' into Hindi and Tamil.", "entities": []}
+{"id": "pii-0581", "category": "neg_order_id", "text": "Where is my order #863371-3814? It was supposed to arrive yesterday.", "entities": []}
+{"id": "pii-0582", "category": "neg_invoice", "text": "Credit note against INV/25-26/85724 was issued to Mander-Kapur.", "entities": []}
+{"id": "pii-0583", "category": "neg_card_like_non_luhn", "text": "Reference 5708521171127500921 was created by the billing system.", "entities": []}
+{"id": "pii-0584", "category": "pos_credit_card", "text": "Update billing for Nayar-Sarin to the card 6065 4121 3627 1877.", "entities": [{"type": "CREDIT_CARD", "start": 43, "end": 62, "value": "6065 4121 3627 1877"}]}
+{"id": "pii-0585", "category": "pos_in_mobile", "text": "Phone: 62367-27979", "entities": [{"type": "IN_MOBILE", "start": 7, "end": 18, "value": "62367-27979"}]}
+{"id": "pii-0586", "category": "pos_pan", "text": "Customer Logan Borra gave PAN ZDQPZ5787N during onboarding at Thanjavur.", "entities": [{"type": "PAN", "start": 30, "end": 40, "value": "ZDQPZ5787N"}]}
+{"id": "pii-0587", "category": "pos_pan", "text": "Verify the PAN WBZPQ1470I against the name Shravya Thaman.", "entities": [{"type": "PAN", "start": 15, "end": 25, "value": "WBZPQ1470I"}]}
+{"id": "pii-0588", "category": "pos_email", "text": "Write a polite follow-up to charles52@example.net, they have not replied in a week.", "entities": [{"type": "EMAIL", "start": 28, "end": 49, "value": "charles52@example.net"}]}
+{"id": "pii-0589", "category": "pos_multi", "text": "Onboarding form: Aadhaar 6479 6217 5292, PAN ZQNPH5924E, email deol-yug@mail.corp.example.org.", "entities": [{"type": "AADHAAR", "start": 25, "end": 39, "value": "6479 6217 5292"}, {"type": "PAN", "start": 45, "end": 55, "value": "ZQNPH5924E"}, {"type": "EMAIL", "start": 63, "end": 93, "value": "deol-yug@mail.corp.example.org"}]}
+{"id": "pii-0590", "category": "pos_in_mobile", "text": "Customer mobile 84004 20335 is linked to two accounts. How do I merge them?", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 27, "value": "84004 20335"}]}
+{"id": "pii-0591", "category": "pos_aadhaar", "text": "Aadhaar: 5883-3336-1625", "entities": [{"type": "AADHAAR", "start": 9, "end": 23, "value": "5883-3336-1625"}]}
+{"id": "pii-0592", "category": "pos_in_mobile", "text": "OTP was sent to 07946680114 but has not arrived.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 27, "value": "07946680114"}]}
+{"id": "pii-0593", "category": "pos_in_mobile", "text": "Hello, this is Theodore Raghavan from Ozhukarai. Ring 93974 12271 if the address is unclear.", "entities": [{"type": "IN_MOBILE", "start": 54, "end": 65, "value": "93974 12271"}]}
+{"id": "pii-0594", "category": "pos_aadhaar", "text": "I entered my Aadhaar (6439-7657-5554) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 36, "value": "6439-7657-5554"}]}
+{"id": "pii-0595", "category": "pos_credit_card", "text": "The payment with card 5102061929769253 was declined. Why?", "entities": [{"type": "CREDIT_CARD", "start": 22, "end": 38, "value": "5102061929769253"}]}
+{"id": "pii-0596", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 9539-6792-5125 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 38, "value": "9539-6792-5125"}]}
+{"id": "pii-0597", "category": "pos_multi", "text": "Refund 3528134250089590 (owner Anmol Dutt); proof of identity: PAN ZINTZ8808O.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 23, "value": "3528134250089590"}, {"type": "PAN", "start": 67, "end": 77, "value": "ZINTZ8808O"}]}
+{"id": "pii-0598", "category": "pos_multi", "text": "Ticket from mason_jayaraman+orders@outlook.com: card 4262 3605 9432 3860 was charged twice; mobile +91 71279 59909.", "entities": [{"type": "EMAIL", "start": 12, "end": 46, "value": "mason_jayaraman+orders@outlook.com"}, {"type": "CREDIT_CARD", "start": 53, "end": 72, "value": "4262 3605 9432 3860"}, {"type": "IN_MOBILE", "start": 99, "end": 114, "value": "+91 71279 59909"}]}
+{"id": "pii-0599", "category": "pos_credit_card", "text": "My card number is 5457 3799 6974 2993, expiry 08/28.", "entities": [{"type": "CREDIT_CARD", "start": 18, "end": 37, "value": "5457 3799 6974 2993"}]}
+{"id": "pii-0600", "category": "neg_order_id", "text": "Order ID: ORD-2025-28254751", "entities": []}
+{"id": "pii-0601", "category": "neg_plain", "text": "How do I explain a gap year on my resume?", "entities": []}
+{"id": "pii-0602", "category": "pos_in_mobile", "text": "OTP was sent to +91 6573675061 but has not arrived.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 30, "value": "+91 6573675061"}]}
+{"id": "pii-0603", "category": "pos_aadhaar", "text": "Verification needed for UIDAI number 939371041783.", "entities": [{"type": "AADHAAR", "start": 37, "end": 49, "value": "939371041783"}]}
+{"id": "pii-0604", "category": "pos_pan", "text": "Verify the PAN LVNGF8550H against the name Oliver Rana.", "entities": [{"type": "PAN", "start": 15, "end": 25, "value": "LVNGF8550H"}]}
+{"id": "pii-0605", "category": "pos_credit_card", "text": "Card on file: 3004 130398 3066", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 30, "value": "3004 130398 3066"}]}
+{"id": "pii-0606", "category": "pos_email", "text": "Can you draft a reply to vivaan_thaman+orders@acme.co.in thanking them for the demo?", "entities": [{"type": "EMAIL", "start": 25, "end": 56, "value": "vivaan_thaman+orders@acme.co.in"}]}
+{"id": "pii-0607", "category": "neg_phone_like_non_indian", "text": "Our overseas office is at 011-65854084.", "entities": []}
+{"id": "pii-0608", "category": "pos_in_mobile", "text": "The delivery partner could not reach 91-6800231357. Please retry.", "entities": [{"type": "IN_MOBILE", "start": 37, "end": 50, "value": "91-6800231357"}]}
+{"id": "pii-0609", "category": "pos_aadhaar", "text": "Verification needed for UIDAI number 2170 2860 6273.", "entities": [{"type": "AADHAAR", "start": 37, "end": 51, "value": "2170 2860 6273"}]}
+{"id": "pii-0610", "category": "pos_aadhaar", "text": "Yamini Deshpande's UID is 3180 0126 1872, born in Hyderabad.", "entities": [{"type": "AADHAAR", "start": 26, "end": 40, "value": "3180 0126 1872"}]}
+{"id": "pii-0611", "category": "neg_invoice", "text": "Please find attached INV/25-27/32179 for the services rendered.", "entities": []}
+{"id": "pii-0612", "category": "pos_email", "text": "Can you draft a reply to indira_shukla+orders@mail.corp.example.org thanking them for the demo?", "entities": [{"type": "EMAIL", "start": 25, "end": 67, "value": "indira_shukla+orders@mail.corp.example.org"}]}
+{"id": "pii-0613", "category": "pos_aadhaar", "text": "Aadhaar: 3918 7102 3478", "entities": [{"type": "AADHAAR", "start": 9, "end": 23, "value": "3918 7102 3478"}]}
+{"id": "pii-0614", "category": "pos_pan", "text": "The form was rejected because the PAN card number FMFPD1375U did not match.", "entities": [{"type": "PAN", "start": 50, "end": 60, "value": "FMFPD1375U"}]}
+{"id": "pii-0615", "category": "pos_in_mobile", "text": "Alternate contact for the Mital, Trivedi and Bhatia account: +916695034283.", "entities": [{"type": "IN_MOBILE", "start": 61, "end": 74, "value": "+916695034283"}]}
+{"id": "pii-0616", "category": "neg_invoice", "text": "Please find attached BILL1114528977 for the services rendered.", "entities": []}
+{"id": "pii-0617", "category": "neg_timestamp", "text": "{\"ts\": \"1630293229\", \"level\": \"warn\"}", "entities": []}
+{"id": "pii-0618", "category": "pos_multi", "text": "Billing contact varenya11@example.net / +91-6957242200, card 6092 3846 3966 0160.", "entities": [{"type": "EMAIL", "start": 16, "end": 37, "value": "varenya11@example.net"}, {"type": "IN_MOBILE", "start": 40, "end": 54, "value": "+91-6957242200"}, {"type": "CREDIT_CARD", "start": 61, "end": 80, "value": "6092 3846 3966 0160"}]}
+{"id": "pii-0619", "category": "neg_email_like", "text": "The reference logo@3x.png is missing from the build output.", "entities": []}
+{"id": "pii-0620", "category": "neg_invoice", "text": "Please find attached INV-2026-8790917 for the services rendered.", "entities": []}
+{"id": "pii-0621", "category": "pos_in_mobile", "text": "Customer mobile 9021908677 is linked to two accounts. How do I merge them?", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 26, "value": "9021908677"}]}
+{"id": "pii-0622", "category": "pos_multi", "text": "Customer Mitali Bassi from Deoghar wrote from lekha5@acme.co.in; call back on +91 89035 39325.", "entities": [{"type": "EMAIL", "start": 46, "end": 63, "value": "lekha5@acme.co.in"}, {"type": "IN_MOBILE", "start": 78, "end": 93, "value": "+91 89035 39325"}]}
+{"id": "pii-0623", "category": "pos_credit_card", "text": "cc=3660-927225-4380&cvv_required=true", "entities": [{"type": "CREDIT_CARD", "start": 3, "end": 19, "value": "3660-927225-4380"}]}
+{"id": "pii-0624", "category": "pos_credit_card", "text": "Can I use 3767 937845 69994 for an international transaction?", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 27, "value": "3767 937845 69994"}]}
+{"id": "pii-0625", "category": "neg_phone_like_non_indian", "text": "Fax (344) 342-4507", "entities": []}
+{"id": "pii-0626", "category": "pos_credit_card", "text": "Update billing for Singhal Group to the card 3589 9956 8469 5590.", "entities": [{"type": "CREDIT_CARD", "start": 45, "end": 64, "value": "3589 9956 8469 5590"}]}
+{"id": "pii-0627", "category": "pos_multi", "text": "I'm Ekani Dyal. My mobile is 6058759833 and my backup email is laksh73@example.com.", "entities": [{"type": "IN_MOBILE", "start": 29, "end": 39, "value": "6058759833"}, {"type": "EMAIL", "start": 63, "end": 82, "value": "laksh73@example.com"}]}
+{"id": "pii-0628", "category": "neg_card_like_non_luhn", "text": "Invoice batch id 465362774568404 failed to import.", "entities": []}
+{"id": "pii-0629", "category": "pos_in_mobile", "text": "My number is 95765 75402, please WhatsApp me the tracking link.", "entities": [{"type": "IN_MOBILE", "start": 13, "end": 24, "value": "95765 75402"}]}
+{"id": "pii-0630", "category": "neg_pan_like_wrong_structure", "text": "Registration JNFN4145G was found in the register.", "entities": []}
+{"id": "pii-0631", "category": "pos_in_mobile", "text": "Call me on +91-8285940496 after 5 pm.", "entities": [{"type": "IN_MOBILE", "start": 11, "end": 25, "value": "+91-8285940496"}]}
+{"id": "pii-0632", "category": "pos_credit_card", "text": "Can I use 4366486002174 for an international transaction?", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 23, "value": "4366486002174"}]}
+{"id": "pii-0633", "category": "pos_aadhaar", "text": "aadhaar_no=3723 2749 4144", "entities": [{"type": "AADHAAR", "start": 11, "end": 25, "value": "3723 2749 4144"}]}
+{"id": "pii-0634", "category": "pos_in_mobile", "text": "OTP was sent to 7394165202 but has not arrived.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 26, "value": "7394165202"}]}
+{"id": "pii-0635", "category": "pos_in_mobile", "text": "Alternate contact for the Shetty-Issac account: 91-6007154665.", "entities": [{"type": "IN_MOBILE", "start": 48, "end": 61, "value": "91-6007154665"}]}
+{"id": "pii-0636", "category": "pos_credit_card", "text": "The payment with card 3620 702890 4661 was declined. Why?", "entities": [{"type": "CREDIT_CARD", "start": 22, "end": 38, "value": "3620 702890 4661"}]}
+{"id": "pii-0637", "category": "pos_multi", "text": "KYC for Bhavika Ramesh: PAN MBCTF1379S, Aadhaar 6445 8932 1670, mobile 8462549915.", "entities": [{"type": "PAN", "start": 28, "end": 38, "value": "MBCTF1379S"}, {"type": "AADHAAR", "start": 48, "end": 62, "value": "6445 8932 1670"}, {"type": "IN_MOBILE", "start": 71, "end": 81, "value": "8462549915"}]}
+{"id": "pii-0638", "category": "neg_phone_like_non_indian", "text": "Fax (618) 341-0277", "entities": []}
+{"id": "pii-0639", "category": "pos_in_mobile", "text": "Phone: 6839516264", "entities": [{"type": "IN_MOBILE", "start": 7, "end": 17, "value": "6839516264"}]}
+{"id": "pii-0640", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 759368399203 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 36, "value": "759368399203"}]}
+{"id": "pii-0641", "category": "pos_multi", "text": "I'm Lohit Kala. My mobile is +91 81479 05918 and my backup email is faraj_bhargava+orders@example.com.", "entities": [{"type": "IN_MOBILE", "start": 29, "end": 44, "value": "+91 81479 05918"}, {"type": "EMAIL", "start": 68, "end": 101, "value": "faraj_bhargava+orders@example.com"}]}
+{"id": "pii-0642", "category": "pos_multi", "text": "KYC for Dhriti Borra: PAN SJAPC2835V, Aadhaar 758418429512, mobile 08739287021.", "entities": [{"type": "PAN", "start": 26, "end": 36, "value": "SJAPC2835V"}, {"type": "AADHAAR", "start": 46, "end": 58, "value": "758418429512"}, {"type": "IN_MOBILE", "start": 67, "end": 78, "value": "08739287021"}]}
+{"id": "pii-0643", "category": "pos_pan", "text": "I am attaching my PAN (NCAPC1315E) and a cancelled cheque.", "entities": [{"type": "PAN", "start": 23, "end": 33, "value": "NCAPC1315E"}]}
+{"id": "pii-0644", "category": "pos_multi", "text": "KYC for Aditya Sachar: PAN UNIPX6029Y, Aadhaar 421222992703, mobile 91-7282867116.", "entities": [{"type": "PAN", "start": 27, "end": 37, "value": "UNIPX6029Y"}, {"type": "AADHAAR", "start": 47, "end": 59, "value": "421222992703"}, {"type": "IN_MOBILE", "start": 68, "end": 81, "value": "91-7282867116"}]}
+{"id": "pii-0645", "category": "pos_multi", "text": "I'm Jyoti Shan. My mobile is +91 6768818332 and my backup email is omisha70@example.com.", "entities": [{"type": "IN_MOBILE", "start": 29, "end": 43, "value": "+91 6768818332"}, {"type": "EMAIL", "start": 67, "end": 87, "value": "omisha70@example.com"}]}
+{"id": "pii-0646", "category": "neg_card_like_non_luhn", "text": "Serial number: 4293464021089", "entities": []}
+{"id": "pii-0647", "category": "neg_order_id", "text": "ref=#267930-1414&status=pending", "entities": []}
+{"id": "pii-0648", "category": "neg_phone_like_non_indian", "text": "Call the regional team on 1800-786-1400.", "entities": []}
+{"id": "pii-0649", "category": "pos_in_mobile", "text": "Update the contact number for Laksh Mody to +916977241663.", "entities": [{"type": "IN_MOBILE", "start": 44, "end": 57, "value": "+916977241663"}]}
+{"id": "pii-0650", "category": "pos_email", "text": "email=dipta_vohra+orders@acme.co.in&source=webform", "entities": [{"type": "EMAIL", "start": 6, "end": 35, "value": "dipta_vohra+orders@acme.co.in"}]}
+{"id": "pii-0651", "category": "pos_email", "text": "Write a polite follow-up to viraj_gaba+orders@example.com, they have not replied in a week.", "entities": [{"type": "EMAIL", "start": 28, "end": 57, "value": "viraj_gaba+orders@example.com"}]}
+{"id": "pii-0652", "category": "pos_in_mobile", "text": "Update the contact number for Falak Sahota to 91-7589707027.", "entities": [{"type": "IN_MOBILE", "start": 46, "end": 59, "value": "91-7589707027"}]}
+{"id": "pii-0653", "category": "neg_pan_like_wrong_structure", "text": "Employee code: WSMLBT9812L", "entities": []}
+{"id": "pii-0654", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 3055 4481 3709 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 38, "value": "3055 4481 3709"}]}
+{"id": "pii-0655", "category": "pos_multi", "text": "Billing contact mandal-kamya@rediffmail.com / +91 90546 23455, card 3766-756326-06666.", "entities": [{"type": "EMAIL", "start": 16, "end": 43, "value": "mandal-kamya@rediffmail.com"}, {"type": "IN_MOBILE", "start": 46, "end": 61, "value": "+91 90546 23455"}, {"type": "CREDIT_CARD", "start": 68, "end": 85, "value": "3766-756326-06666"}]}
+{"id": "pii-0656", "category": "neg_timestamp", "text": "Session started at 1784197984 from Lucknow.", "entities": []}
+{"id": "pii-0657", "category": "pos_in_mobile", "text": "Please block the SIM registered as 72734-51518.", "entities": [{"type": "IN_MOBILE", "start": 35, "end": 46, "value": "72734-51518"}]}
+{"id": "pii-0658", "category": "pos_email", "text": "I signed up with vasa-chandresh@example.com but never got the confirmation.", "entities": [{"type": "EMAIL", "start": 17, "end": 43, "value": "vasa-chandresh@example.com"}]}
+{"id": "pii-0659", "category": "pos_in_mobile", "text": "Phone: 91-7239260454", "entities": [{"type": "IN_MOBILE", "start": 7, "end": 20, "value": "91-7239260454"}]}
+{"id": "pii-0660", "category": "pos_pan", "text": "The form was rejected because the PAN card number PVMPM2997W did not match.", "entities": [{"type": "PAN", "start": 50, "end": 60, "value": "PVMPM2997W"}]}
+{"id": "pii-0661", "category": "pos_pan", "text": "pan=KOJPZ2635Q&state=KA", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "KOJPZ2635Q"}]}
+{"id": "pii-0662", "category": "neg_plain", "text": "Sampath-Dugar wants a one-page note on our data retention policy.", "entities": []}
+{"id": "pii-0663", "category": "neg_plain", "text": "Prabhakar-Ben wants a one-page note on our data retention policy.", "entities": []}
+{"id": "pii-0664", "category": "pos_aadhaar", "text": "My Aadhaar number is 4302 4687 0199, link it to my account.", "entities": [{"type": "AADHAAR", "start": 21, "end": 35, "value": "4302 4687 0199"}]}
+{"id": "pii-0665", "category": "pos_aadhaar", "text": "Verification needed for UIDAI number 5267 7403 2547.", "entities": [{"type": "AADHAAR", "start": 37, "end": 51, "value": "5267 7403 2547"}]}
+{"id": "pii-0666", "category": "pos_multi", "text": "Refund 6596231406883833 (owner Ekalinga Parmer); proof of identity: PAN VLAPM7139P.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 23, "value": "6596231406883833"}, {"type": "PAN", "start": 72, "end": 82, "value": "VLAPM7139P"}]}
+{"id": "pii-0667", "category": "neg_order_id", "text": "ref=ORD-2025-65385374&status=pending", "entities": []}
+{"id": "pii-0668", "category": "pos_email", "text": "Summarise the complaint from amaira6@rediffmail.com in two lines.", "entities": [{"type": "EMAIL", "start": 29, "end": 51, "value": "amaira6@rediffmail.com"}]}
+{"id": "pii-0669", "category": "neg_aadhaar_like_non_verhoeff", "text": "Case number 483286543807 has been escalated.", "entities": []}
+{"id": "pii-0670", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 533115857480 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 36, "value": "533115857480"}]}
+{"id": "pii-0671", "category": "pos_pan", "text": "For TDS purposes, the deductee PAN is YKHPT5555K.", "entities": [{"type": "PAN", "start": 38, "end": 48, "value": "YKHPT5555K"}]}
+{"id": "pii-0672", "category": "neg_aadhaar_like_non_verhoeff", "text": "UPI reference number 380446750642 for the transfer to Saxena, Rattan and Gupta.", "entities": []}
+{"id": "pii-0673", "category": "pos_email", "text": "Hi, I'm Oni Nanda. You can reach me at khurana-eesha@yahoo.co.in about the refund.", "entities": [{"type": "EMAIL", "start": 39, "end": 64, "value": "khurana-eesha@yahoo.co.in"}]}
+{"id": "pii-0674", "category": "pos_pan", "text": "Customer Ekani Hayer gave PAN JEOCN1777Y during onboarding at Bhalswa Jahangir Pur.", "entities": [{"type": "PAN", "start": 30, "end": 40, "value": "JEOCN1777Y"}]}
+{"id": "pii-0675", "category": "neg_pan_like_wrong_structure", "text": "Employee code: FTTWM108MC", "entities": []}
+{"id": "pii-0676", "category": "neg_aadhaar_like_non_verhoeff", "text": "UPI reference number 976412751067 for the transfer to Dugal-Bora.", "entities": []}
+{"id": "pii-0677", "category": "neg_card_like_non_luhn", "text": "Shipment AWB 41793081769171 was handed to the courier.", "entities": []}
+{"id": "pii-0678", "category": "neg_card_like_non_luhn", "text": "Reference 2271-9693-5828-3813 was created by the billing system.", "entities": []}
+{"id": "pii-0679", "category": "pos_credit_card", "text": "My card number is 4973 7605 3567 9298, expiry 08/28.", "entities": [{"type": "CREDIT_CARD", "start": 18, "end": 37, "value": "4973 7605 3567 9298"}]}
+{"id": "pii-0680", "category": "pos_aadhaar", "text": "e-KYC failed for Aadhaar 5788 2199 1961. What should I do?", "entities": [{"type": "AADHAAR", "start": 25, "end": 39, "value": "5788 2199 1961"}]}
+{"id": "pii-0681", "category": "neg_card_like_non_luhn", "text": "Shipment AWB 6631933592072193172 was handed to the courier.", "entities": []}
+{"id": "pii-0682", "category": "neg_aadhaar_like_non_verhoeff", "text": "UPI reference number 5081-7286-6066 for the transfer to Din-Kaul.", "entities": []}
+{"id": "pii-0683", "category": "neg_misc_numeric", "text": "Card ending in 1551 was used for the last purchase.", "entities": []}
+{"id": "pii-0684", "category": "pos_email", "text": "Write a polite follow-up to agarwal-darika@outlook.com, they have not replied in a week.", "entities": [{"type": "EMAIL", "start": 28, "end": 54, "value": "agarwal-darika@outlook.com"}]}
+{"id": "pii-0685", "category": "pos_email", "text": "Hi, I'm Rachit Roy. You can reach me at dubey-finn@acme.co.in about the refund.", "entities": [{"type": "EMAIL", "start": 40, "end": 61, "value": "dubey-finn@acme.co.in"}]}
+{"id": "pii-0686", "category": "neg_card_like_non_luhn", "text": "Invoice batch id 54056201952500 failed to import.", "entities": []}
+{"id": "pii-0687", "category": "pos_email", "text": "Summarise the complaint from nicholas_dass+orders@mail.corp.example.org in two lines.", "entities": [{"type": "EMAIL", "start": 29, "end": 71, "value": "nicholas_dass+orders@mail.corp.example.org"}]}
+{"id": "pii-0688", "category": "pos_aadhaar", "text": "aadhaar_no=6281 6544 1104", "entities": [{"type": "AADHAAR", "start": 11, "end": 25, "value": "6281 6544 1104"}]}
+{"id": "pii-0689", "category": "neg_misc_numeric", "text": "The trace id is 93954227-1807-9291-0699-035187207576.", "entities": []}
+{"id": "pii-0690", "category": "neg_email_like", "text": "The string icon-cart@2x.png loads slowly on mobile, any idea why?", "entities": []}
+{"id": "pii-0691", "category": "pos_email", "text": "Contact: deo-neel@gmail.com", "entities": [{"type": "EMAIL", "start": 9, "end": 27, "value": "deo-neel@gmail.com"}]}
+{"id": "pii-0692", "category": "pos_aadhaar", "text": "I entered my Aadhaar (4127 9351 6276) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 36, "value": "4127 9351 6276"}]}
+{"id": "pii-0693", "category": "neg_order_id", "text": "Please cancel order #3685144647 placed by Ishwar Agarwal.", "entities": []}
+{"id": "pii-0694", "category": "neg_plain", "text": "Explain GST input tax credit in simple terms for a small shop in Orai.", "entities": []}
+{"id": "pii-0695", "category": "neg_card_like_non_luhn", "text": "Reference 3217155132591438940 was created by the billing system.", "entities": []}
+{"id": "pii-0696", "category": "neg_email_like", "text": "The reference icon-cart@2x.png is missing from the build output.", "entities": []}
+{"id": "pii-0697", "category": "pos_aadhaar", "text": "Verification needed for UIDAI number 369650314052.", "entities": [{"type": "AADHAAR", "start": 37, "end": 49, "value": "369650314052"}]}
+{"id": "pii-0698", "category": "pos_aadhaar", "text": "Anvi Acharya's UID is 4623-9800-1884, born in Guwahati.", "entities": [{"type": "AADHAAR", "start": 22, "end": 36, "value": "4623-9800-1884"}]}
+{"id": "pii-0699", "category": "pos_email", "text": "Hi, I'm Jhalak Srivastava. You can reach me at zarna74@gmail.com about the refund.", "entities": [{"type": "EMAIL", "start": 47, "end": 64, "value": "zarna74@gmail.com"}]}
+{"id": "pii-0700", "category": "pos_multi", "text": "Please charge 3008 950543 1020 and email the receipt to pau-hema@example.com.", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 30, "value": "3008 950543 1020"}, {"type": "EMAIL", "start": 56, "end": 76, "value": "pau-hema@example.com"}]}
+{"id": "pii-0701", "category": "pos_pan", "text": "For TDS purposes, the deductee PAN is UHLPF3191V.", "entities": [{"type": "PAN", "start": 38, "end": 48, "value": "UHLPF3191V"}]}
+{"id": "pii-0702", "category": "pos_in_mobile", "text": "Call me on +91 61223 84630 after 5 pm.", "entities": [{"type": "IN_MOBILE", "start": 11, "end": 26, "value": "+91 61223 84630"}]}
+{"id": "pii-0703", "category": "neg_card_like_non_luhn", "text": "Reference 260935780878242 was created by the billing system.", "entities": []}
+{"id": "pii-0704", "category": "pos_email", "text": "My login email is ysaraf@rediffmail.com, but I can't reset my password.", "entities": [{"type": "EMAIL", "start": 18, "end": 39, "value": "ysaraf@rediffmail.com"}]}
+{"id": "pii-0705", "category": "pos_pan", "text": "The form was rejected because the PAN card number MUYPC6003G did not match.", "entities": [{"type": "PAN", "start": 50, "end": 60, "value": "MUYPC6003G"}]}
+{"id": "pii-0706", "category": "pos_credit_card", "text": "Update billing for Gola, Saran and Cheema to the card 4046 3871 0772 2620.", "entities": [{"type": "CREDIT_CARD", "start": 54, "end": 73, "value": "4046 3871 0772 2620"}]}
+{"id": "pii-0707", "category": "pos_credit_card", "text": "Refund to 8172082668899654 please, the order was cancelled.", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 26, "value": "8172082668899654"}]}
+{"id": "pii-0708", "category": "neg_card_like_non_luhn", "text": "Bank account number 3033811050377437, IFSC listed separately.", "entities": []}
+{"id": "pii-0709", "category": "neg_card_like_non_luhn", "text": "Payment gateway txn id 6285897835307194301, status success.", "entities": []}
+{"id": "pii-0710", "category": "pos_multi", "text": "Ticket from qborah@example.net: card 3620 193683 1165 was charged twice; mobile 7676507415.", "entities": [{"type": "EMAIL", "start": 12, "end": 30, "value": "qborah@example.net"}, {"type": "CREDIT_CARD", "start": 37, "end": 53, "value": "3620 193683 1165"}, {"type": "IN_MOBILE", "start": 80, "end": 90, "value": "7676507415"}]}
+{"id": "pii-0711", "category": "pos_in_mobile", "text": "My number is 09290182246, please WhatsApp me the tracking link.", "entities": [{"type": "IN_MOBILE", "start": 13, "end": 24, "value": "09290182246"}]}
+{"id": "pii-0712", "category": "neg_timestamp", "text": "The error occurred at 24/05/2024 20:52 according to the logs.", "entities": []}
+{"id": "pii-0713", "category": "neg_timestamp", "text": "Compare the events at 10/07/2026 02:56 and the retry that followed.", "entities": []}
+{"id": "pii-0714", "category": "pos_aadhaar", "text": "Verification needed for UIDAI number 839907932165.", "entities": [{"type": "AADHAAR", "start": 37, "end": 49, "value": "839907932165"}]}
+{"id": "pii-0715", "category": "pos_pan", "text": "PAN: BJPPF0729N", "entities": [{"type": "PAN", "start": 5, "end": 15, "value": "BJPPF0729N"}]}
+{"id": "pii-0716", "category": "neg_aadhaar_like_non_verhoeff", "text": "UPI reference number 839859450239 for the transfer to Kannan, Munshi and Chanda.", "entities": []}
+{"id": "pii-0717", "category": "neg_invoice", "text": "Reconcile INV/26-27/34844 with the bank statement.", "entities": []}
+{"id": "pii-0718", "category": "pos_in_mobile", "text": "OTP was sent to 91-9202632864 but has not arrived.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 29, "value": "91-9202632864"}]}
+{"id": "pii-0719", "category": "pos_credit_card", "text": "cc=4406214646490986&cvv_required=true", "entities": [{"type": "CREDIT_CARD", "start": 3, "end": 19, "value": "4406214646490986"}]}
+{"id": "pii-0720", "category": "pos_pan", "text": "Verify the PAN HXAPL9786N against the name Vaishnavi Dhingra.", "entities": [{"type": "PAN", "start": 15, "end": 25, "value": "HXAPL9786N"}]}
+{"id": "pii-0721", "category": "neg_pan_like_wrong_structure", "text": "Part number VWNMD3589T, quantity 12.", "entities": []}
+{"id": "pii-0722", "category": "neg_timestamp", "text": "Session started at 1634066118 from Anantapur.", "entities": []}
+{"id": "pii-0723", "category": "pos_pan", "text": "PAN: MOQPR5231X", "entities": [{"type": "PAN", "start": 5, "end": 15, "value": "MOQPR5231X"}]}
+{"id": "pii-0724", "category": "pos_email", "text": "I signed up with desai-barkha@example.com but never got the confirmation.", "entities": [{"type": "EMAIL", "start": 17, "end": 41, "value": "desai-barkha@example.com"}]}
+{"id": "pii-0725", "category": "pos_aadhaar", "text": "Link 9240-7710-5177 with the bank account for DBT.", "entities": [{"type": "AADHAAR", "start": 5, "end": 19, "value": "9240-7710-5177"}]}
+{"id": "pii-0726", "category": "pos_aadhaar", "text": "I entered my Aadhaar (5849 5466 7236) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 36, "value": "5849 5466 7236"}]}
+{"id": "pii-0727", "category": "pos_aadhaar", "text": "e-KYC failed for Aadhaar 8935 4703 3069. What should I do?", "entities": [{"type": "AADHAAR", "start": 25, "end": 39, "value": "8935 4703 3069"}]}
+{"id": "pii-0728", "category": "pos_email", "text": "My login email is meeraparmar@example.net, but I can't reset my password.", "entities": [{"type": "EMAIL", "start": 18, "end": 41, "value": "meeraparmar@example.net"}]}
+{"id": "pii-0729", "category": "neg_invoice", "text": "PO number INV-2026-9967188", "entities": []}
+{"id": "pii-0730", "category": "neg_pan_like_wrong_structure", "text": "Registration RQEJG40579 was found in the register.", "entities": []}
+{"id": "pii-0731", "category": "neg_invoice", "text": "Please find attached PO-8669-751315 for the services rendered.", "entities": []}
+{"id": "pii-0732", "category": "neg_card_like_non_luhn", "text": "Invoice batch id 6757796102509552646 failed to import.", "entities": []}
+{"id": "pii-0733", "category": "neg_order_id", "text": "Where is my order 5730606942? It was supposed to arrive yesterday.", "entities": []}
+{"id": "pii-0734", "category": "neg_plain", "text": "Draft a friendly reminder to Oliver Lad about the quarterly review meeting.", "entities": []}
+{"id": "pii-0735", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 653119047794 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 36, "value": "653119047794"}]}
+{"id": "pii-0736", "category": "pos_in_mobile", "text": "My number is 9593416877, please WhatsApp me the tracking link.", "entities": [{"type": "IN_MOBILE", "start": 13, "end": 23, "value": "9593416877"}]}
+{"id": "pii-0737", "category": "neg_order_id", "text": "Order ID: OD821964849161712105", "entities": []}
+{"id": "pii-0738", "category": "pos_aadhaar", "text": "Aadhaar: 916283072096", "entities": [{"type": "AADHAAR", "start": 9, "end": 21, "value": "916283072096"}]}
+{"id": "pii-0739", "category": "neg_timestamp", "text": "The error occurred at 1691334247 according to the logs.", "entities": []}
+{"id": "pii-0740", "category": "pos_aadhaar", "text": "I entered my Aadhaar (991824191101) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 34, "value": "991824191101"}]}
+{"id": "pii-0741", "category": "neg_misc_numeric", "text": "The trace id is 48416402-3919-3947-8697-338046764773.", "entities": []}
+{"id": "pii-0742", "category": "pos_pan", "text": "Verify the PAN CKWPM4464B against the name Daksh Dara.", "entities": [{"type": "PAN", "start": 15, "end": 25, "value": "CKWPM4464B"}]}
+{"id": "pii-0743", "category": "pos_email", "text": "Can you draft a reply to rattancharita@example.net thanking them for the demo?", "entities": [{"type": "EMAIL", "start": 25, "end": 50, "value": "rattancharita@example.net"}]}
+{"id": "pii-0744", "category": "neg_aadhaar_like_non_verhoeff", "text": "UPI reference number 315807027180 for the transfer to Goswami Inc.", "entities": []}
+{"id": "pii-0745", "category": "pos_pan", "text": "I am attaching my PAN (XFJAU6121H) and a cancelled cheque.", "entities": [{"type": "PAN", "start": 23, "end": 33, "value": "XFJAU6121H"}]}
+{"id": "pii-0746", "category": "pos_pan", "text": "pan=CNMPY0142S&state=KA", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "CNMPY0142S"}]}
+{"id": "pii-0747", "category": "neg_order_id", "text": "Return request for shipment #716783-4926 from Muni-Hans.", "entities": []}
+{"id": "pii-0748", "category": "pos_credit_card", "text": "Refund to 6571462577827270 please, the order was cancelled.", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 26, "value": "6571462577827270"}]}
+{"id": "pii-0749", "category": "pos_email", "text": "Write a polite follow-up to warhi.dhillon@example.com, they have not replied in a week.", "entities": [{"type": "EMAIL", "start": 28, "end": 53, "value": "warhi.dhillon@example.com"}]}
+{"id": "pii-0750", "category": "pos_pan", "text": "The form was rejected because the PAN card number PPIPR0075R did not match.", "entities": [{"type": "PAN", "start": 50, "end": 60, "value": "PPIPR0075R"}]}
+{"id": "pii-0751", "category": "pos_pan", "text": "Customer Utkarsh Mahal gave PAN UYAPI1613B during onboarding at Ballia.", "entities": [{"type": "PAN", "start": 32, "end": 42, "value": "UYAPI1613B"}]}
+{"id": "pii-0752", "category": "pos_in_mobile", "text": "Please block the SIM registered as +91 70850 38248.", "entities": [{"type": "IN_MOBILE", "start": 35, "end": 50, "value": "+91 70850 38248"}]}
+{"id": "pii-0753", "category": "pos_pan", "text": "Customer Xalak Chander gave PAN YECPS8507A during onboarding at Morbi.", "entities": [{"type": "PAN", "start": 32, "end": 42, "value": "YECPS8507A"}]}
+{"id": "pii-0754", "category": "neg_card_like_non_luhn", "text": "Serial number: 3129274705896", "entities": []}
+{"id": "pii-0755", "category": "neg_aadhaar_like_non_verhoeff", "text": "The 12-digit transaction id 469034505396 does not appear in our records.", "entities": []}
+{"id": "pii-0756", "category": "pos_aadhaar", "text": "aadhaar_no=3306 5839 4056", "entities": [{"type": "AADHAAR", "start": 11, "end": 25, "value": "3306 5839 4056"}]}
+{"id": "pii-0757", "category": "pos_credit_card", "text": "Card on file: 6449-4460-5904-1757", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 33, "value": "6449-4460-5904-1757"}]}
+{"id": "pii-0758", "category": "pos_aadhaar", "text": "aadhaar_no=9508 1379 9488", "entities": [{"type": "AADHAAR", "start": 11, "end": 25, "value": "9508 1379 9488"}]}
+{"id": "pii-0759", "category": "neg_pan_like_wrong_structure", "text": "Employee code: BLYIL5686P", "entities": []}
+{"id": "pii-0760", "category": "pos_aadhaar", "text": "Link 282654786074 with the bank account for DBT.", "entities": [{"type": "AADHAAR", "start": 5, "end": 17, "value": "282654786074"}]}
+{"id": "pii-0761", "category": "pos_email", "text": "Forward this thread to onagi@gmail.com.", "entities": [{"type": "EMAIL", "start": 23, "end": 38, "value": "onagi@gmail.com"}]}
+{"id": "pii-0762", "category": "neg_aadhaar_like_non_verhoeff", "text": "Application number 811505550111 for the passport appointment in Bhusawal.", "entities": []}
+{"id": "pii-0763", "category": "neg_pan_like_wrong_structure", "text": "Registration PZDQS54246 was found in the register.", "entities": []}
+{"id": "pii-0764", "category": "neg_aadhaar_like_non_verhoeff", "text": "UTR 301155382964 credited on the same day.", "entities": []}
+{"id": "pii-0765", "category": "pos_credit_card", "text": "Can I use 6510094000651888 for an international transaction?", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 26, "value": "6510094000651888"}]}
+{"id": "pii-0766", "category": "pos_pan", "text": "My PAN is QZJPT4820A, please update it in the KYC form.", "entities": [{"type": "PAN", "start": 10, "end": 20, "value": "QZJPT4820A"}]}
+{"id": "pii-0767", "category": "neg_card_like_non_luhn", "text": "Bank account number 223495536876703, IFSC listed separately.", "entities": []}
+{"id": "pii-0768", "category": "neg_pan_like_wrong_structure", "text": "Registration SAXJV809UH was found in the register.", "entities": []}
+{"id": "pii-0769", "category": "pos_multi", "text": "Billing contact oliverpurohit@example.org / +917542184800, card 4669 3986 4823 4534.", "entities": [{"type": "EMAIL", "start": 16, "end": 41, "value": "oliverpurohit@example.org"}, {"type": "IN_MOBILE", "start": 44, "end": 57, "value": "+917542184800"}, {"type": "CREDIT_CARD", "start": 64, "end": 83, "value": "4669 3986 4823 4534"}]}
+{"id": "pii-0770", "category": "pos_credit_card", "text": "cc=344155724982605&cvv_required=true", "entities": [{"type": "CREDIT_CARD", "start": 3, "end": 18, "value": "344155724982605"}]}
+{"id": "pii-0771", "category": "neg_order_id", "text": "Return request for shipment ORD-2024-55784109 from Tak, Deol and Dhingra.", "entities": []}
+{"id": "pii-0772", "category": "neg_phone_like_non_indian", "text": "Our overseas office is at (436) 436-0500.", "entities": []}
+{"id": "pii-0773", "category": "neg_phone_like_non_indian", "text": "The helpline 1800-618-0314 is open 24x7.", "entities": []}
+{"id": "pii-0774", "category": "neg_card_like_non_luhn", "text": "Payment gateway txn id 6194472184614, status success.", "entities": []}
+{"id": "pii-0775", "category": "pos_credit_card", "text": "Refund to 3589775203509450 please, the order was cancelled.", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 26, "value": "3589775203509450"}]}
+{"id": "pii-0776", "category": "pos_multi", "text": "Onboarding form: Aadhaar 445160628905, PAN YUQPQ4911U, email chandran27@example.org.", "entities": [{"type": "AADHAAR", "start": 25, "end": 37, "value": "445160628905"}, {"type": "PAN", "start": 43, "end": 53, "value": "YUQPQ4911U"}, {"type": "EMAIL", "start": 61, "end": 83, "value": "chandran27@example.org"}]}
+{"id": "pii-0777", "category": "neg_phone_like_non_indian", "text": "Call the regional team on +49 30 24334114.", "entities": []}
+{"id": "pii-0778", "category": "neg_aadhaar_like_non_verhoeff", "text": "UPI reference number 775735394862 for the transfer to Garg-Gandhi.", "entities": []}
+{"id": "pii-0779", "category": "pos_multi", "text": "Refund 6011917461796509 (owner Wyatt Nayak); proof of identity: PAN YSKPC1814D.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 23, "value": "6011917461796509"}, {"type": "PAN", "start": 68, "end": 78, "value": "YSKPC1814D"}]}
+{"id": "pii-0780", "category": "neg_pan_like_wrong_structure", "text": "Registration PPFZ1132H was found in the register.", "entities": []}
+{"id": "pii-0781", "category": "pos_pan", "text": "pan=RYHPY2423C&state=KA", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "RYHPY2423C"}]}
+{"id": "pii-0782", "category": "pos_email", "text": "My login email is azaan_chacko+orders@gmail.com, but I can't reset my password.", "entities": [{"type": "EMAIL", "start": 18, "end": 47, "value": "azaan_chacko+orders@gmail.com"}]}
+{"id": "pii-0783", "category": "pos_email", "text": "My login email is rout-libni@mail.corp.example.org, but I can't reset my password.", "entities": [{"type": "EMAIL", "start": 18, "end": 50, "value": "rout-libni@mail.corp.example.org"}]}
+{"id": "pii-0784", "category": "pos_in_mobile", "text": "Update the contact number for Yadavi Shan to 6105307517.", "entities": [{"type": "IN_MOBILE", "start": 45, "end": 55, "value": "6105307517"}]}
+{"id": "pii-0785", "category": "pos_aadhaar", "text": "I entered my Aadhaar (239376161672) but the OTP never came.", "entities": [{"type": "AADHAAR", "start": 22, "end": 34, "value": "239376161672"}]}
+{"id": "pii-0786", "category": "neg_pan_like_wrong_structure", "text": "Is WGVRN5421Q a valid PAN?", "entities": []}
+{"id": "pii-0787", "category": "pos_credit_card", "text": "Charge 3623 064444 0290 for the annual plan.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 23, "value": "3623 064444 0290"}]}
+{"id": "pii-0788", "category": "neg_invoice", "text": "Credit note against INV/26-27/12373 was issued to Tiwari, Kari and Andra.", "entities": []}
+{"id": "pii-0789", "category": "pos_credit_card", "text": "Can I use 5083 6479 8738 1032 for an international transaction?", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 29, "value": "5083 6479 8738 1032"}]}
+{"id": "pii-0790", "category": "pos_aadhaar", "text": "Aadhaar: 901038252555", "entities": [{"type": "AADHAAR", "start": 9, "end": 21, "value": "901038252555"}]}
+{"id": "pii-0791", "category": "neg_phone_like_non_indian", "text": "The helpline (283) 620-0058 is open 24x7.", "entities": []}
+{"id": "pii-0792", "category": "neg_email_like", "text": "Why does the config still point to logo@2x.png?", "entities": []}
+{"id": "pii-0793", "category": "pos_credit_card", "text": "Customer Gaurang Sachar pasted their card 8180 5533 5502 7080 into the chat by mistake.", "entities": [{"type": "CREDIT_CARD", "start": 42, "end": 61, "value": "8180 5533 5502 7080"}]}
+{"id": "pii-0794", "category": "pos_credit_card", "text": "Refund to 6521 4905 6892 4641 please, the order was cancelled.", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 29, "value": "6521 4905 6892 4641"}]}
+{"id": "pii-0795", "category": "neg_misc_numeric", "text": "The meeting is on 05/12/2024 in Surendranagar Dudhrej.", "entities": []}
+{"id": "pii-0796", "category": "neg_timestamp", "text": "{\"ts\": \"2025-01-20 12:51:28.025843\", \"level\": \"warn\"}", "entities": []}
+{"id": "pii-0797", "category": "neg_order_id", "text": "Tracking number FKT31693150799 shows no movement for three days.", "entities": []}
+{"id": "pii-0798", "category": "pos_pan", "text": "Verify the PAN PHACJ9187G against the name Raksha Kothari.", "entities": [{"type": "PAN", "start": 15, "end": 25, "value": "PHACJ9187G"}]}
+{"id": "pii-0799", "category": "neg_phone_like_non_indian", "text": "The helpline (424) 362-4171 is open 24x7.", "entities": []}
+{"id": "pii-0800", "category": "neg_aadhaar_like_non_verhoeff", "text": "Reference no. 5143 0829 0996", "entities": []}
+{"id": "pii-0801", "category": "neg_invoice", "text": "Credit note against INV/26-27/93726 was issued to Dugar-Mistry.", "entities": []}
+{"id": "pii-0802", "category": "neg_misc_numeric", "text": "Upgrade to v1.17.14 before the next release.", "entities": []}
+{"id": "pii-0803", "category": "neg_aadhaar_like_non_verhoeff", "text": "Case number 9036 3048 5069 has been escalated.", "entities": []}
+{"id": "pii-0804", "category": "neg_misc_numeric", "text": "Total payable amount is Rs 5,88,47,10,83,863.00.", "entities": []}
+{"id": "pii-0805", "category": "neg_timestamp", "text": "Session started at 27/11/2024 00:56 from Ghaziabad.", "entities": []}
+{"id": "pii-0806", "category": "neg_phone_like_non_indian", "text": "Call the regional team on +49 30 03867236.", "entities": []}
+{"id": "pii-0807", "category": "neg_aadhaar_like_non_verhoeff", "text": "UPI reference number 2784-3456-5891 for the transfer to Chand-Johal.", "entities": []}
+{"id": "pii-0808", "category": "neg_aadhaar_like_non_verhoeff", "text": "Application number 5399-7077-2691 for the passport appointment in Singrauli.", "entities": []}
+{"id": "pii-0809", "category": "pos_in_mobile", "text": "Customer mobile 91 8757038123 is linked to two accounts. How do I merge them?", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 29, "value": "91 8757038123"}]}
+{"id": "pii-0810", "category": "neg_phone_like_non_indian", "text": "Customer support: 1800-678-8848", "entities": []}
+{"id": "pii-0811", "category": "neg_plain", "text": "Give me three names for a bakery in Chapra.", "entities": []}
+{"id": "pii-0812", "category": "neg_timestamp", "text": "Session started at 02/01/2026 00:30 from Kalyan-Dombivli.", "entities": []}
+{"id": "pii-0813", "category": "neg_card_like_non_luhn", "text": "Invoice batch id 5539536643608860301 failed to import.", "entities": []}
+{"id": "pii-0814", "category": "pos_credit_card", "text": "Customer Caleb Apte pasted their card 6011 1573 1927 7044 into the chat by mistake.", "entities": [{"type": "CREDIT_CARD", "start": 38, "end": 57, "value": "6011 1573 1927 7044"}]}
+{"id": "pii-0815", "category": "pos_aadhaar", "text": "My Aadhaar number is 8647 4738 6564, link it to my account.", "entities": [{"type": "AADHAAR", "start": 21, "end": 35, "value": "8647 4738 6564"}]}
+{"id": "pii-0816", "category": "pos_in_mobile", "text": "Alternate contact for the Datta-Arya account: 91 9944436682.", "entities": [{"type": "IN_MOBILE", "start": 46, "end": 59, "value": "91 9944436682"}]}
+{"id": "pii-0817", "category": "neg_aadhaar_like_non_verhoeff", "text": "The 12-digit transaction id 2420 8254 2509 does not appear in our records.", "entities": []}
+{"id": "pii-0818", "category": "neg_order_id", "text": "Where is my order ORD-2025-59133674? It was supposed to arrive yesterday.", "entities": []}
+{"id": "pii-0819", "category": "neg_pan_like_wrong_structure", "text": "Promo code GYXAV10392 expires tonight.", "entities": []}
+{"id": "pii-0820", "category": "neg_email_like", "text": "The string icon-home@2x.png loads slowly on mobile, any idea why?", "entities": []}
+{"id": "pii-0821", "category": "neg_timestamp", "text": "Request received 1743998281, response sent shortly after.", "entities": []}
+{"id": "pii-0822", "category": "neg_aadhaar_like_non_verhoeff", "text": "Reference no. 2893 2749 4882", "entities": []}
+{"id": "pii-0823", "category": "neg_pan_like_wrong_structure", "text": "Registration PGWX4943V was found in the register.", "entities": []}
+{"id": "pii-0824", "category": "pos_in_mobile", "text": "OTP was sent to 08096965044 but has not arrived.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 27, "value": "08096965044"}]}
+{"id": "pii-0825", "category": "pos_pan", "text": "I am attaching my PAN (XOGPL2460Y) and a cancelled cheque.", "entities": [{"type": "PAN", "start": 23, "end": 33, "value": "XOGPL2460Y"}]}
+{"id": "pii-0826", "category": "pos_in_mobile", "text": "OTP was sent to +91 8193818755 but has not arrived.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 30, "value": "+91 8193818755"}]}
+{"id": "pii-0827", "category": "pos_email", "text": "Summarise the complaint from karanfaraj@example.org in two lines.", "entities": [{"type": "EMAIL", "start": 29, "end": 51, "value": "karanfaraj@example.org"}]}
+{"id": "pii-0828", "category": "pos_email", "text": "Summarise the complaint from vig-krishna@outlook.com in two lines.", "entities": [{"type": "EMAIL", "start": 29, "end": 52, "value": "vig-krishna@outlook.com"}]}
+{"id": "pii-0829", "category": "pos_multi", "text": "I'm Radhika Walla. My mobile is +91 74243 18268 and my backup email is rajeshrisavant@example.com.", "entities": [{"type": "IN_MOBILE", "start": 32, "end": 47, "value": "+91 74243 18268"}, {"type": "EMAIL", "start": 71, "end": 97, "value": "rajeshrisavant@example.com"}]}
+{"id": "pii-0830", "category": "neg_misc_numeric", "text": "The meeting is on 22/11/2023 in Kalyan-Dombivli.", "entities": []}
+{"id": "pii-0831", "category": "pos_pan", "text": "Customer Faqid Krish gave PAN ACFPU5604W during onboarding at Saharsa.", "entities": [{"type": "PAN", "start": 30, "end": 40, "value": "ACFPU5604W"}]}
+{"id": "pii-0832", "category": "pos_email", "text": "Please send the invoice to narula-matthew@outlook.com and copy accounts.", "entities": [{"type": "EMAIL", "start": 27, "end": 53, "value": "narula-matthew@outlook.com"}]}
+{"id": "pii-0833", "category": "pos_email", "text": "email=vramesh@example.net&source=webform", "entities": [{"type": "EMAIL", "start": 6, "end": 25, "value": "vramesh@example.net"}]}
+{"id": "pii-0834", "category": "neg_phone_like_non_indian", "text": "Customer support: +1 700 250 7546", "entities": []}
+{"id": "pii-0835", "category": "pos_email", "text": "Customer Ubika Mukherjee (abeer.chahal@yahoo.co.in) reported that the app crashes on login.", "entities": [{"type": "EMAIL", "start": 26, "end": 50, "value": "abeer.chahal@yahoo.co.in"}]}
+{"id": "pii-0836", "category": "pos_aadhaar", "text": "Link 772800171551 with the bank account for DBT.", "entities": [{"type": "AADHAAR", "start": 5, "end": 17, "value": "772800171551"}]}
+{"id": "pii-0837", "category": "pos_email", "text": "From: Advika Batta <chavvi39@gmail.com>\nSubject: Delivery delay", "entities": [{"type": "EMAIL", "start": 20, "end": 38, "value": "chavvi39@gmail.com"}]}
+{"id": "pii-0838", "category": "pos_multi", "text": "Billing contact kotaamaira@example.com / 64917 34529, card 3439-450566-91464.", "entities": [{"type": "EMAIL", "start": 16, "end": 38, "value": "kotaamaira@example.com"}, {"type": "IN_MOBILE", "start": 41, "end": 52, "value": "64917 34529"}, {"type": "CREDIT_CARD", "start": 59, "end": 76, "value": "3439-450566-91464"}]}
+{"id": "pii-0839", "category": "pos_in_mobile", "text": "The delivery partner could not reach +91 89781 04249. Please retry.", "entities": [{"type": "IN_MOBILE", "start": 37, "end": 52, "value": "+91 89781 04249"}]}
+{"id": "pii-0840", "category": "neg_timestamp", "text": "The error occurred at 1629763422150 according to the logs.", "entities": []}
+{"id": "pii-0841", "category": "neg_aadhaar_like_non_verhoeff", "text": "Application number 9756-7888-0681 for the passport appointment in Bhatpara.", "entities": []}
+{"id": "pii-0842", "category": "pos_in_mobile", "text": "OTP was sent to 6069100269 but has not arrived.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 26, "value": "6069100269"}]}
+{"id": "pii-0843", "category": "pos_in_mobile", "text": "My number is 78580-26132, please WhatsApp me the tracking link.", "entities": [{"type": "IN_MOBILE", "start": 13, "end": 24, "value": "78580-26132"}]}
+{"id": "pii-0844", "category": "neg_phone_like_non_indian", "text": "Our overseas office is at +49 30 90088294.", "entities": []}
+{"id": "pii-0845", "category": "neg_order_id", "text": "Where is my order OD622882803467267599? It was supposed to arrive yesterday.", "entities": []}
+{"id": "pii-0846", "category": "neg_timestamp", "text": "Compare the events at 07/05/2024 00:59 and the retry that followed.", "entities": []}
+{"id": "pii-0847", "category": "pos_email", "text": "I signed up with aryan45@mail.corp.example.org but never got the confirmation.", "entities": [{"type": "EMAIL", "start": 17, "end": 46, "value": "aryan45@mail.corp.example.org"}]}
+{"id": "pii-0848", "category": "neg_card_like_non_luhn", "text": "Payment gateway txn id 5952284205462546, status success.", "entities": []}
+{"id": "pii-0849", "category": "neg_timestamp", "text": "The error occurred at 2025-06-08 17:09:56.400797 according to the logs.", "entities": []}
+{"id": "pii-0850", "category": "pos_credit_card", "text": "Charge 3054 322058 3309 for the annual plan.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 23, "value": "3054 322058 3309"}]}
+{"id": "pii-0851", "category": "pos_multi", "text": "KYC for Samaksh Das: PAN BDVPG6098D, Aadhaar 8584 3949 8001, mobile +91-8720088708.", "entities": [{"type": "PAN", "start": 25, "end": 35, "value": "BDVPG6098D"}, {"type": "AADHAAR", "start": 45, "end": 59, "value": "8584 3949 8001"}, {"type": "IN_MOBILE", "start": 68, "end": 82, "value": "+91-8720088708"}]}
+{"id": "pii-0852", "category": "pos_in_mobile", "text": "Hello, this is Anamika Oza from Tezpur. Ring 72367 76284 if the address is unclear.", "entities": [{"type": "IN_MOBILE", "start": 45, "end": 56, "value": "72367 76284"}]}
+{"id": "pii-0853", "category": "pos_credit_card", "text": "Can I use 5382 8279 3888 7331 for an international transaction?", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 29, "value": "5382 8279 3888 7331"}]}
+{"id": "pii-0854", "category": "neg_timestamp", "text": "Session started at 2024-08-05 13:10:04.550592 from Guna.", "entities": []}
+{"id": "pii-0855", "category": "pos_pan", "text": "For TDS purposes, the deductee PAN is MXHPL8830D.", "entities": [{"type": "PAN", "start": 38, "end": 48, "value": "MXHPL8830D"}]}
+{"id": "pii-0856", "category": "pos_email", "text": "Summarise the complaint from hshanker@example.com in two lines.", "entities": [{"type": "EMAIL", "start": 29, "end": 49, "value": "hshanker@example.com"}]}
+{"id": "pii-0857", "category": "pos_email", "text": "Write a polite follow-up to mangal-januja@outlook.com, they have not replied in a week.", "entities": [{"type": "EMAIL", "start": 28, "end": 53, "value": "mangal-januja@outlook.com"}]}
+{"id": "pii-0858", "category": "pos_credit_card", "text": "The payment with card 3058 742061 8084 was declined. Why?", "entities": [{"type": "CREDIT_CARD", "start": 22, "end": 38, "value": "3058 742061 8084"}]}
+{"id": "pii-0859", "category": "neg_order_id", "text": "Tracking number ORD-2025-39882025 shows no movement for three days.", "entities": []}
+{"id": "pii-0860", "category": "neg_aadhaar_like_non_verhoeff", "text": "Application number 464408901882 for the passport appointment in Baranagar.", "entities": []}
+{"id": "pii-0861", "category": "neg_card_like_non_luhn", "text": "Shipment AWB 4476847763970356 was handed to the courier.", "entities": []}
+{"id": "pii-0862", "category": "pos_email", "text": "Hi, I'm Madhav Chandra. You can reach me at sastry-eshana@mail.corp.example.org about the refund.", "entities": [{"type": "EMAIL", "start": 44, "end": 79, "value": "sastry-eshana@mail.corp.example.org"}]}
+{"id": "pii-0863", "category": "pos_multi", "text": "Customer Daksh Ahluwalia from Jodhpur wrote from borahvivaan@example.net; call back on +91 8464045463.", "entities": [{"type": "EMAIL", "start": 49, "end": 72, "value": "borahvivaan@example.net"}, {"type": "IN_MOBILE", "start": 87, "end": 101, "value": "+91 8464045463"}]}
+{"id": "pii-0864", "category": "pos_credit_card", "text": "cc=3692 292652 4730&cvv_required=true", "entities": [{"type": "CREDIT_CARD", "start": 3, "end": 19, "value": "3692 292652 4730"}]}
+{"id": "pii-0865", "category": "neg_aadhaar_like_non_verhoeff", "text": "UTR 9636-7212-3971 credited on the same day.", "entities": []}
+{"id": "pii-0866", "category": "pos_email", "text": "Please send the invoice to deol-ekansh@example.com and copy accounts.", "entities": [{"type": "EMAIL", "start": 27, "end": 50, "value": "deol-ekansh@example.com"}]}
+{"id": "pii-0867", "category": "neg_aadhaar_like_non_verhoeff", "text": "Reference no. 4287 2980 9142", "entities": []}
+{"id": "pii-0868", "category": "pos_in_mobile", "text": "Alternate contact for the Bava Inc account: 8516836815.", "entities": [{"type": "IN_MOBILE", "start": 44, "end": 54, "value": "8516836815"}]}
+{"id": "pii-0869", "category": "pos_aadhaar", "text": "Link 3424 3552 6531 with the bank account for DBT.", "entities": [{"type": "AADHAAR", "start": 5, "end": 19, "value": "3424 3552 6531"}]}
+{"id": "pii-0870", "category": "neg_timestamp", "text": "created_at: 1653469701", "entities": []}
+{"id": "pii-0871", "category": "pos_in_mobile", "text": "mobile=+91 73612 61940", "entities": [{"type": "IN_MOBILE", "start": 7, "end": 22, "value": "+91 73612 61940"}]}
+{"id": "pii-0872", "category": "pos_pan", "text": "Customer Bhavini Goswami gave PAN CNYFJ5491K during onboarding at Aurangabad.", "entities": [{"type": "PAN", "start": 34, "end": 44, "value": "CNYFJ5491K"}]}
+{"id": "pii-0873", "category": "neg_timestamp", "text": "created_at: 02/03/2025 22:59", "entities": []}
+{"id": "pii-0874", "category": "pos_aadhaar", "text": "e-KYC failed for Aadhaar 652663806177. What should I do?", "entities": [{"type": "AADHAAR", "start": 25, "end": 37, "value": "652663806177"}]}
+{"id": "pii-0875", "category": "neg_misc_numeric", "text": "Total payable amount is Rs 8,52,76,05,88,049.00.", "entities": []}
+{"id": "pii-0876", "category": "pos_multi", "text": "Refund 6011 4940 2009 0311 (owner Anika Amble); proof of identity: PAN HIUPK5839V.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 26, "value": "6011 4940 2009 0311"}, {"type": "PAN", "start": 71, "end": 81, "value": "HIUPK5839V"}]}
+{"id": "pii-0877", "category": "neg_invoice", "text": "Credit note against BILL3714424823 was issued to Shenoy Ltd.", "entities": []}
+{"id": "pii-0878", "category": "neg_plain", "text": "Give me three names for a bakery in Nashik.", "entities": []}
+{"id": "pii-0879", "category": "pos_pan", "text": "Add LILPF3364A to the vendor master for Khare Ltd.", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "LILPF3364A"}]}
+{"id": "pii-0880", "category": "neg_misc_numeric", "text": "The server at 221.129.130.241 is not responding.", "entities": []}
+{"id": "pii-0881", "category": "neg_phone_like_non_indian", "text": "The helpline (673) 653-8198 is open 24x7.", "entities": []}
+{"id": "pii-0882", "category": "pos_in_mobile", "text": "Phone: 7895573056", "entities": [{"type": "IN_MOBILE", "start": 7, "end": 17, "value": "7895573056"}]}
+{"id": "pii-0883", "category": "pos_multi", "text": "Ticket from samar.rajan@outlook.com: card 4275871567525187 was charged twice; mobile 91 9111392136.", "entities": [{"type": "EMAIL", "start": 12, "end": 35, "value": "samar.rajan@outlook.com"}, {"type": "CREDIT_CARD", "start": 42, "end": 58, "value": "4275871567525187"}, {"type": "IN_MOBILE", "start": 85, "end": 98, "value": "91 9111392136"}]}
+{"id": "pii-0884", "category": "pos_email", "text": "Customer Keya Shankar (avni_bala+orders@yahoo.co.in) reported that the app crashes on login.", "entities": [{"type": "EMAIL", "start": 23, "end": 51, "value": "avni_bala+orders@yahoo.co.in"}]}
+{"id": "pii-0885", "category": "neg_misc_numeric", "text": "Total payable amount is Rs 7,28,82,27,42,626.00.", "entities": []}
+{"id": "pii-0886", "category": "pos_email", "text": "Can you draft a reply to vchoudhary@rediffmail.com thanking them for the demo?", "entities": [{"type": "EMAIL", "start": 25, "end": 50, "value": "vchoudhary@rediffmail.com"}]}
+{"id": "pii-0887", "category": "neg_phone_like_non_indian", "text": "Fax 1800-507-5418", "entities": []}
+{"id": "pii-0888", "category": "pos_in_mobile", "text": "My number is +918399644701, please WhatsApp me the tracking link.", "entities": [{"type": "IN_MOBILE", "start": 13, "end": 26, "value": "+918399644701"}]}
+{"id": "pii-0889", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 841895933671 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 36, "value": "841895933671"}]}
+{"id": "pii-0890", "category": "neg_pan_like_wrong_structure", "text": "Part number CCNW2658V, quantity 12.", "entities": []}
+{"id": "pii-0891", "category": "neg_misc_numeric", "text": "The server at 76.72.77.115 is not responding.", "entities": []}
+{"id": "pii-0892", "category": "pos_in_mobile", "text": "Hello, this is Yashoda Srinivasan from Asansol. Ring +91-6512495612 if the address is unclear.", "entities": [{"type": "IN_MOBILE", "start": 53, "end": 67, "value": "+91-6512495612"}]}
+{"id": "pii-0893", "category": "pos_pan", "text": "For TDS purposes, the deductee PAN is ZLNCY5941A.", "entities": [{"type": "PAN", "start": 38, "end": 48, "value": "ZLNCY5941A"}]}
+{"id": "pii-0894", "category": "pos_multi", "text": "Refund 3717-747336-87652 (owner Guneet Goda); proof of identity: PAN FWWLV5230J.", "entities": [{"type": "CREDIT_CARD", "start": 7, "end": 24, "value": "3717-747336-87652"}, {"type": "PAN", "start": 69, "end": 79, "value": "FWWLV5230J"}]}
+{"id": "pii-0895", "category": "neg_misc_numeric", "text": "The trace id is 42819976-3805-7324-4973-768725286447.", "entities": []}
+{"id": "pii-0896", "category": "neg_email_like", "text": "The reference user@localhost is missing from the build output.", "entities": []}
+{"id": "pii-0897", "category": "pos_pan", "text": "Add LLZPV9819A to the vendor master for Sridhar-Pall.", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "LLZPV9819A"}]}
+{"id": "pii-0898", "category": "pos_in_mobile", "text": "Customer mobile 91 7349155621 is linked to two accounts. How do I merge them?", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 29, "value": "91 7349155621"}]}
+{"id": "pii-0899", "category": "neg_plain", "text": "How do I explain a gap year on my resume?", "entities": []}
+{"id": "pii-0900", "category": "pos_email", "text": "Contact: hardik_mangat+orders@acme.co.in", "entities": [{"type": "EMAIL", "start": 9, "end": 40, "value": "hardik_mangat+orders@acme.co.in"}]}
+{"id": "pii-0901", "category": "pos_credit_card", "text": "Card on file: 4056270273053", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 27, "value": "4056270273053"}]}
+{"id": "pii-0902", "category": "pos_aadhaar", "text": "Link 8192 3517 4766 with the bank account for DBT.", "entities": [{"type": "AADHAAR", "start": 5, "end": 19, "value": "8192 3517 4766"}]}
+{"id": "pii-0903", "category": "pos_in_mobile", "text": "Alternate contact for the Bava, Raval and Narayanan account: 73513-88328.", "entities": [{"type": "IN_MOBILE", "start": 61, "end": 72, "value": "73513-88328"}]}
+{"id": "pii-0904", "category": "pos_multi", "text": "Name: Imaran Wali. Email lila_ganesan+orders@gmail.com, phone 75365 00064.", "entities": [{"type": "EMAIL", "start": 25, "end": 54, "value": "lila_ganesan+orders@gmail.com"}, {"type": "IN_MOBILE", "start": 62, "end": 73, "value": "75365 00064"}]}
+{"id": "pii-0905", "category": "pos_in_mobile", "text": "Draft an SMS to 7693525589 confirming the appointment tomorrow.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 26, "value": "7693525589"}]}
+{"id": "pii-0906", "category": "pos_email", "text": "Can you draft a reply to QPINGLE@EXAMPLE.COM thanking them for the demo?", "entities": [{"type": "EMAIL", "start": 25, "end": 44, "value": "QPINGLE@EXAMPLE.COM"}]}
+{"id": "pii-0907", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 353805417526 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 36, "value": "353805417526"}]}
+{"id": "pii-0908", "category": "pos_credit_card", "text": "cc=4239932474248233&cvv_required=true", "entities": [{"type": "CREDIT_CARD", "start": 3, "end": 19, "value": "4239932474248233"}]}
+{"id": "pii-0909", "category": "pos_aadhaar", "text": "Please mask the Aadhaar 3119 2005 0117 in the attached scan.", "entities": [{"type": "AADHAAR", "start": 24, "end": 38, "value": "3119 2005 0117"}]}
+{"id": "pii-0910", "category": "neg_phone_like_non_indian", "text": "Call the regional team on 022-23581355.", "entities": []}
+{"id": "pii-0911", "category": "pos_multi", "text": "KYC for Ridhi Ganguly: PAN NAFPD2586Z, Aadhaar 2634 1100 0186, mobile 91-8452811817.", "entities": [{"type": "PAN", "start": 27, "end": 37, "value": "NAFPD2586Z"}, {"type": "AADHAAR", "start": 47, "end": 61, "value": "2634 1100 0186"}, {"type": "IN_MOBILE", "start": 70, "end": 83, "value": "91-8452811817"}]}
+{"id": "pii-0912", "category": "pos_in_mobile", "text": "Update the contact number for Utkarsh Patla to 8352036149.", "entities": [{"type": "IN_MOBILE", "start": 47, "end": 57, "value": "8352036149"}]}
+{"id": "pii-0913", "category": "neg_card_like_non_luhn", "text": "Bank account number 5265079243255033023, IFSC listed separately.", "entities": []}
+{"id": "pii-0914", "category": "neg_card_like_non_luhn", "text": "Shipment AWB 665742610090393 was handed to the courier.", "entities": []}
+{"id": "pii-0915", "category": "pos_credit_card", "text": "Can I use 6521501498678535 for an international transaction?", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 26, "value": "6521501498678535"}]}
+{"id": "pii-0916", "category": "neg_card_like_non_luhn", "text": "Bank account number 5307641684105196, IFSC listed separately.", "entities": []}
+{"id": "pii-0917", "category": "pos_email", "text": "Summarise the complaint from arjun.ratta@yahoo.co.in in two lines.", "entities": [{"type": "EMAIL", "start": 29, "end": 52, "value": "arjun.ratta@yahoo.co.in"}]}
+{"id": "pii-0918", "category": "pos_in_mobile", "text": "Call me on +918308875578 after 5 pm.", "entities": [{"type": "IN_MOBILE", "start": 11, "end": 24, "value": "+918308875578"}]}
+{"id": "pii-0919", "category": "neg_order_id", "text": "Return request for shipment ORD-2026-56157641 from Kara, Bakshi and Mohanty.", "entities": []}
+{"id": "pii-0920", "category": "neg_order_id", "text": "Order ID: AMZ51784035529", "entities": []}
+{"id": "pii-0921", "category": "neg_aadhaar_like_non_verhoeff", "text": "Case number 599869184721 has been escalated.", "entities": []}
+{"id": "pii-0922", "category": "pos_aadhaar", "text": "Aadhaar: 4224 2888 1934", "entities": [{"type": "AADHAAR", "start": 9, "end": 23, "value": "4224 2888 1934"}]}
+{"id": "pii-0923", "category": "pos_aadhaar", "text": "e-KYC failed for Aadhaar 603588694255. What should I do?", "entities": [{"type": "AADHAAR", "start": 25, "end": 37, "value": "603588694255"}]}
+{"id": "pii-0924", "category": "pos_pan", "text": "The form was rejected because the PAN card number PSUPP4746D did not match.", "entities": [{"type": "PAN", "start": 50, "end": 60, "value": "PSUPP4746D"}]}
+{"id": "pii-0925", "category": "neg_pan_like_wrong_structure", "text": "Employee code: ZBVU0948B", "entities": []}
+{"id": "pii-0926", "category": "neg_aadhaar_like_non_verhoeff", "text": "Case number 212159785759 has been escalated.", "entities": []}
+{"id": "pii-0927", "category": "neg_pan_like_wrong_structure", "text": "Registration NNGS7751F was found in the register.", "entities": []}
+{"id": "pii-0928", "category": "neg_plain", "text": "Draft a friendly reminder to Keya Ravi about the quarterly review meeting.", "entities": []}
+{"id": "pii-0929", "category": "neg_pan_like_wrong_structure", "text": "Registration JQGTI971EQ was found in the register.", "entities": []}
+{"id": "pii-0930", "category": "neg_plain", "text": "What is the best way to prepare for a system design interview?", "entities": []}
+{"id": "pii-0931", "category": "neg_phone_like_non_indian", "text": "Landline of the Dehri branch: (594) 812-3939", "entities": []}
+{"id": "pii-0932", "category": "pos_pan", "text": "Customer Daksha Dar gave PAN TEGPI6126A during onboarding at Nagaon.", "entities": [{"type": "PAN", "start": 29, "end": 39, "value": "TEGPI6126A"}]}
+{"id": "pii-0933", "category": "pos_credit_card", "text": "cc=30567439408966&cvv_required=true", "entities": [{"type": "CREDIT_CARD", "start": 3, "end": 17, "value": "30567439408966"}]}
+{"id": "pii-0934", "category": "pos_multi", "text": "Please charge 4987973826406222 and email the receipt to lohit_dubey+orders@gmail.com.", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 30, "value": "4987973826406222"}, {"type": "EMAIL", "start": 56, "end": 84, "value": "lohit_dubey+orders@gmail.com"}]}
+{"id": "pii-0935", "category": "pos_pan", "text": "My PAN is UXJPN6807V, please update it in the KYC form.", "entities": [{"type": "PAN", "start": 10, "end": 20, "value": "UXJPN6807V"}]}
+{"id": "pii-0936", "category": "pos_email", "text": "Forward this thread to bera-deepa@mail.corp.example.org.", "entities": [{"type": "EMAIL", "start": 23, "end": 55, "value": "bera-deepa@mail.corp.example.org"}]}
+{"id": "pii-0937", "category": "pos_pan", "text": "Add LHHPC9196G to the vendor master for Bhavsar-Som.", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "LHHPC9196G"}]}
+{"id": "pii-0938", "category": "pos_in_mobile", "text": "The delivery partner could not reach 85954-56056. Please retry.", "entities": [{"type": "IN_MOBILE", "start": 37, "end": 48, "value": "85954-56056"}]}
+{"id": "pii-0939", "category": "pos_in_mobile", "text": "OTP was sent to 09896792716 but has not arrived.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 27, "value": "09896792716"}]}
+{"id": "pii-0940", "category": "neg_card_like_non_luhn", "text": "Serial number: 3317-4350-1555-7637", "entities": []}
+{"id": "pii-0941", "category": "neg_misc_numeric", "text": "Card ending in 2764 was used for the last purchase.", "entities": []}
+{"id": "pii-0942", "category": "neg_plain", "text": "Can you summarise the main differences between a savings account and a current account?", "entities": []}
+{"id": "pii-0943", "category": "pos_in_mobile", "text": "Alternate contact for the Mane, Char and Ranganathan account: 8016978405.", "entities": [{"type": "IN_MOBILE", "start": 62, "end": 72, "value": "8016978405"}]}
+{"id": "pii-0944", "category": "pos_email", "text": "Please send the invoice to naksh_kothari+orders@acme.co.in and copy accounts.", "entities": [{"type": "EMAIL", "start": 27, "end": 58, "value": "naksh_kothari+orders@acme.co.in"}]}
+{"id": "pii-0945", "category": "neg_invoice", "text": "PO number INV-2024-1795522", "entities": []}
+{"id": "pii-0946", "category": "pos_pan", "text": "Add WWDPX9021S to the vendor master for Bose-Sarraf.", "entities": [{"type": "PAN", "start": 4, "end": 14, "value": "WWDPX9021S"}]}
+{"id": "pii-0947", "category": "pos_email", "text": "My login email is devika_chawla+orders@yahoo.co.in, but I can't reset my password.", "entities": [{"type": "EMAIL", "start": 18, "end": 50, "value": "devika_chawla+orders@yahoo.co.in"}]}
+{"id": "pii-0948", "category": "neg_email_like", "text": "The string icon-cart@2x.png loads slowly on mobile, any idea why?", "entities": []}
+{"id": "pii-0949", "category": "neg_order_id", "text": "Return request for shipment #849052-5518 from Patil PLC.", "entities": []}
+{"id": "pii-0950", "category": "neg_email_like", "text": "The string git@github.com:initech/api.git loads slowly on mobile, any idea why?", "entities": []}
+{"id": "pii-0951", "category": "neg_pan_like_wrong_structure", "text": "The code ZDIZX3072O was printed on the label.", "entities": []}
+{"id": "pii-0952", "category": "pos_email", "text": "Write a polite follow-up to girik.chand@yahoo.co.in, they have not replied in a week.", "entities": [{"type": "EMAIL", "start": 28, "end": 51, "value": "girik.chand@yahoo.co.in"}]}
+{"id": "pii-0953", "category": "pos_in_mobile", "text": "Hello, this is Samesh Ahluwalia from Silchar. Ring +91 62867 21947 if the address is unclear.", "entities": [{"type": "IN_MOBILE", "start": 51, "end": 66, "value": "+91 62867 21947"}]}
+{"id": "pii-0954", "category": "neg_phone_like_non_indian", "text": "Call the regional team on 011-28132634.", "entities": []}
+{"id": "pii-0955", "category": "neg_aadhaar_like_non_verhoeff", "text": "Reference no. 704814384898", "entities": []}
+{"id": "pii-0956", "category": "pos_aadhaar", "text": "Oliver Buch's UID is 472558888981, born in Karimnagar.", "entities": [{"type": "AADHAAR", "start": 21, "end": 33, "value": "472558888981"}]}
+{"id": "pii-0957", "category": "pos_in_mobile", "text": "Customer mobile 69779 45712 is linked to two accounts. How do I merge them?", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 27, "value": "69779 45712"}]}
+{"id": "pii-0958", "category": "neg_phone_like_non_indian", "text": "Fax 1800-109-3870", "entities": []}
+{"id": "pii-0959", "category": "pos_email", "text": "I signed up with borra-yatan@gmail.com but never got the confirmation.", "entities": [{"type": "EMAIL", "start": 17, "end": 38, "value": "borra-yatan@gmail.com"}]}
+{"id": "pii-0960", "category": "neg_invoice", "text": "Please find attached PO-6347-975464 for the services rendered.", "entities": []}
+{"id": "pii-0961", "category": "neg_order_id", "text": "Order ID: #788943-7960", "entities": []}
+{"id": "pii-0962", "category": "neg_pan_like_wrong_structure", "text": "Part number YUQNE3268L, quantity 12.", "entities": []}
+{"id": "pii-0963", "category": "pos_in_mobile", "text": "Alternate contact for the Bedi-Mangal account: +91 7208649073.", "entities": [{"type": "IN_MOBILE", "start": 47, "end": 61, "value": "+91 7208649073"}]}
+{"id": "pii-0964", "category": "pos_aadhaar", "text": "Link 2265 2800 1931 with the bank account for DBT.", "entities": [{"type": "AADHAAR", "start": 5, "end": 19, "value": "2265 2800 1931"}]}
+{"id": "pii-0965", "category": "pos_in_mobile", "text": "OTP was sent to +91 9966479765 but has not arrived.", "entities": [{"type": "IN_MOBILE", "start": 16, "end": 30, "value": "+91 9966479765"}]}
+{"id": "pii-0966", "category": "pos_multi", "text": "Verify NCHPE8485B and 676238467681 for Victor Raman, then SMS +91 74754 68067.", "entities": [{"type": "PAN", "start": 7, "end": 17, "value": "NCHPE8485B"}, {"type": "AADHAAR", "start": 22, "end": 34, "value": "676238467681"}, {"type": "IN_MOBILE", "start": 62, "end": 77, "value": "+91 74754 68067"}]}
+{"id": "pii-0967", "category": "neg_order_id", "text": "Where is my order ORD-2025-33133418? It was supposed to arrive yesterday.", "entities": []}
+{"id": "pii-0968", "category": "neg_invoice", "text": "Reconcile BILL4399860222 with the bank statement.", "entities": []}
+{"id": "pii-0969", "category": "pos_aadhaar", "text": "Verification needed for UIDAI number 6839 4199 7426.", "entities": [{"type": "AADHAAR", "start": 37, "end": 51, "value": "6839 4199 7426"}]}
+{"id": "pii-0970", "category": "neg_plain", "text": "Give me three names for a bakery in Dhule.", "entities": []}
+{"id": "pii-0971", "category": "neg_phone_like_non_indian", "text": "Fax +1 315 633 5569", "entities": []}
+{"id": "pii-0972", "category": "pos_pan", "text": "My PAN is YIGGD4830L, please update it in the KYC form.", "entities": [{"type": "PAN", "start": 10, "end": 20, "value": "YIGGD4830L"}]}
+{"id": "pii-0973", "category": "neg_pan_like_wrong_structure", "text": "Is BANOYX8927B a valid PAN?", "entities": []}
+{"id": "pii-0974", "category": "pos_credit_card", "text": "Can I use 3008 335021 6156 for an international transaction?", "entities": [{"type": "CREDIT_CARD", "start": 10, "end": 26, "value": "3008 335021 6156"}]}
+{"id": "pii-0975", "category": "pos_credit_card", "text": "My card number is 8172 8903 4795 6962, expiry 08/28.", "entities": [{"type": "CREDIT_CARD", "start": 18, "end": 37, "value": "8172 8903 4795 6962"}]}
+{"id": "pii-0976", "category": "pos_aadhaar", "text": "Verification needed for UIDAI number 947337818722.", "entities": [{"type": "AADHAAR", "start": 37, "end": 49, "value": "947337818722"}]}
+{"id": "pii-0977", "category": "pos_multi", "text": "Please charge 5160 4512 7877 4864 and email the receipt to veerrajagopalan@example.net.", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 33, "value": "5160 4512 7877 4864"}, {"type": "EMAIL", "start": 59, "end": 86, "value": "veerrajagopalan@example.net"}]}
+{"id": "pii-0978", "category": "pos_multi", "text": "I'm Damini Sharaf. My mobile is +91-9787193576 and my backup email is nagi-brinda@gmail.com.", "entities": [{"type": "IN_MOBILE", "start": 32, "end": 46, "value": "+91-9787193576"}, {"type": "EMAIL", "start": 70, "end": 91, "value": "nagi-brinda@gmail.com"}]}
+{"id": "pii-0979", "category": "pos_credit_card", "text": "cc=3589 3225 2933 5474&cvv_required=true", "entities": [{"type": "CREDIT_CARD", "start": 3, "end": 22, "value": "3589 3225 2933 5474"}]}
+{"id": "pii-0980", "category": "pos_email", "text": "Summarise the complaint from bora-noah@mail.corp.example.org in two lines.", "entities": [{"type": "EMAIL", "start": 29, "end": 60, "value": "bora-noah@mail.corp.example.org"}]}
+{"id": "pii-0981", "category": "pos_aadhaar", "text": "Link 979726335022 with the bank account for DBT.", "entities": [{"type": "AADHAAR", "start": 5, "end": 17, "value": "979726335022"}]}
+{"id": "pii-0982", "category": "pos_multi", "text": "Name: Aarav Magar. Email kaul-advika@mail.corp.example.org, phone 7108248638.", "entities": [{"type": "EMAIL", "start": 25, "end": 58, "value": "kaul-advika@mail.corp.example.org"}, {"type": "IN_MOBILE", "start": 66, "end": 76, "value": "7108248638"}]}
+{"id": "pii-0983", "category": "neg_email_like", "text": "The string icon-user@2x.png loads slowly on mobile, any idea why?", "entities": []}
+{"id": "pii-0984", "category": "neg_phone_like_non_indian", "text": "Landline of the Mango branch: +44 20 7686 5056", "entities": []}
+{"id": "pii-0985", "category": "neg_aadhaar_like_non_verhoeff", "text": "Case number 4505 7212 2318 has been escalated.", "entities": []}
+{"id": "pii-0986", "category": "pos_credit_card", "text": "Card on file: 4727-3059-2272-0484", "entities": [{"type": "CREDIT_CARD", "start": 14, "end": 33, "value": "4727-3059-2272-0484"}]}
+{"id": "pii-0987", "category": "pos_multi", "text": "Name: Ekantika Patla. Email qabil_tara+orders@outlook.com, phone 9846665735.", "entities": [{"type": "EMAIL", "start": 28, "end": 57, "value": "qabil_tara+orders@outlook.com"}, {"type": "IN_MOBILE", "start": 65, "end": 75, "value": "9846665735"}]}
+{"id": "pii-0988", "category": "neg_invoice", "text": "Credit note against INV-2026-4375152 was issued to Dyal, Loke and Chacko.", "entities": []}
+{"id": "pii-0989", "category": "neg_misc_numeric", "text": "Total payable amount is Rs 1,16,68,66,81,222.00.", "entities": []}
+{"id": "pii-0990", "category": "pos_in_mobile", "text": "My number is +91 66483 35189, please WhatsApp me the tracking link.", "entities": [{"type": "IN_MOBILE", "start": 13, "end": 28, "value": "+91 66483 35189"}]}
+{"id": "pii-0991", "category": "pos_credit_card", "text": "Customer Krishna Gera pasted their card 3448 879226 38924 into the chat by mistake.", "entities": [{"type": "CREDIT_CARD", "start": 40, "end": 57, "value": "3448 879226 38924"}]}
+{"id": "pii-0992", "category": "neg_pan_like_wrong_structure", "text": "Registration OJRMPL8974P was found in the register.", "entities": []}
+{"id": "pii-0993", "category": "pos_email", "text": "Contact: neha.bava@rediffmail.com", "entities": [{"type": "EMAIL", "start": 9, "end": 33, "value": "neha.bava@rediffmail.com"}]}
+{"id": "pii-0994", "category": "neg_misc_numeric", "text": "Card ending in 4947 was used for the last purchase.", "entities": []}
+{"id": "pii-0995", "category": "pos_email", "text": "Contact: maanas83@example.com", "entities": [{"type": "EMAIL", "start": 9, "end": 29, "value": "maanas83@example.com"}]}
+{"id": "pii-0996", "category": "pos_multi", "text": "Onboarding form: Aadhaar 7944 1912 3871, PAN FOIPV0341W, email vinaya.bera@outlook.com.", "entities": [{"type": "AADHAAR", "start": 25, "end": 39, "value": "7944 1912 3871"}, {"type": "PAN", "start": 45, "end": 55, "value": "FOIPV0341W"}, {"type": "EMAIL", "start": 63, "end": 86, "value": "vinaya.bera@outlook.com"}]}
+{"id": "pii-0997", "category": "neg_aadhaar_like_non_verhoeff", "text": "Case number 508272800941 has been escalated.", "entities": []}
+{"id": "pii-0998", "category": "neg_pan_like_wrong_structure", "text": "Is GNDWP6173H a valid PAN?", "entities": []}
+{"id": "pii-0999", "category": "pos_in_mobile", "text": "Call me on +91 96452 43953 after 5 pm.", "entities": [{"type": "IN_MOBILE", "start": 11, "end": 26, "value": "+91 96452 43953"}]}
+{"id": "pii-1000", "category": "pos_pan", "text": "I am attaching my PAN (ILHBJ0920R) and a cancelled cheque.", "entities": [{"type": "PAN", "start": 23, "end": 33, "value": "ILHBJ0920R"}]}
