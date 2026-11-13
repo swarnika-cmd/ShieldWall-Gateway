@@ -1,0 +1,57 @@
+== 1-workers: uvicorn_workers=1 api_cpuset=0-1 mock_latency_ms=800 date_utc=2026-11-12T23:47:07Z
+tokenizer: tiktoken; input_tokens=17 estimate=17*5 + 100*15 = 1585 micro-USD
+budget stored = 11887 micro-USD; 11887 // 1585 = 7 reservations fit -> expected 200s = 7, 429s = 43
+worker processes found: 0; used CPU during the burst: 0 (none found: single-process server)
+statuses: [200, 429] 200=7 429=43  spent=1190 budget=11887 holds=0
+PASS
+exit=0
+tokenizer: tiktoken; input_tokens=17 estimate=17*5 + 100*15 = 1585 micro-USD
+budget stored = 11887 micro-USD; 11887 // 1585 = 7 reservations fit -> expected 200s = 7, 429s = 43
+worker processes found: 0; used CPU during the burst: 0 (none found: single-process server)
+statuses: [200, 429] 200=7 429=43  spent=1190 budget=11887 holds=0
+PASS
+exit=0
+tokenizer: tiktoken; input_tokens=17 estimate=17*5 + 100*15 = 1585 micro-USD
+budget stored = 11887 micro-USD; 11887 // 1585 = 7 reservations fit -> expected 200s = 7, 429s = 43
+worker processes found: 0; used CPU during the burst: 0 (none found: single-process server)
+statuses: [200, 429] 200=7 429=43  spent=1190 budget=11887 holds=0
+PASS
+exit=0
+== 2-workers: uvicorn_workers=2 api_cpuset=0-1 mock_latency_ms=800 date_utc=2026-11-12T23:47:25Z
+tokenizer: tiktoken; input_tokens=17 estimate=17*5 + 100*15 = 1585 micro-USD
+budget stored = 11887 micro-USD; 11887 // 1585 = 7 reservations fit -> expected 200s = 7, 429s = 43
+worker processes found: 2; used CPU during the burst: 2
+statuses: [200, 429] 200=7 429=43  spent=1190 budget=11887 holds=0
+PASS
+exit=0
+tokenizer: tiktoken; input_tokens=17 estimate=17*5 + 100*15 = 1585 micro-USD
+budget stored = 11887 micro-USD; 11887 // 1585 = 7 reservations fit -> expected 200s = 7, 429s = 43
+worker processes found: 2; used CPU during the burst: 2
+statuses: [200, 429] 200=7 429=43  spent=1190 budget=11887 holds=0
+PASS
+exit=0
+tokenizer: tiktoken; input_tokens=17 estimate=17*5 + 100*15 = 1585 micro-USD
+budget stored = 11887 micro-USD; 11887 // 1585 = 7 reservations fit -> expected 200s = 7, 429s = 43
+worker processes found: 2; used CPU during the burst: 2
+statuses: [200, 429] 200=7 429=43  spent=1190 budget=11887 holds=0
+PASS
+exit=0
+== 4-workers: uvicorn_workers=4 api_cpuset=0-3 mock_latency_ms=800 date_utc=2026-11-12T23:47:42Z
+tokenizer: tiktoken; input_tokens=17 estimate=17*5 + 100*15 = 1585 micro-USD
+budget stored = 11887 micro-USD; 11887 // 1585 = 7 reservations fit -> expected 200s = 7, 429s = 43
+worker processes found: 4; used CPU during the burst: 4
+statuses: [200, 429] 200=7 429=43  spent=1190 budget=11887 holds=0
+PASS
+exit=0
+tokenizer: tiktoken; input_tokens=17 estimate=17*5 + 100*15 = 1585 micro-USD
+budget stored = 11887 micro-USD; 11887 // 1585 = 7 reservations fit -> expected 200s = 7, 429s = 43
+worker processes found: 4; used CPU during the burst: 4
+statuses: [200, 429] 200=7 429=43  spent=1190 budget=11887 holds=0
+PASS
+exit=0
+tokenizer: tiktoken; input_tokens=17 estimate=17*5 + 100*15 = 1585 micro-USD
+budget stored = 11887 micro-USD; 11887 // 1585 = 7 reservations fit -> expected 200s = 7, 429s = 43
+worker processes found: 4; used CPU during the burst: 2
+statuses: [200, 429] 200=7 429=43  spent=1190 budget=11887 holds=0
+PASS
+exit=0
