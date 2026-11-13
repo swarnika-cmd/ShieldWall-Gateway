@@ -6,7 +6,8 @@
 #
 # Env overrides: BENCH_RATES, BENCH_DURATION, MOCK_LATENCY_MS, BENCH_CPUS_* (see
 # bench/docker-compose.bench.yml), BENCH_HARDWARE (free text for the report),
-# EXTRA_COMPOSE (path to an extra compose file, e.g. to mount a tokenizer cache).
+# EXTRA_COMPOSE (path to an extra compose file, e.g. bench/docker-compose.tokenizer-cache.yml to mount a
+# tokenizer cache), UVICORN_WORKERS (API worker processes, default 1; also raise BENCH_CPUS_API).
 # Results: bench/results/summary.md, bench/results/k6-summary.json, bench/results/db-crosscheck.txt
 set -euo pipefail
 cd "$(dirname "$0")"

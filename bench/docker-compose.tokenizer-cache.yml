@@ -1,0 +1,17 @@
+# Mounts a pre-populated tiktoken cache into the API container, for hosts where the
+# image build could not download the encodings (TLS-inspecting proxy, offline).
+# Without it pricing.py falls back to a byte-count upper bound, which is cheaper than real
+# tokenising and would make any benchmark unrepresentative.
+#
+#   TIKTOKEN_CACHE_HOST=/abs/path/to/tiktoken-cache \
+#     EXTRA_COMPOSE=bench/docker-compose.tokenizer-cache.yml bench/run.sh
+#
+# The directory must hold the files tiktoken names by the SHA-1 of the encoding URL
+# (9b5ad71b... for cl100k_base, fb374d41... for o200k_base). One way to fill it, from a
+# machine that can reach openaipublic.blob.core.windows.net:
+#   docker run --rm -v "$TIKTOKEN_CACHE_HOST":/opt/tiktoken -u root shieldwall-gateway:bench \
+#     python -c "import tiktoken; tiktoken.get_encoding('cl100k_base'); tiktoken.get_encoding('o200k_base')"
+services:
+  api:
+    volumes:
+      - ${TIKTOKEN_CACHE_HOST:?set TIKTOKEN_CACHE_HOST to a directory holding the tiktoken cache}:/opt/tiktoken:ro

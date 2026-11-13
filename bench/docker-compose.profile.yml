@@ -1,0 +1,18 @@
+# Profiling override for the bench stack: py-spy in the API container.
+# Use together with docker-compose.bench.yml (see bench/profile.sh and docs/profiling/README.md).
+# Build the base image first (docker compose -f docker-compose.bench.yml build api) because
+# Dockerfile.profile starts FROM shieldwall-gateway:bench.
+services:
+  api:
+    image: shieldwall-gateway:bench-profile
+    build:
+      context: ..
+      dockerfile: bench/Dockerfile.profile
+      args:
+        BASE_IMAGE: shieldwall-gateway:bench
+    cap_add: [SYS_PTRACE]
+    volumes:
+      - ./results/profile:/out
+  k6:
+    volumes:
+      - ./results/profile/k6out:/results

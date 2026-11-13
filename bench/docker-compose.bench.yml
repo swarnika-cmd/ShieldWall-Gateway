@@ -14,8 +14,11 @@ services:
   api:
     build: ..
     image: shieldwall-gateway:bench
-    # One uvicorn worker process: overhead numbers are per core.
-    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--no-access-log"]
+    # One uvicorn worker process by default: overhead numbers are per core.
+    # UVICORN_WORKERS=N runs N worker processes; give the container N CPUs too, e.g.
+    #   UVICORN_WORKERS=4 BENCH_CPUS_API=0-3 bench/run.sh
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--no-access-log",
+              "--workers", "${UVICORN_WORKERS:-1}"]
     environment: *app-env
     cpuset: "${BENCH_CPUS_API:-0-1}"
     healthcheck:
@@ -69,7 +72,7 @@ services:
       retries: 30
 
   k6:
-    image: grafana/k6
+    image: grafana/k6:0.54.0
     profiles: ["load"]   # only started explicitly by run.sh
     cpuset: "${BENCH_CPUS_K6:-8-11}"
     volumes:
@@ -80,5 +83,6 @@ services:
       DIRECT_URL: http://mock-upstream:8001/v1/chat/completions
       RATES: "${BENCH_RATES:-50,200}"
       DURATION: "${BENCH_DURATION:-30s}"
+      TARGETS: "${BENCH_TARGETS:-direct,gateway}"
       API_KEYS: "${BENCH_API_KEYS:-}"
       HARDWARE: "${BENCH_HARDWARE:-}"

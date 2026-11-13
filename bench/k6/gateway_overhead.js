@@ -9,6 +9,8 @@ import { Trend, Rate } from 'k6/metrics';
 
 const RATES = (__ENV.RATES || '50,200').split(',').map((r) => parseInt(r, 10));
 const DURATION = __ENV.DURATION || '30s';
+// TARGETS=gateway skips the direct baseline scenarios (used by bench/profile.sh).
+const TARGETS = (__ENV.TARGETS || 'direct,gateway').split(',');
 const GAP_SECONDS = 5;
 // API_KEYS = "50:sw_xxx,200:sw_yyy" (one project per rate so the DB cross-check can split them)
 const KEYS = Object.fromEntries((__ENV.API_KEYS || '').split(',').filter(Boolean).map((kv) => {
@@ -36,7 +38,7 @@ const errors = {};
 const scenarios = {};
 let start = 0;
 for (const rate of RATES) {
-  for (const target of ['direct', 'gateway']) {
+  for (const target of TARGETS) {
     const name = `${target}_${rate}`;
     latency[name] = new Trend(`latency_${name}`, true);
     errors[name] = new Rate(`errors_${name}`);
@@ -97,6 +99,7 @@ export function handleSummary(data) {
       + data.metrics[`errors_${n}`].values.fails : 0);
     row.direct_requests = count(d);
     row.gateway_requests = count(g);
+    row.dropped_iterations = data.metrics.dropped_iterations ? data.metrics.dropped_iterations.values.count : 0;
     row.direct_error_rate = stat(data, `errors_${d}`, 'rate');
     row.gateway_error_rate = stat(data, `errors_${g}`, 'rate');
     rows.push(row);
@@ -107,13 +110,13 @@ export function handleSummary(data) {
   md += `Written by bench/run.sh on ${new Date().toISOString()}.\n\n`;
   if (__ENV.HARDWARE) md += `Hardware: ${__ENV.HARDWARE}\n\n`;
   md += 'Mock upstream latency is fixed (MOCK_LATENCY_MS); overhead = gateway - direct at the same percentile.\n\n';
-  md += '| Rate (RPS) | Duration | Requests direct / gateway | Direct p50 / p95 / p99 (ms) | Gateway p50 / p95 / p99 (ms) | Overhead p50 / p95 / p99 (ms) | Errors direct / gateway |\n';
-  md += '|---|---|---|---|---|---|---|\n';
+  md += '| Rate (RPS) | Duration | Requests direct / gateway | Direct p50 / p95 / p99 (ms) | Gateway p50 / p95 / p99 (ms) | Overhead p50 / p95 / p99 (ms) | Errors direct / gateway | Dropped iterations |\n';
+  md += '|---|---|---|---|---|---|---|---|\n';
   for (const r of rows) {
     md += `| ${r.rate_rps} | ${r.duration} | ${r.direct_requests} / ${r.gateway_requests} | ${fmt(r.direct_p50_ms)} / ${fmt(r.direct_p95_ms)} / ${fmt(r.direct_p99_ms)} `
       + `| ${fmt(r.gateway_p50_ms)} / ${fmt(r.gateway_p95_ms)} / ${fmt(r.gateway_p99_ms)} `
       + `| ${fmt(r.overhead_p50_ms)} / ${fmt(r.overhead_p95_ms)} / ${fmt(r.overhead_p99_ms)} `
-      + `| ${pct(r.direct_error_rate)} / ${pct(r.gateway_error_rate)} |\n`;
+      + `| ${pct(r.direct_error_rate)} / ${pct(r.gateway_error_rate)} | ${r.dropped_iterations} |\n`;
   }
   return {
     stdout: md,

@@ -6,3 +6,6 @@ __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
 STAR_PROJECT_DESCRIPTION.md
+bench/results/profile/
+bench/results/sweep-v3-directional*/
+bench/results/sweep-v3/dry-run/
