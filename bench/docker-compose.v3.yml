@@ -1,0 +1,22 @@
+# Override used by bench/sweep_v3.sh: pick the gateway image and the upstream pool limits per run,
+# mount the tokenizer cache, and send k6 output to a per-run directory.
+#   SW_IMAGE            image for the api service only (worker and mock are pinned to shieldwall-gateway:v3-fixed)
+#   SW_MAX_CONN/SW_MAX_KEEP  UPSTREAM_MAX_CONNECTIONS / UPSTREAM_MAX_KEEPALIVE (ignored by pre-fix code, which is 500/100)
+#   TIKTOKEN_CACHE_HOST directory with the tiktoken cache (see docker-compose.tokenizer-cache.yml)
+#   SW_K6_OUT           absolute directory for k6 output
+services:
+  api:
+    image: ${SW_IMAGE:?set SW_IMAGE}
+    environment:
+      UPSTREAM_MAX_CONNECTIONS: "${SW_MAX_CONN:-500}"
+      UPSTREAM_MAX_KEEPALIVE: "${SW_MAX_KEEP:-100}"
+    volumes:
+      - ${TIKTOKEN_CACHE_HOST:?set TIKTOKEN_CACHE_HOST}:/opt/tiktoken:ro
+  # Only the API image varies between variants; worker and mock always run the fixed image.
+  worker:
+    image: shieldwall-gateway:v3-fixed
+  mock-upstream:
+    image: shieldwall-gateway:v3-fixed
+  k6:
+    volumes:
+      - ${SW_K6_OUT:-./results/sweep-v3/k6out}:/results

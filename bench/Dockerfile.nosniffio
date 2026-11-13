@@ -1,0 +1,7 @@
+# The gateway image as it was before sniffio was added to requirements.txt: same pins, sniffio removed.
+# Used by bench/sweep_v3.sh for the "before" configuration (httpcore then fails `import sniffio` on every call).
+ARG BASE_IMAGE=shieldwall-gateway:v3-fixed
+FROM ${BASE_IMAGE}
+USER root
+RUN pip uninstall -y sniffio
+USER shieldwall

@@ -1,0 +1,7 @@
+# Added by bench/sweep_v3.sh for part P (py-spy runs): ptrace capability and an output mount.
+# The image is a variant image plus py-spy (bench/Dockerfile.profile), selected with SW_IMAGE.
+services:
+  api:
+    cap_add: [SYS_PTRACE]
+    volumes:
+      - ${SW_SPY_OUT:?set SW_SPY_OUT}:/out
