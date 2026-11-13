@@ -1,0 +1,7 @@
+date_utc=2026-11-12T19:34:16Z
+mode=none rate=100 duration=60s
+hardware=Apple M4 Pro (12 cores), Docker Desktop Linux VM (12 vCPUs, 7.7 GiB)
+api_cpuset=0-1 uvicorn_workers=1
+container os.cpu_count()=12 sched_getaffinity=2 default to_thread max_workers=min(32, cpu_count+4)=16
+py-spy 0.4.1
+load started: 19:34:18

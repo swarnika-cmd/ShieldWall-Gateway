@@ -1,0 +1,15 @@
+date_utc=2026-11-12T19:22:44Z
+mode=gil rate=200 duration=150s
+hardware=Apple M4 Pro (12 cores), Docker Desktop Linux VM (12 vCPUs, 7.7 GiB)
+api_cpuset=0-1 uvicorn_workers=1
+container os.cpu_count()=12 sched_getaffinity=2 default to_thread max_workers=min(32, cpu_count+4)=16
+py-spy 0.4.1
+load started: 19:22:45
+==> py-spy window 1: flamegraph
+sw-prof-api-1 cpu=118.71% mem=219.4MiB / 7.748GiB
+sw-prof-mock-upstream-1 cpu=3.74% mem=40.97MiB / 7.748GiB
+sw-prof-postgres-1 cpu=5.75% mem=88.82MiB / 7.748GiB
+sw-prof-redis-1 cpu=5.77% mem=20.95MiB / 7.748GiB
+sw-prof-worker-1 cpu=14.11% mem=99.87MiB / 7.748GiB
+==> py-spy window 2: raw collapsed stacks
+window 2 done: 19:25:01
