@@ -1,0 +1,261 @@
+{
+  "meta": {
+    "date": "2026-11-12 23:26:00",
+    "dataset": "tests/data/pii_labelled.jsonl",
+    "seed": 20261113,
+    "rows": 1000,
+    "labelled_spans": 742,
+    "python": "3.11.18",
+    "match_rule": "same type and overlapping span (>=1 char), one-to-one"
+  },
+  "per_type": {
+    "AADHAAR": {
+      "tp": 119,
+      "fp": 1,
+      "fn": 0,
+      "exact": 119,
+      "gold": 119,
+      "precision": 0.9916666666666667,
+      "recall": 1.0,
+      "f1": 0.99581589958159
+    },
+    "CREDIT_CARD": {
+      "tp": 142,
+      "fp": 0,
+      "fn": 0,
+      "exact": 142,
+      "gold": 142,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "EMAIL": {
+      "tp": 176,
+      "fp": 15,
+      "fn": 0,
+      "exact": 176,
+      "gold": 176,
+      "precision": 0.9214659685863874,
+      "recall": 1.0,
+      "f1": 0.9591280653950953
+    },
+    "IN_MOBILE": {
+      "tp": 184,
+      "fp": 0,
+      "fn": 1,
+      "exact": 184,
+      "gold": 185,
+      "precision": 1.0,
+      "recall": 0.9945945945945946,
+      "f1": 0.997289972899729
+    },
+    "PAN": {
+      "tp": 120,
+      "fp": 0,
+      "fn": 0,
+      "exact": 120,
+      "gold": 120,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  "micro": {
+    "tp": 741,
+    "fp": 16,
+    "fn": 1,
+    "precision": 0.9788639365918098,
+    "recall": 0.9986522911051213,
+    "f1": 0.9886591060707138
+  },
+  "by_category": {
+    "pos_aadhaar": {
+      "rows": 100,
+      "fp": 0,
+      "fn": 0
+    },
+    "neg_timestamp": {
+      "rows": 45,
+      "fp": 0,
+      "fn": 0
+    },
+    "neg_invoice": {
+      "rows": 40,
+      "fp": 0,
+      "fn": 0
+    },
+    "neg_misc_numeric": {
+      "rows": 40,
+      "fp": 0,
+      "fn": 0
+    },
+    "neg_plain": {
+      "rows": 30,
+      "fp": 0,
+      "fn": 0
+    },
+    "pos_credit_card": {
+      "rows": 100,
+      "fp": 0,
+      "fn": 0
+    },
+    "pos_in_mobile": {
+      "rows": 120,
+      "fp": 1,
+      "fn": 1
+    },
+    "pos_email": {
+      "rows": 110,
+      "fp": 0,
+      "fn": 0
+    },
+    "pos_pan": {
+      "rows": 90,
+      "fp": 0,
+      "fn": 0
+    },
+    "pos_multi": {
+      "rows": 90,
+      "fp": 0,
+      "fn": 0
+    },
+    "neg_order_id": {
+      "rows": 40,
+      "fp": 0,
+      "fn": 0
+    },
+    "neg_aadhaar_like_non_verhoeff": {
+      "rows": 45,
+      "fp": 0,
+      "fn": 0
+    },
+    "neg_card_like_non_luhn": {
+      "rows": 45,
+      "fp": 0,
+      "fn": 0
+    },
+    "neg_pan_like_wrong_structure": {
+      "rows": 40,
+      "fp": 0,
+      "fn": 0
+    },
+    "neg_email_like": {
+      "rows": 20,
+      "fp": 15,
+      "fn": 0
+    },
+    "neg_phone_like_non_indian": {
+      "rows": 45,
+      "fp": 0,
+      "fn": 0
+    }
+  },
+  "errors": {
+    "fp": [
+      {
+        "id": "pii-0084",
+        "type": "AADHAAR",
+        "value": "917287354050",
+        "category": "pos_in_mobile"
+      },
+      {
+        "id": "pii-0105",
+        "type": "EMAIL",
+        "value": "logo@2x.png",
+        "category": "neg_email_like"
+      },
+      {
+        "id": "pii-0111",
+        "type": "EMAIL",
+        "value": "logo@3x.png",
+        "category": "neg_email_like"
+      },
+      {
+        "id": "pii-0128",
+        "type": "EMAIL",
+        "value": "git@github.com",
+        "category": "neg_email_like"
+      },
+      {
+        "id": "pii-0236",
+        "type": "EMAIL",
+        "value": "icon-user@2x.png",
+        "category": "neg_email_like"
+      },
+      {
+        "id": "pii-0273",
+        "type": "EMAIL",
+        "value": "logo@2x.png",
+        "category": "neg_email_like"
+      },
+      {
+        "id": "pii-0328",
+        "type": "EMAIL",
+        "value": "logo@2x.png",
+        "category": "neg_email_like"
+      },
+      {
+        "id": "pii-0555",
+        "type": "EMAIL",
+        "value": "icon-cart@2x.png",
+        "category": "neg_email_like"
+      },
+      {
+        "id": "pii-0619",
+        "type": "EMAIL",
+        "value": "logo@3x.png",
+        "category": "neg_email_like"
+      },
+      {
+        "id": "pii-0690",
+        "type": "EMAIL",
+        "value": "icon-cart@2x.png",
+        "category": "neg_email_like"
+      },
+      {
+        "id": "pii-0696",
+        "type": "EMAIL",
+        "value": "icon-cart@2x.png",
+        "category": "neg_email_like"
+      },
+      {
+        "id": "pii-0792",
+        "type": "EMAIL",
+        "value": "logo@2x.png",
+        "category": "neg_email_like"
+      },
+      {
+        "id": "pii-0820",
+        "type": "EMAIL",
+        "value": "icon-home@2x.png",
+        "category": "neg_email_like"
+      },
+      {
+        "id": "pii-0948",
+        "type": "EMAIL",
+        "value": "icon-cart@2x.png",
+        "category": "neg_email_like"
+      },
+      {
+        "id": "pii-0950",
+        "type": "EMAIL",
+        "value": "git@github.com",
+        "category": "neg_email_like"
+      },
+      {
+        "id": "pii-0983",
+        "type": "EMAIL",
+        "value": "icon-user@2x.png",
+        "category": "neg_email_like"
+      }
+    ],
+    "fn": [
+      {
+        "id": "pii-0084",
+        "type": "IN_MOBILE",
+        "value": "+917287354050",
+        "category": "pos_in_mobile"
+      }
+    ]
+  }
+}
